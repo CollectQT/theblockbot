@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: [:show, :edit, :update, :destroy]
+  before_action :set_report, only: [:show, :edit, :update, :destroy, :approve]
 
   # GET /reports
   # GET /reports.json
@@ -57,6 +57,15 @@ class ReportsController < ApplicationController
     @report.destroy
     respond_to do |format|
       format.html { redirect_to reports_url, notice: 'Report was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def approve
+    Block.create(text: @report.text)
+    @report.destroy
+    respond_to do |format|
+      format.html { redirect_to reports_url, notice: 'Report approved.' }
       format.json { head :no_content }
     end
   end

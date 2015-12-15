@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   resources :blocks
+
   resources :reports
+  post 'reports/:id' => 'reports#approve'
+
   resources :users
 
   root 'index#index'
