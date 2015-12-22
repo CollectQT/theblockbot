@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
+ruby "2.2.1"
+
 gem 'rails', '4.2.5'
-gem 'sqlite3'
+gem 'pg'
 
 gem 'sass-rails', '~> 5.0'
 gem 'twitter-bootstrap-rails'
@@ -31,3 +33,7 @@ group :development do
   gem 'spring'
 end
 
+group :production do
+  # for heroku
+  gem 'rails_12factor'
+end
