@@ -61,9 +61,13 @@ class ReportsController < ApplicationController
     end
   end
 
+  # POST /reposts/1
   def approve
+
     Block.create(text: @report.text)
+    SendBlock.perform_async(@report.text)
     @report.destroy
+
     respond_to do |format|
       format.html { redirect_to reports_url, notice: 'Report approved.' }
       format.json { head :no_content }
