@@ -1,3 +1,10 @@
 # TheBlockBot
 
-(( WIP ))
+## Install
+
+Requires:
+
+* Rails
+* Redis
+* Postgres
+* heroku toolbelt (or foreman)
