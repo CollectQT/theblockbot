@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :reports
+  resources :reports
+  resources :reports
+  resources :reports
+  resources :reports
+  resources :block_lists
+  resources :reports
   resources :block_lists
   resources :blocks
 

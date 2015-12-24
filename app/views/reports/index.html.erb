@@ -8,6 +8,7 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:text) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th>Block List</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -17,6 +18,7 @@
         <td><%= link_to report.id, report_path(report) %></td>
         <td><%= report.text %></td>
         <td><%=l report.created_at %></td>
+        <td><%= BlockList.find(report.block_list_id).name %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_report_path(report),
@@ -35,7 +37,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_report_path,
-            :class => 'btn btn-primary' %>
