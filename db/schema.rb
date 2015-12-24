@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224041453) do
+ActiveRecord::Schema.define(version: 20151224050051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "block_lists", force: :cascade do |t|
-    t.text     "name"
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -30,9 +30,12 @@ ActiveRecord::Schema.define(version: 20151224041453) do
 
   create_table "reports", force: :cascade do |t|
     t.text     "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "block_list_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
+
+  add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -47,4 +50,5 @@ ActiveRecord::Schema.define(version: 20151224041453) do
     t.datetime "updated_at",           null: false
   end
 
+  add_foreign_key "reports", "block_lists"
 end
