@@ -8,7 +8,7 @@ class Report < ActiveRecord::Base
     text_included_a_list = false
 
     for blocklist in BlockList.all()
-      if ('#'+blocklist.name).downcase.in? text.downcase
+      if ('#'+blocklist.name).downcase.delete(' ').in? text.downcase
         puts '[Created Report('+blocklist.name+')] '+text.squish
         Report.create(text: text, block_list_id: blocklist.id)
         text_included_a_list = true
