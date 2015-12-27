@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :block_lists
   post '/block_lists/:id/subscribe' => 'block_lists#subscribe', :as => :subscribe
+  delete '/block_lists/:id/subscribe' => 'block_lists#unsubscribe'
 
   resources :reports
   post 'reports/:id/approve' => 'reports#approve', :as => :approve

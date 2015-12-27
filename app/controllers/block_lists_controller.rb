@@ -1,5 +1,5 @@
 class BlockListsController < ApplicationController
-  before_action :set_block_list, only: [:show, :edit, :update, :destroy, :subscribe]
+  before_action :set_block_list, only: [:show, :edit, :update, :destroy, :subscribe, :unsubscribe]
 
   # GET /block_lists
   def index
@@ -56,6 +56,14 @@ class BlockListsController < ApplicationController
     Subscription.create(block_list_id: @block_list.id)
     respond_to do |format|
       format.html { redirect_to block_lists_url, notice: 'Subscribed to '+@block_list.name}
+    end
+  end
+
+  # DELETE /block_lists/1/subscribe
+  def unsubscribe
+    Subscription.find(block_list_id: @block_list.id).delete
+    respond_to do |format|
+      format.html { redirect_to block_lists_url, notice: 'Unsubscribed from '+@block_list.name}
     end
   end
 

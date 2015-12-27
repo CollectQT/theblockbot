@@ -1,4 +1,9 @@
 %h1 TheBlockBot
-= button_to 'Log In with Twitter',   |
-  '/auth/twitter',                   |
-  :class => 'btn btn-xs btn-primary' |
+- if current_user
+  = link_to 'Subscribe to block lists',
+    block_lists_path,
+    :class => 'btn btn-xs btn-primary'
+- else
+  =  button_to 'Log In with Twitter',
+    '/auth/twitter',
+    :class => 'btn btn-xs btn-primary'
