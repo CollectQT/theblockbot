@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :auths
+  resources :users
+  resources :auths
+  resources :users
   resources :reports
   resources :reports
   resources :reports

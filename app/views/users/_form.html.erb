@@ -1,34 +1,77 @@
-<%= form_for @user, :html => { :class => "form-horizontal user" } do |f| %>
-
+<%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :account_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :account_id, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:account_id) %>
+  <div class="field">
+    <%= f.label :display_name %><br>
+    <%= f.text_field :display_name %>
   </div>
-
-  <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                users_path, :class => 'btn btn-default' %>
-    </div>
+  <div class="field">
+    <%= f.label :account_created %><br>
+    <%= f.text_field :account_created %>
   </div>
-
+  <div class="field">
+    <%= f.label :default_profile_image %><br>
+    <%= f.check_box :default_profile_image %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :incoming_follows %><br>
+    <%= f.number_field :incoming_follows %>
+  </div>
+  <div class="field">
+    <%= f.label :outgoing_follows %><br>
+    <%= f.number_field :outgoing_follows %>
+  </div>
+  <div class="field">
+    <%= f.label :account_id %><br>
+    <%= f.text_field :account_id %>
+  </div>
+  <div class="field">
+    <%= f.label :profile_image_url %><br>
+    <%= f.text_field :profile_image_url %>
+  </div>
+  <div class="field">
+    <%= f.label :user_name %><br>
+    <%= f.text_field :user_name %>
+  </div>
+  <div class="field">
+    <%= f.label :website %><br>
+    <%= f.text_field :website %>
+  </div>
+  <div class="field">
+    <%= f.label :posts %><br>
+    <%= f.number_field :posts %>
+  </div>
+  <div class="field">
+    <%= f.label :times_reported %><br>
+    <%= f.number_field :times_reported %>
+  </div>
+  <div class="field">
+    <%= f.label :times_blocked %><br>
+    <%= f.number_field :times_blocked %>
+  </div>
+  <div class="field">
+    <%= f.label :reports %><br>
+    <%= f.number_field :reports %>
+  </div>
+  <div class="field">
+    <%= f.label :blocks %><br>
+    <%= f.number_field :blocks %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 <% end %>

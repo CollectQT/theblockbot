@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224050051) do
+ActiveRecord::Schema.define(version: 20151225073812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,16 +38,23 @@ ActiveRecord::Schema.define(version: 20151224050051) do
   add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name"
     t.string   "display_name"
-    t.string   "site"
-    t.string   "user_id"
+    t.string   "account_created"
+    t.boolean  "default_profile_image"
     t.text     "description"
-    t.string   "date_profile_created"
-    t.integer  "times_reported"
-    t.integer  "times_blocked"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "incoming_follows"
+    t.integer  "outgoing_follows"
+    t.string   "account_id"
+    t.string   "profile_image_url"
+    t.string   "user_name"
+    t.string   "website"
+    t.integer  "posts"
+    t.integer  "times_reported",        default: 0
+    t.integer  "times_blocked",         default: 0
+    t.integer  "reports",               default: 0
+    t.integer  "blocks",                default: 0
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   add_foreign_key "reports", "block_lists"
