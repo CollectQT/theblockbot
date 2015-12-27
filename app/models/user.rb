@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_one :auth, :dependent => :destroy
   has_many :subscriptions
   has_many :reports
+  has_many :block_lists, through: :subscriptions
 
   validates :website, presence: true
   validates :account_id, presence: true
