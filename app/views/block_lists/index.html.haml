@@ -15,13 +15,13 @@
         %td= block_list.name
         %td= l block_list.created_at
         %td
-          - if @current_user.in? block_list.users
-            = button_to 'Subscribe',
-              subscribe_path(block_list),
-              :method => :delete,
-              :class => 'btn btn-xs btn-primary'
-          - else
+          - if current_user.in? block_list.users
             = button_to 'Unsubscribe',
               subscribe_path(block_list),
-              :method => :post,
+              :method => :delete,
               :class => 'btn btn-xs btn-danger'
+          - else
+            = button_to 'Subscribe',
+              subscribe_path(block_list),
+              :method => :post,
+              :class => 'btn btn-xs btn-primary'

@@ -4,7 +4,7 @@ list3 = BlockList.create(name: 'Birbs')
 
 me = User.get(TwitterClient.REST.user)
 
-Subscription.to(list1.id, me.id)
-Subscription.to(list2.id, me.id)
+Subscription.create(user_id: me.id, block_list_id: list1.id)
+Subscription.create(user_id: me.id, block_list_id: list2.id)
 
 Report.parse('@lynncyrin #block #badcats knocked over my water')
