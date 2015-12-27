@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
-  has_one :auth
+  has_one :auth, :dependent => :destroy
   has_many :subscriptions
   has_many :reports
 
   validates :website, presence: true
   validates :account_id, presence: true
-  validates_uniqueness_of [:website, :account_id]
+  validates_uniqueness_of :account_id, scope: :website
 
   def self.get(_user, website='twitter')
 
@@ -31,6 +31,9 @@ class User < ActiveRecord::Base
     # https://www.tumblr.com/docs/en/api/v2#blog-info
     elsif website == 'tumblr'
       raise 'tumblr not yet implemented'
+
+    else
+      raise 'invalid website???'
 
     end
 

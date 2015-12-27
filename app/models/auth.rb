@@ -20,7 +20,7 @@ class Auth < ActiveRecord::Base
 
     end
 
-  return user
+    return user
   end
 
 end
