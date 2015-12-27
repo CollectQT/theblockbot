@@ -2,10 +2,6 @@ Rails.application.routes.draw do
 
   root 'index#index'
 
-  resources :auths
-
-  resources :users
-
   resources :blocks
 
   resources :block_lists

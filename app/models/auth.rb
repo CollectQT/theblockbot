@@ -1,12 +1,26 @@
 class Auth < ActiveRecord::Base
   belongs_to :user
 
-  def self.create_with_omniauth(auth)
-    create! do |user|
-      user.provider = auth["provider"]
-      user.uid = auth["uid"]
-      user.name = auth["info"]["name"]
+  # returns a user object instead of an auth object
+  def self.parse(_auth)
+
+    user = User.get(_auth.extra.raw_info, _auth.provider)
+
+    if _auth.provider == 'twitter'
+      Auth.find_or_create_by(user_id: user.id) do |auth|
+        auth.key    = _auth.credentials.token
+        auth.secret = _auth.credentials.secret
+      end
+
+    elsif website == 'facebook'
+      raise 'facebook not yet implemented'
+
+    elsif website == 'tumblr'
+      raise 'tumblr not yet implemented'
+
     end
+
+  return user
   end
 
 end

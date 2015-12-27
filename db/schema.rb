@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20151227022339) do
   add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "display_name"
+    t.string   "name"
     t.string   "account_created"
     t.boolean  "default_profile_image"
     t.text     "description"
