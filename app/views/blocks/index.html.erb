@@ -1,36 +1,29 @@
-<%- model_class = Block -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
-<table class="table table-striped">
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Blocks</h1>
+
+<table>
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:text) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th>Subscription</th>
+      <th>Block list</th>
+      <th colspan="3"></th>
     </tr>
   </thead>
+
   <tbody>
     <% @blocks.each do |block| %>
       <tr>
-        <td><%= link_to block.id, block_path(block) %></td>
-        <td><%= block.text %></td>
-        <td><%=l block.created_at %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_block_path(block), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      block_path(block),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
-        </td>
+        <td><%= block.subscription %></td>
+        <td><%= block.block_list %></td>
+        <td><%= link_to 'Show', block %></td>
+        <td><%= link_to 'Edit', edit_block_path(block) %></td>
+        <td><%= link_to 'Destroy', block, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_block_path,
-            :class => 'btn btn-primary' %>
+<br>
+
+<%= link_to 'New Block', new_block_path %>

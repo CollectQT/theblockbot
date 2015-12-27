@@ -1,10 +1,10 @@
-<%= form_for(@block) do |f| %>
-  <% if @block.errors.any? %>
+<%= form_for(@subscription) do |f| %>
+  <% if @subscription.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@block.errors.count, "error") %> prohibited this block from being saved:</h2>
+      <h2><%= pluralize(@subscription.errors.count, "error") %> prohibited this subscription from being saved:</h2>
 
       <ul>
-      <% @block.errors.full_messages.each do |message| %>
+      <% @subscription.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :subscription_id %><br>
-    <%= f.text_field :subscription_id %>
+    <%= f.label :user_id %><br>
+    <%= f.text_field :user_id %>
   </div>
   <div class="field">
     <%= f.label :block_list_id %><br>

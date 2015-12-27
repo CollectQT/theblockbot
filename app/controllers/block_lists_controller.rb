@@ -1,14 +1,12 @@
 class BlockListsController < ApplicationController
-  before_action :set_block_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_block_list, only: [:show, :edit, :update, :destroy, :subscribe]
 
   # GET /block_lists
-  # GET /block_lists.json
   def index
     @block_lists = BlockList.all
   end
 
   # GET /block_lists/1
-  # GET /block_lists/1.json
   def show
   end
 
@@ -22,42 +20,42 @@ class BlockListsController < ApplicationController
   end
 
   # POST /block_lists
-  # POST /block_lists.json
   def create
     @block_list = BlockList.new(block_list_params)
 
     respond_to do |format|
       if @block_list.save
         format.html { redirect_to @block_list, notice: 'Block list was successfully created.' }
-        format.json { render :show, status: :created, location: @block_list }
       else
         format.html { render :new }
-        format.json { render json: @block_list.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /block_lists/1
-  # PATCH/PUT /block_lists/1.json
   def update
     respond_to do |format|
       if @block_list.update(block_list_params)
         format.html { redirect_to @block_list, notice: 'Block list was successfully updated.' }
-        format.json { render :show, status: :ok, location: @block_list }
       else
         format.html { render :edit }
-        format.json { render json: @block_list.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /block_lists/1
-  # DELETE /block_lists/1.json
   def destroy
     @block_list.destroy
     respond_to do |format|
       format.html { redirect_to block_lists_url, notice: 'Block list was successfully destroyed.' }
-      format.json { head :no_content }
+    end
+  end
+
+  # POST /block_lists/1/subscribe
+  def subscribe
+    Subscription.create(block_list_id: @block_list.id)
+    respond_to do |format|
+      format.html { redirect_to block_lists_url, notice: 'Subscribed to '+@block_list.name}
     end
   end
 

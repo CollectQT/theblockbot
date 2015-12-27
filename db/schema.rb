@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151227022339) do
+ActiveRecord::Schema.define(version: 20151227051937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,10 +33,14 @@ ActiveRecord::Schema.define(version: 20151227022339) do
   end
 
   create_table "blocks", force: :cascade do |t|
-    t.text     "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "subscription_id"
+    t.integer  "block_list_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
+
+  add_index "blocks", ["block_list_id"], name: "index_blocks_on_block_list_id", using: :btree
+  add_index "blocks", ["subscription_id"], name: "index_blocks_on_subscription_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
     t.text     "text"
@@ -46,6 +50,16 @@ ActiveRecord::Schema.define(version: 20151227022339) do
   end
 
   add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "block_list_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "subscriptions", ["block_list_id"], name: "index_subscriptions_on_block_list_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -71,5 +85,9 @@ ActiveRecord::Schema.define(version: 20151227022339) do
   add_index "users", ["account_id", "website"], name: "index_users_on_account_id_and_website", unique: true, using: :btree
 
   add_foreign_key "auths", "users"
+  add_foreign_key "blocks", "block_lists"
+  add_foreign_key "blocks", "subscriptions"
   add_foreign_key "reports", "block_lists"
+  add_foreign_key "subscriptions", "block_lists"
+  add_foreign_key "subscriptions", "users"
 end
