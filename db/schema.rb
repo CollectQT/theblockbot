@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151225073812) do
+ActiveRecord::Schema.define(version: 20151227022339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "auths", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "key"
+    t.string   "secret"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "auths", ["user_id"], name: "index_auths_on_user_id", using: :btree
 
   create_table "block_lists", force: :cascade do |t|
     t.string   "name"
@@ -48,6 +58,7 @@ ActiveRecord::Schema.define(version: 20151225073812) do
     t.string   "profile_image_url"
     t.string   "user_name"
     t.string   "website"
+    t.string   "url"
     t.integer  "posts"
     t.integer  "times_reported",        default: 0
     t.integer  "times_blocked",         default: 0
@@ -57,5 +68,8 @@ ActiveRecord::Schema.define(version: 20151225073812) do
     t.datetime "updated_at",                        null: false
   end
 
+  add_index "users", ["account_id", "website"], name: "index_users_on_account_id_and_website", unique: true, using: :btree
+
+  add_foreign_key "auths", "users"
   add_foreign_key "reports", "block_lists"
 end
