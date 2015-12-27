@@ -1,0 +1,44 @@
+%p#notice= notice
+%h1 Listing Users
+%table
+  %thead
+    %tr
+      %th Display name
+      %th Account created
+      %th Default profile image
+      %th Description
+      %th Incoming follows
+      %th Outgoing follows
+      %th Account
+      %th Profile image url
+      %th User name
+      %th Website
+      %th Posts
+      %th Times reported
+      %th Times blocked
+      %th Reports
+      %th Blocks
+      %th{:colspan => "3"}
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.display_name
+        %td= user.account_created
+        %td= user.default_profile_image
+        %td= user.description
+        %td= user.incoming_follows
+        %td= user.outgoing_follows
+        %td= user.account_id
+        %td= user.profile_image_url
+        %td= user.user_name
+        %td= user.website
+        %td= user.posts
+        %td= user.times_reported
+        %td= user.times_blocked
+        %td= user.reports
+        %td= user.blocks
+        %td= link_to 'Show', user
+        %td= link_to 'Edit', edit_user_path(user)
+        %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+%br/
+= link_to 'New User', new_user_path

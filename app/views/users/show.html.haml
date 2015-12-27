@@ -1,0 +1,49 @@
+%p#notice= notice
+%p
+  %strong Display name:
+  = @user.display_name
+%p
+  %strong Account created:
+  = @user.account_created
+%p
+  %strong Default profile image:
+  = @user.default_profile_image
+%p
+  %strong Description:
+  = @user.description
+%p
+  %strong Incoming follows:
+  = @user.incoming_follows
+%p
+  %strong Outgoing follows:
+  = @user.outgoing_follows
+%p
+  %strong Account:
+  = @user.account_id
+%p
+  %strong Profile image url:
+  = @user.profile_image_url
+%p
+  %strong User name:
+  = @user.user_name
+%p
+  %strong Website:
+  = @user.website
+%p
+  %strong Posts:
+  = @user.posts
+%p
+  %strong Times reported:
+  = @user.times_reported
+%p
+  %strong Times blocked:
+  = @user.times_blocked
+%p
+  %strong Reports:
+  = @user.reports
+%p
+  %strong Blocks:
+  = @user.blocks
+= link_to 'Edit', edit_user_path(@user)
+|
+= link_to 'Back', users_path

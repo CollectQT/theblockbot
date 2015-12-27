@@ -1,0 +1,23 @@
+= form_for(@auth) do |f|
+  - if @auth.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@auth.errors.count, "error")
+        prohibited this auth from being saved:
+      %ul
+        - @auth.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = f.label :user_id
+    %br/
+    = f.text_field :user_id
+  .field
+    = f.label :key
+    %br/
+    = f.text_field :key
+  .field
+    = f.label :secret
+    %br/
+    = f.text_field :secret
+  .actions
+    = f.submit
