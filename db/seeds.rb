@@ -5,3 +5,10 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+list1 = BlockList.create(name: 'Bad Cats')
+list2 = BlockList.create(name: 'Smelly Dogs')
+
+me = User.get(TwitterClient.REST.user)
+
+subscribe = Subscription.to(list1.id, me.id)
