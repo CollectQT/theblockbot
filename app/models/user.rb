@@ -7,16 +7,17 @@ class User < ActiveRecord::Base
   def self.get(_user, website='twitter')
     if website == 'twitter'
       # https://dev.twitter.com/overview/api/users
-      User.find_or_create_by(account_id: _user.id.to_s, website: website) do |param|
-        param.display_name          = _user.name
-        param.account_created       = _user.created_at
-        param.default_profile_image = _user.default_profile_image?
-        param.description           = _user.description
-        param.incoming_follows      = _user.followers_count
-        param.outgoing_follows      = _user.friends_count
-        param.profile_image_url     = _user.profile_image_url
-        param.user_name             = _user.screen_name
-        param.posts                 = _user.statuses_count
+      User.find_or_create_by(account_id: _user.id.to_s, website: website) do |user|
+        user.display_name          = _user.name
+        user.account_created       = _user.created_at
+        user.default_profile_image = _user.default_profile_image?
+        user.description           = _user.description
+        user.incoming_follows      = _user.followers_count
+        user.outgoing_follows      = _user.friends_count
+        user.profile_image_url     = _user.profile_image_url
+        user.user_name             = _user.screen_name
+        user.posts                 = _user.statuses_count
+        user.url                   = _user.url.to_s
       end
     elsif website == 'facebook'
       # https://developers.facebook.com/docs/graph-api/reference/user

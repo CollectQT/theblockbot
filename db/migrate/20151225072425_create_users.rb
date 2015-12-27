@@ -11,6 +11,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :profile_image_url
       t.string :user_name
       t.string :website
+      t.string :url
       t.integer :posts
       t.integer :times_reported
       t.integer :times_blocked
