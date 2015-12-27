@@ -13,12 +13,15 @@ class CreateUsers < ActiveRecord::Migration
       t.string :website
       t.string :url
       t.integer :posts
-      t.integer :times_reported
-      t.integer :times_blocked
-      t.integer :reports
-      t.integer :blocks
+      t.integer :times_reported, :default => 0
+      t.integer :times_blocked, :default => 0
+      t.integer :reports, :default => 0
+      t.integer :blocks, :default => 0
 
       t.timestamps null: false
     end
+
+    add_index :users, [:account_id, :website], :unique => true
+
   end
 end

@@ -26,6 +26,7 @@
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+          <!-- if @current_user.in? BlockList.first.users then puts 'yes' else puts 'no' end -->
           <%= button_to 'Subscribe',
                       subscribe_path(block_list),
                       :method => :post,

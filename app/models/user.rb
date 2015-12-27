@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_one :auth
   has_many :subscriptions
+  has_many :reports
+
   validates :website, presence: true
   validates :account_id, presence: true
   validates_uniqueness_of [:website, :account_id]
