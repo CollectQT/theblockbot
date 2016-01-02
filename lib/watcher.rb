@@ -9,6 +9,6 @@ puts 'Starting Watcher for "'+track+'"'
 
 TwitterClient.Stream.filter(track: track) do |object|
   if object.is_a? Twitter::Tweet
-    Report.parse(object.text)
+    Report.parse(object.text, object.user)
   end
 end

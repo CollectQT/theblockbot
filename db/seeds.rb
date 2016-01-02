@@ -7,4 +7,4 @@ me = User.get(TwitterClient.REST.user)
 Subscription.create(user_id: me.id, block_list_id: list1.id)
 Subscription.create(user_id: me.id, block_list_id: list2.id)
 
-Report.parse('@lynncyrin #block #badcats knocked over my water')
+Report.parse('@lynncyrin #block +cyrin_test_2 #badcats knocked over my water', me)
