@@ -8,6 +8,9 @@ class Report < ActiveRecord::Base
   validates :reporter_id, presence: true
   validates :target_id, presence: true
 
+  validates_uniqueness_of :text, scope: :reporter_id
+
+
   def self.parse(text, reporter)
     puts '[Incoming Report] '+text.squish
     text_included_a_list = false
