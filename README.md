@@ -7,4 +7,4 @@ Requires:
 * Rails
 * Redis
 * Postgres
-* foreman
+* Foreman
