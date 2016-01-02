@@ -23,9 +23,9 @@
         %a.navbar-brand{:href => "/"} TheBlockBot
         .navbar-collapse.collapse.navbar-responsive-collapse
           %ul.nav.navbar-nav
-            %li= link_to "About",   "/about"
-            %li= link_to "Signup",  "/signup"
-            %li= link_to "Contact", "/contact"
+            %li= link_to "Reports",   "/reports"
+            %li= link_to "Blocks",  "/blocks"
+            %li= link_to "Block Lists", "/block_lists"
             %li
               - if current_user
                 Welcome #{current_user.name}!
