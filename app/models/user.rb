@@ -19,18 +19,20 @@ class User < ActiveRecord::Base
 
     # https://dev.twitter.com/overview/api/users
     elsif website == 'twitter'
-      User.find_or_create_by(account_id: _user.id.to_s, website: website) do |user|
-        user.name                  = _user.name
-        user.user_name             = _user.screen_name
-        user.account_created       = _user.created_at
-        user.default_profile_image = _user.default_profile_image?
-        user.description           = _user.description
-        user.incoming_follows      = _user.followers_count
-        user.outgoing_follows      = _user.friends_count
-        user.profile_image_url     = _user.profile_image_url
-        user.posts                 = _user.statuses_count
-        user.url                   = _user.url.to_s
-      end
+      user = User.find_or_create_by(account_id: _user.id.to_s, website: website)
+      user.update_attributes(
+        name:                   _user.name,
+        user_name:              _user.screen_name,
+        account_created:        _user.created_at,
+        default_profile_image:  _user.default_profile_image?,
+        description:            _user.description,
+        incoming_follows:       _user.followers_count,
+        outgoing_follows:       _user.friends_count,
+        profile_image_url:      _user.profile_image_url,
+        posts:                  _user.statuses_count,
+        url:                    _user.url.to_s
+      )
+      return user
 
     # https://developers.facebook.com/docs/graph-api/reference/user
     elsif website == 'facebook'
