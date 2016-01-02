@@ -7,4 +7,4 @@ Requires:
 * Rails
 * Redis
 * Postgres
-* heroku toolbelt (or foreman)
+* Foreman
