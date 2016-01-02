@@ -1,20 +1,28 @@
 - model_class = Report
+<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+
 .page-header
   %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
 %table.table.table-striped
   %thead
     %tr
-      %th= model_class.human_attribute_name(:id)
-      %th= model_class.human_attribute_name(:text)
+      %th= 'Report'
       %th= model_class.human_attribute_name(:created_at)
+      %th= 'Reporter'
+      %th= 'Target User'
       %th Block List
       %th= t '.actions', :default => t("helpers.actions")
   %tbody
     - @reports.each do |report|
       %tr
-        %td= link_to report.id, report_path(report)
         %td= report.text
         %td= l report.created_at
+        %td
+          = link_to report.reporter.name+' (@'+report.reporter.user_name+')',
+            "https://twitter.com/intent/user?user_id="+report.reporter.account_id
+        %td
+          = link_to report.target.name+' (@'+report.target.user_name+')',
+            "https://twitter.com/intent/user?user_id="+report.target.account_id
         %td= BlockList.find(report.block_list_id).name
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")),
