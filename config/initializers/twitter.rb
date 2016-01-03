@@ -1,5 +1,15 @@
 class TwitterClient
-    cattr_accessor :REST, :Stream
+  cattr_accessor :REST, :Stream
+
+  def self.user(auth)
+    Twitter::REST::Client.new(
+      consumer_key: TwitterClient.REST.consumer_key,
+      consumer_secret: TwitterClient.REST.consumer_secret,
+      access_token: auth.key,
+      access_token_secret: auth.secret,
+    )
+  end
+
 end
 
 twitterSecrets = {
