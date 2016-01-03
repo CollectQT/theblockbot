@@ -7,8 +7,6 @@ track = 'lynncyrin #block'
 
 puts 'Starting Watcher for "'+track+'"'
 
-TwitterClient.Stream.filter(track: track) do |object|
-  if object.is_a? Twitter::Tweet
-    Report.parse(object.text, object.user)
-  end
+TweetStream::Client.new.track(track) do |status|
+  Report.parse(status.text, status.user)
 end

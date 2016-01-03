@@ -53,7 +53,7 @@ class BlockListsController < ApplicationController
 
   # POST /block_lists/1/subscribe
   def subscribe
-    s = Subscription.create(user_id: current_user.id, block_list_id: @block_list.id)
+    Subscription.create(user_id: current_user.id, block_list_id: @block_list.id)
     respond_to do |format|
       format.html { redirect_to block_lists_url, notice: 'Subscribed to '+@block_list.name}
     end

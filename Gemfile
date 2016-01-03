@@ -15,7 +15,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'twitter', :git => 'https://github.com/sferik/twitter.git', :branch => 'streaming-updates'
+gem 'twitter'
+gem 'tweetstream'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim'

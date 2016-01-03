@@ -35,24 +35,28 @@ ActiveRecord::Schema.define(version: 20151227051937) do
   add_index "block_lists", ["name"], name: "index_block_lists_on_name", unique: true, using: :btree
 
   create_table "blocks", force: :cascade do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "subscription_id"
+    t.text     "text"
+    t.integer  "user_id",       null: false
     t.integer  "block_list_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "report_id"
+    t.integer  "target_id",     null: false
+    t.integer  "reporter_id",   null: false
+    t.integer  "approver_id",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "blocks", ["block_list_id"], name: "index_blocks_on_block_list_id", using: :btree
-  add_index "blocks", ["subscription_id"], name: "index_blocks_on_subscription_id", using: :btree
   add_index "blocks", ["user_id"], name: "index_blocks_on_user_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
     t.text     "text"
-    t.integer  "target_id",     null: false
-    t.integer  "reporter_id",   null: false
-    t.integer  "block_list_id", null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.boolean  "processed",     default: false, null: false
+    t.integer  "target_id",                     null: false
+    t.integer  "reporter_id",                   null: false
+    t.integer  "block_list_id",                 null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
@@ -92,7 +96,7 @@ ActiveRecord::Schema.define(version: 20151227051937) do
 
   add_foreign_key "auths", "users"
   add_foreign_key "blocks", "block_lists"
-  add_foreign_key "blocks", "subscriptions"
+  add_foreign_key "blocks", "reports"
   add_foreign_key "blocks", "users"
   add_foreign_key "reports", "block_lists"
   add_foreign_key "subscriptions", "block_lists"

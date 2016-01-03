@@ -1,76 +1,39 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: [:show, :edit, :update, :destroy, :approve]
+  before_action :set_report, only: [:create, :approve, :deny]
 
   # GET /reports
   # GET /reports.json
   def index
-    @reports = Report.all
-  end
-
-  # GET /reports/1
-  # GET /reports/1.json
-  def show
-  end
-
-  # GET /reports/new
-  def new
-    @report = Report.new
-  end
-
-  # GET /reports/1/edit
-  def edit
+    @reports = Report.where(processed: false)
   end
 
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.new(report_params)
+    @report = Report.parse(report_params)
 
     respond_to do |format|
-      if @report.save
-        format.html { redirect_to @report, notice: 'Report was successfully created.' }
-        format.json { render :show, status: :created, location: @report }
+      if @report
+        format.html { redirect_to @report, notice: 'Report was successfully created' }
       else
         format.html { render :new }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /reports/1
-  # PATCH/PUT /reports/1.json
-  def update
-    respond_to do |format|
-      if @report.update(report_params)
-        format.html { redirect_to @report, notice: 'Report was successfully updated.' }
-        format.json { render :show, status: :ok, location: @report }
-      else
-        format.html { render :edit }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy
-    @report.destroy
-    respond_to do |format|
-      format.html { redirect_to reports_url, notice: 'Report was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
   # POST /reposts/1
   def approve
-
-    Block.create(text: @report.text)
-    SendBlock.perform_async(@report.text)
-    @report.destroy
-
+    SendBlock.perform_async(@report.id, current_user.id)
     respond_to do |format|
-      format.html { redirect_to reports_url, notice: 'Report approved.' }
-      format.json { head :no_content }
+      format.html { redirect_to reports_url, notice: 'Report approved' }
+    end
+  end
+
+  # DELETE /reports/1
+  def deny
+    @report.update_attributes(processed: true)
+    respond_to do |format|
+      format.html { redirect_to reports_url, notice: 'Report denied' }
     end
   end
 

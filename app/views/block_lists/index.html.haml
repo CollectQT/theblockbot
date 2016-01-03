@@ -17,11 +17,11 @@
         %td
           - if current_user.in? block_list.users
             = button_to 'Unsubscribe',
-              subscribe_path(block_list),
+              list_unsubscribe_path(block_list),
               :method => :delete,
               :class => 'btn btn-xs btn-danger'
           - else
             = button_to 'Subscribe',
-              subscribe_path(block_list),
+              list_subscribe_path(block_list),
               :method => :post,
               :class => 'btn btn-xs btn-primary'
