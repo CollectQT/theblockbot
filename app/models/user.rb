@@ -10,15 +10,31 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :account_id, scope: :website
 
   def self.get(_user, website='twitter')
-    # takes in a user object from an API library (ex: the Twitter gem)
-    # returns a local User instance
 
-    # sometimes we already have a user object, and aren't aware of it
+    # get user from string (username) / integer (id) + website
+    # example: User.get('nasa', 'twitter')
+    if _user.is_a? String or _user.is_a? Integer
+      if website == 'twitter'
+        _user = TwitterClient.REST.user(_user)
+
+      elsif website == 'facebook'
+        raise 'facebook not yet implemented'
+
+      elsif website == 'tumblr'
+        raise 'tumblr not yet implemented'
+
+      else
+        raise 'invalid website???'
+      end
+    end
+
+    # sometimes you're tired coding and dont know that you already have a User
     if _user.is_a? User
-      return _user
+      user = _user
 
+    # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    elsif website == 'twitter'
+    elsif _user.is_a? Twitter::User
       user = User.find_or_create_by(account_id: _user.id.to_s, website: website)
       user.update_attributes(
         name:                   _user.name,
@@ -32,20 +48,9 @@ class User < ActiveRecord::Base
         posts:                  _user.statuses_count,
         url:                    _user.url.to_s
       )
-      return user
-
-    # https://developers.facebook.com/docs/graph-api/reference/user
-    elsif website == 'facebook'
-      raise 'facebook not yet implemented'
-
-    # https://www.tumblr.com/docs/en/api/v2#blog-info
-    elsif website == 'tumblr'
-      raise 'tumblr not yet implemented'
-
-    else
-      raise 'invalid website???'
-
     end
+
+    return user
 
   rescue ActiveRecord::RecordNotUnique
     tries ||= 0
