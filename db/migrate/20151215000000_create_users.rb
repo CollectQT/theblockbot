@@ -15,8 +15,8 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :posts
       t.integer :times_reported, :default => 0
       t.integer :times_blocked, :default => 0
-      t.integer :reports, :default => 0
-      t.integer :blocks, :default => 0
+      t.integer :reports_created, :default => 0
+      t.integer :reports_approved, :default => 0
 
       t.timestamps null: false
     end
