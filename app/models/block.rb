@@ -5,4 +5,9 @@ class Block < ActiveRecord::Base
 
   validates_uniqueness_of :target, scope: :user
 
+  delegate :text, to: :report
+  delegate :approver, to: :report
+  delegate :reporter, to: :report
+  delegate :block_list, to: :report
+
 end
