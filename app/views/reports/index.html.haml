@@ -25,12 +25,12 @@
             "https://twitter.com/intent/user?user_id="+report.target.account_id
         %td= BlockList.find(report.block_list_id).name
         %td
+          = button_to 'Approve',
+            report_approve_path(report),
+            :method => :post,
+            :class => 'btn btn-xs btn-primary'
           = button_to 'Deny',
             report_deny_path(report),
             :method => :delete,
             :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
             :class => 'btn btn-xs btn-danger'
-          = button_to 'Approve',
-            report_approve_path(report),
-            :method => :post,
-            :class => 'btn btn-xs btn-primary'
