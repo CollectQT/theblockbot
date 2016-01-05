@@ -3,7 +3,9 @@ class SendBlock
   include Sidekiq::Worker
 
   def perform(report_id, approver_id)
+
     report = Report.find(report_id)
+    report.update_attributes(approver_id: approver_id)
     report.target.times_blocked += 1
     report.target.save
 
@@ -18,15 +20,13 @@ class SendBlock
         Block.create(
           user: user_model,
           target: report.target,
-          reporter: report.reporter,
-          text: report.text,
-          block_list: report.block_list,
-          approver_id: approver_id,
           report: report,
         )
       end
     end
+
     report.update_attributes(processed: true)
+
   end
 
 end

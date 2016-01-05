@@ -2,6 +2,7 @@ class Report < ActiveRecord::Base
   belongs_to :block_list
   belongs_to :reporter, class_name: "User"
   belongs_to :target, class_name: "User"
+  belongs_to :approver, class_name: "User"
   has_many :blocks
 
   validates :text, presence: true
