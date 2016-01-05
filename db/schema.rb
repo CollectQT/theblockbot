@@ -60,7 +60,10 @@ ActiveRecord::Schema.define(version: 20151227051937) do
 
   add_index "reports", ["approver_id"], name: "index_reports_on_approver_id", using: :btree
   add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
+<<<<<<< HEAD
   add_index "reports", ["processed"], name: "index_reports_on_processed", using: :btree
+=======
+>>>>>>> 7205b4c255e463edf7c1920ae116bc1767a49e28
   add_index "reports", ["reporter_id"], name: "index_reports_on_reporter_id", using: :btree
   add_index "reports", ["target_id"], name: "index_reports_on_target_id", using: :btree
 
