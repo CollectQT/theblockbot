@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(version: 20151227051937) do
   enable_extension "plpgsql"
 
   create_table "auths", force: :cascade do |t|
-    t.integer  "user_id"
     t.string   "key"
     t.string   "secret"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -36,17 +36,15 @@ ActiveRecord::Schema.define(version: 20151227051937) do
 
   create_table "blocks", force: :cascade do |t|
     t.text     "text"
-    t.integer  "user_id",       null: false
-    t.integer  "block_list_id"
+    t.integer  "user_id",    null: false
     t.integer  "report_id"
-    t.integer  "target_id",     null: false
-    t.integer  "reporter_id",   null: false
-    t.integer  "approver_id",   null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "target_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "blocks", ["block_list_id"], name: "index_blocks_on_block_list_id", using: :btree
+  add_index "blocks", ["report_id"], name: "index_blocks_on_report_id", using: :btree
+  add_index "blocks", ["target_id"], name: "index_blocks_on_target_id", using: :btree
   add_index "blocks", ["user_id"], name: "index_blocks_on_user_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
@@ -54,12 +52,17 @@ ActiveRecord::Schema.define(version: 20151227051937) do
     t.boolean  "processed",     default: false, null: false
     t.integer  "target_id",                     null: false
     t.integer  "reporter_id",                   null: false
+    t.integer  "approver_id"
     t.integer  "block_list_id",                 null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
   end
 
+  add_index "reports", ["approver_id"], name: "index_reports_on_approver_id", using: :btree
   add_index "reports", ["block_list_id"], name: "index_reports_on_block_list_id", using: :btree
+  add_index "reports", ["processed"], name: "index_reports_on_processed", using: :btree
+  add_index "reports", ["reporter_id"], name: "index_reports_on_reporter_id", using: :btree
+  add_index "reports", ["target_id"], name: "index_reports_on_target_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -95,7 +98,6 @@ ActiveRecord::Schema.define(version: 20151227051937) do
   add_index "users", ["account_id", "website"], name: "index_users_on_account_id_and_website", unique: true, using: :btree
 
   add_foreign_key "auths", "users"
-  add_foreign_key "blocks", "block_lists"
   add_foreign_key "blocks", "reports"
   add_foreign_key "blocks", "users"
   add_foreign_key "reports", "block_lists"
