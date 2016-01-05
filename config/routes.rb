@@ -2,8 +2,6 @@ Rails.application.routes.draw do
 
   root 'index#index'
 
-  resources :blocks
-
   resources :block_lists
   post   '/block_lists/:id/subscribe' => 'block_lists#subscribe',   :as => :list_subscribe
   delete '/block_lists/:id/subscribe' => 'block_lists#unsubscribe', :as => :list_unsubscribe
