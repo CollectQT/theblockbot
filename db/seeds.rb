@@ -1,6 +1,7 @@
 list1 = BlockList.create(name: 'Bad Cats')
 list2 = BlockList.create(name: 'Dogs')
 list3 = BlockList.create(name: 'Birbs')
+list4 = BlockList.create(name: 'General')
 
 me = User.get(TwitterClient.REST.user)
 Report.parse('@lynncyrin #block +cyrin_test_2 #badcats knocked over my water', me)

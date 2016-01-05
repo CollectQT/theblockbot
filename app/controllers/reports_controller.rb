@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: [:create, :approve, :deny, :show]
+  before_action :set_report, only: [:approve, :deny, :show]
 
   # GET /reports
   # GET /reports.json
@@ -19,10 +19,10 @@ class ReportsController < ApplicationController
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.parse(report_params, reporter: current_user)
+    @report = Report.parse(report_params['text'], current_user)
 
     respond_to do |format|
-      if @report
+      if @report.save
         format.html { redirect_to @report, notice: 'Report was successfully created' }
       else
         format.html { render :new }

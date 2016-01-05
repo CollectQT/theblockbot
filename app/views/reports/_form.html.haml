@@ -7,8 +7,9 @@
           prohibited this report from being saved:
       .panel-body
         %ul
-          - @report.errors.full_messages.each do |msg|
-            %li= msg
+          - @report.errors.messages.values.each do |msg|
+            - msg.each do |m|
+              %li= msg[0]
   .form-group
     = f.label :text, :class => 'control-label col-lg-2'
     .col-lg-10

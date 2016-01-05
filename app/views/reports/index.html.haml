@@ -15,7 +15,7 @@
   %tbody
     - @reports.each do |report|
       %tr
-        %td= report.text
+        %td= link_to report.text, report_url(report.id)
         %td= l report.created_at
         %td
           = link_to report.reporter.name+' (@'+report.reporter.user_name+')',

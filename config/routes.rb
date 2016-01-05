@@ -7,9 +7,9 @@ Rails.application.routes.draw do
   delete '/block_lists/:id/subscribe' => 'block_lists#unsubscribe', :as => :list_unsubscribe
 
   get    'reports'             => 'reports#index',   :as => :reports
+  get    'reports/:id'         => 'reports#show',    :as => :report
   get    'reports/new'         => 'reports#new',     :as => :report_new
   post   'reports'             => 'reports#create',  :as => :report_create
-  get    'reports/:id'         => 'reports#show',    :as => :report_show
   post   'reports/:id/approve' => 'reports#approve', :as => :report_approve
   delete 'reports/:id'         => 'reports#deny',    :as => :report_deny
 

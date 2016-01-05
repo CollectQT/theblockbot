@@ -5,12 +5,14 @@ class Report < ActiveRecord::Base
   belongs_to :approver, class_name: "User"
   has_many :blocks
 
-  validates :text, presence: true
   validates :block_list, presence: true
   validates :reporter, presence: true
-  validates :target, presence: true
+  validates_presence_of :text, message: 'Report cannot be blank'
+  validates_presence_of :target,
+    message: "Need to specify who to report with \"+USERNAME\""
 
-  validates_uniqueness_of :text, scope: :reporter_id
+  validates_uniqueness_of :text, scope: :reporter_id,
+    message: "You have already created this report"
 
 
   def self.parse(text, reporter)
@@ -18,17 +20,18 @@ class Report < ActiveRecord::Base
     text_included_a_list = false
 
     reporter = User.get(reporter)
-    puts '[Incoming Report] Reporter @'+reporter.user_name
-    reporter.increment(:reports_created)
 
-    match = text.match('(?<=\+)\w*')[0]
-    puts '[Incoming Report] Target user @'+match
-    target = User.get(TwitterClient.REST.user('@'+match))
-    target.increment(:times_reported)
+    #todo: make this shorter
+    match = text.match('(?<=\+)\w*')
+    if match
+      target = User.get(TwitterClient.REST.user('@'+match[0]))
+    else
+      target = nil
+    end
 
     for blocklist in BlockList.all()
       if ('#'+blocklist.name).downcase.delete(' ').in? text.downcase
-        puts '[Created Report('+blocklist.name+')] '+text.squish
+        puts "[Created Report(#{blocklist.name})] #{text.squish}"
         report = Report.create(
           text: text,
           block_list: blocklist,
@@ -40,8 +43,8 @@ class Report < ActiveRecord::Base
     end
 
     unless text_included_a_list
-      blocklist = BlockList.find(name: 'General')
-      puts '[Created Report('+blocklist.name+')] '+text.squish
+      blocklist = BlockList.where(name: 'General')[0]
+      puts "[Created Report(#{blocklist.name})] #{text.squish}"
       report = Report.create(
         text: text,
         block_list: blocklist,
@@ -49,6 +52,9 @@ class Report < ActiveRecord::Base
         target: target
       )
     end
+
+    if target then target.increment(:times_reported) end
+    if reporter then reporter.increment(:reports_created) end
 
     return report
 
