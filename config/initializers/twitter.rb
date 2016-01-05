@@ -1,5 +1,5 @@
 class TwitterClient
-  cattr_accessor :REST, :Stream
+  cattr_accessor :REST
 
   def self.user(auth)
     Twitter::REST::Client.new do |config|

@@ -8,12 +8,7 @@ class SendBlock
     report.target.save
 
     for user_model in report.block_list.users
-      user_client = Twitter::REST::Client.new do |config|
-        config.consumer_key        = TwitterClient.REST.consumer_key
-        config.consumer_secret     = TwitterClient.REST.consumer_secret
-        config.access_token        = user_model.auth.key
-        config.access_token_secret = user_model.auth.secret
-      end
+      user_client = TwitterClient.user(user_model.auth)
 
       # dont block users that our client user is following
       if user_client.friendship?(user_client, report.target.account_id.to_i)
