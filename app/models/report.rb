@@ -19,14 +19,12 @@ class Report < ActiveRecord::Base
 
     reporter = User.get(reporter)
     puts '[Incoming Report] Reporter @'+reporter.user_name
-    reporter.reports += 1
-    reporter.save
+    reporter.increment(:reports_created)
 
     match = text.match('(?<=\+)\w*')[0]
     puts '[Incoming Report] Target user @'+match
     target = User.get(TwitterClient.REST.user('@'+match))
-    target.times_reported += 1
-    target.save
+    target.increment(:times_reported)
 
     for blocklist in BlockList.all()
       if ('#'+blocklist.name).downcase.delete(' ').in? text.downcase

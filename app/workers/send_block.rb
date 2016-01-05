@@ -6,8 +6,8 @@ class SendBlock
 
     report = Report.find(report_id)
     report.update_attributes(approver_id: approver_id)
-    report.target.times_blocked += 1
-    report.target.save
+    report.target.increment(:times_blocked)
+    report.reporter.increment(:reports_approved)
 
     for user_model in report.block_list.users
       user_client = TwitterClient.user(user_model.auth)
