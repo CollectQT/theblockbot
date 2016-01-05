@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: [:create, :approve, :deny]
+  before_action :set_report, only: [:create, :approve, :deny, :show]
 
   # GET /reports
   # GET /reports.json
@@ -7,10 +7,19 @@ class ReportsController < ApplicationController
     @reports = Report.where(processed: false)
   end
 
+  # GET /reports/1
+  def show
+  end
+
+  # GET /reports/new
+  def new
+    @report = Report.new
+  end
+
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.parse(report_params)
+    @report = Report.parse(report_params, reporter: current_user)
 
     respond_to do |format|
       if @report
