@@ -6,9 +6,9 @@ class Report < ActiveRecord::Base
   has_many :blocks
 
   validates :text, presence: true
-  validates :block_list_id, presence: true
-  validates :reporter_id, presence: true
-  validates :target_id, presence: true
+  validates :block_list, presence: true
+  validates :reporter, presence: true
+  validates :target, presence: true
 
   validates_uniqueness_of :text, scope: :reporter_id
 
@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
     for blocklist in BlockList.all()
       if ('#'+blocklist.name).downcase.delete(' ').in? text.downcase
         puts '[Created Report('+blocklist.name+')] '+text.squish
-        Report.create(
+        report = Report.create(
           text: text,
           block_list: blocklist,
           reporter: reporter,
@@ -42,7 +42,7 @@ class Report < ActiveRecord::Base
     unless text_included_a_list
       blocklist = BlockList.find(name: 'General')
       puts '[Created Report('+blocklist.name+')] '+text.squish
-      Report.create(
+      report = Report.create(
         text: text,
         block_list: blocklist,
         reporter: reporter,
@@ -50,7 +50,7 @@ class Report < ActiveRecord::Base
       )
     end
 
-    # some report level default parsing
+    return report
 
   end
 
