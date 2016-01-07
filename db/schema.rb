@@ -27,9 +27,11 @@ ActiveRecord::Schema.define(version: 20151227051937) do
   add_index "auths", ["user_id"], name: "index_auths_on_user_id", using: :btree
 
   create_table "block_lists", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                        null: false
+    t.boolean  "private",     default: false, null: false
+    t.boolean  "show_blocks", default: true,  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "block_lists", ["name"], name: "index_block_lists_on_name", unique: true, using: :btree
