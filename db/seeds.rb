@@ -1,6 +1,6 @@
 list1 = BlockList.create(name: 'Bad Cats')
 list2 = BlockList.create(name: 'Dogs')
-list3 = BlockList.create(name: 'Birbs')
+list3 = BlockList.create(name: 'Birbs', private_list: true)
 list4 = BlockList.create(name: 'General')
 
 me = User.get(TwitterClient.REST.user)
