@@ -43,14 +43,10 @@ class Report < ActiveRecord::Base
     end
 
     unless text_included_a_list
-      blocklist = BlockList.where(name: 'General')[0]
-      puts "[Created Report(#{blocklist.name})] #{text.squish}"
-      report = Report.create(
-        text: text,
-        block_list: blocklist,
-        reporter: reporter,
-        target: target
-      )
+      puts "[!Error! (no list)] #{text.squish}"
+    end
+    unless target
+      puts "[!Error! (no target)] #{text.squish}"
     end
 
     if target then target.increment(:times_reported) end
