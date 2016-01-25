@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signout' => 'sessions#destroy', :as => :signout
 
+  get '/profile' => 'users#index', :as => :profile
+
   require 'sidekiq/web'
   mount Sidekiq::Web, at: '/sidekiq'
 

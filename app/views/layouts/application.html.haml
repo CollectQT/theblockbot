@@ -24,14 +24,13 @@
           %ul.nav.navbar-nav
             %li= link_to "Reports",   "/reports"
             %li= link_to "Block Lists", "/block_lists"
-            %li
-              - if current_user
-                Welcome #{current_user.name}!
-                \#{link_to "Sign Out", signout_path}
-              - else
-                = link_to "Sign in with Twitter", "/auth/twitter"
+            - if current_user
+              %li= link_to 'Profile', '/profile'
+              %li= link_to 'Sign Out', signout_path
+            - else
+              %li= link_to "Sign in with Twitter", "/auth/twitter"
     .container
-      .row
+      %main.row
         .col-lg-12
           = bootstrap_flash
           = yield
