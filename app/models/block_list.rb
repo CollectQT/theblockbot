@@ -13,8 +13,10 @@ class BlockList < ActiveRecord::Base
 
   validates :name, presence: true
 
-  def self.default_scope
-    where(hidden: false)
+  def self.visible(user)
+    blocker_for = BlockList.joins(:blocker_records).where(:blockers => {user_id: user.id}).to_a
+    not_hidden = BlockList.where(hidden: false).to_a
+    (blocker_for + not_hidden).uniq
   end
 
 end
