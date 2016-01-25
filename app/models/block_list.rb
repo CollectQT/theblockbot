@@ -7,4 +7,8 @@ class BlockList < ActiveRecord::Base
 
   validates :name, presence: true
 
+  def self.default_scope
+    where(hidden: false)
+  end
+
 end
