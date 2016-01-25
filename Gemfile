@@ -25,7 +25,6 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'haml'
 gem 'haml-rails'
-gem 'pundit'
 
 group :development, :test do
   gem 'byebug'
