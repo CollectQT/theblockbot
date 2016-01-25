@@ -1,0 +1,2 @@
+class Admin < Blocker
+end
