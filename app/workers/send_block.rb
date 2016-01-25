@@ -1,4 +1,3 @@
-# from https://github.com/resque/resque#overview
 class SendBlock
   include Sidekiq::Worker
 
