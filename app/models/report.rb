@@ -7,13 +7,20 @@ class Report < ActiveRecord::Base
 
   validates :block_list, presence: true
   validates :reporter, presence: true
-  validates_presence_of :text, message: 'Report cannot be blank'
+  validates_presence_of :text,
+    message: 'Report cannot be blank'
   validates_presence_of :target,
     message: "Need to specify who to report with \"+USERNAME\""
-
   validates_uniqueness_of :text, scope: :reporter_id,
     message: "You have already created this report"
 
+  def self.visible(user)
+    if user == nil
+      self.none
+    else
+      self.joins(:block_list => :blockers).where(:blockers => {user_id: user.id})
+    end
+  end
 
   def self.parse(text, reporter)
     puts '[Incoming Report] '+text.squish
@@ -29,12 +36,12 @@ class Report < ActiveRecord::Base
       target = nil
     end
 
-    for blocklist in BlockList.all()
-      if ('#'+blocklist.name).downcase.delete(' ').in? text.downcase
-        puts "[Created Report(#{blocklist.name})] #{text.squish}"
+    for block_list in BlockList.all()
+      if ('#'+block_list.name).downcase.delete(' ').in? text.downcase
+        puts "[Created Report(#{block_list.name})] #{text.squish}"
         report = Report.create(
           text: text,
-          block_list: blocklist,
+          block_list: block_list,
           reporter: reporter,
           target: target
         )

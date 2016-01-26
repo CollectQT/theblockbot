@@ -1,36 +1,40 @@
 - model_class = Report
 <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 
-.page-header
-  %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
-%table.table.table-striped
-  %thead
-    %tr
-      %th= 'Report'
-      %th= model_class.human_attribute_name(:created_at)
-      %th= 'Reporter'
-      %th= 'Target User'
-      %th Block List
-      %th= t '.actions', :default => t("helpers.actions")
-  %tbody
-    - @reports.each do |report|
+- if @reports.length > 0
+  .page-header
+    %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
+  %table.table.table-striped
+    %thead
       %tr
-        %td= link_to report.text, report_url(report.id)
-        %td= l report.created_at
-        %td
-          = link_to report.reporter.name+' (@'+report.reporter.user_name+')',
-            "https://twitter.com/intent/user?user_id="+report.reporter.account_id
-        %td
-          = link_to report.target.name+' (@'+report.target.user_name+')',
-            "https://twitter.com/intent/user?user_id="+report.target.account_id
-        %td= BlockList.find(report.block_list_id).name
-        %td
-          = button_to 'Approve',
-            report_approve_path(report),
-            :method => :post,
-            :class => 'btn btn-xs btn-primary'
-          = button_to 'Deny',
-            report_deny_path(report),
-            :method => :delete,
-            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-            :class => 'btn btn-xs btn-danger'
+        %th= 'Report'
+        %th= model_class.human_attribute_name(:created_at)
+        %th= 'Reporter'
+        %th= 'Target User'
+        %th Block List
+        %th= t '.actions', :default => t("helpers.actions")
+    %tbody
+      - @reports.each do |report|
+        %tr
+          %td= link_to report.text, report_url(report.id)
+          %td= l report.created_at
+          %td
+            = link_to report.reporter.name+' (@'+report.reporter.user_name+')',
+              "https://twitter.com/intent/user?user_id="+report.reporter.account_id
+          %td
+            = link_to report.target.name+' (@'+report.target.user_name+')',
+              "https://twitter.com/intent/user?user_id="+report.target.account_id
+          %td= BlockList.find(report.block_list_id).name
+          %td
+            = button_to 'Approve',
+              report_approve_path(report),
+              :method => :post,
+              :class => 'btn btn-xs btn-primary'
+            = button_to 'Deny',
+              report_deny_path(report),
+              :method => :delete,
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-xs btn-danger'
+- else
+  .page-header
+    %h1 No Accessible Reports

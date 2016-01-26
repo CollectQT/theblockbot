@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
   # GET /reports
   # GET /reports.json
   def index
-    @reports = Report.where(processed: false)
+    @reports = Report.all.visible(current_user)
   end
 
   # GET /reports/1
@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_report
-      @report = Report.find(params[:id])
+      @report = Report.visible(current_user)[params[:id].to_i]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
