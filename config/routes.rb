@@ -18,7 +18,4 @@ Rails.application.routes.draw do
 
   get '/profile' => 'users#index', :as => :profile
 
-  require 'sidekiq/web'
-  mount Sidekiq::Web, at: '/sidekiq'
-
 end
