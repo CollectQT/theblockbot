@@ -15,9 +15,9 @@ rescue Exception
   puts $!.message
   tries ||= 0
   tries += 1
-  if tries > 5 then raise end
+  if tries > 7 then raise end
   sleep_time = 5**tries
   puts "Watcher crashed. Retrying in #{sleep_time} seconds..."
-  sleep(sleep_time.seconds)
+  sleep(sleep_time)
   retry
 end
