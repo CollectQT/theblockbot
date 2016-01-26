@@ -1,14 +1,6 @@
 class SessionsController < ApplicationController
 
-  def create
-    user = Auth.parse(request.env["omniauth.auth"])
-    session[:user_id] = user.id
-    redirect_to root_url, :notice => "Signed in!"
-  end
-
-  def destroy
-    session[:user_id] = nil
-    redirect_to root_url, :notice => "Signed out!"
-  end
+  alias_method :create, :signin
+  alias_method :destroy, :signout
 
 end
