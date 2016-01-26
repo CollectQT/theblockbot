@@ -18,6 +18,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :reports_created, :default => 0
       t.integer :reports_approved, :default => 0
       t.boolean :let_expire, default: true
+      t.boolean :dont_block_followers, default: false
 
       t.timestamps null: false
     end

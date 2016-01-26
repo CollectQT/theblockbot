@@ -28,7 +28,15 @@ class SendBlock
         next
       end
 
-      # expiration
+      # if the user does not want to block followers
+      if user_model.dont_block_followers
+        # dont block followers
+        if user_client.friendship?(report.target.account_id.to_i, user_client)
+          next
+        end
+      end
+
+      # set expiration DateTime if the user allows blocks to expire
       if user_model.let_expire
         expires = DateTime.now + report.block_list.expires
       else
