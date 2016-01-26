@@ -17,11 +17,11 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   enable_extension "plpgsql"
 
   create_table "auths", force: :cascade do |t|
-    t.string   "key"
-    t.string   "secret"
+    t.string   "encrypted_token"
+    t.string   "encrypted_secret"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "auths", ["user_id"], name: "index_auths_on_user_id", using: :btree

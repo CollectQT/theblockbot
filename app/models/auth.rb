@@ -1,7 +1,10 @@
 class Auth < ActiveRecord::Base
   belongs_to :user
 
-  validates :key, presence: true
+  attr_encrypted :token, :key => Rails.application.secrets.secret_key_base
+  attr_encrypted :secret, :key => Rails.application.secrets.secret_key_base
+
+  validates :token, presence: true
   validates :secret, presence: true
 
   # returns a user object instead of an auth object
@@ -12,7 +15,7 @@ class Auth < ActiveRecord::Base
     if _auth.provider == 'twitter'
       auth = Auth.find_or_create_by(user_id: user.id)
       auth.update_attributes(
-        key:    _auth.credentials.token,
+        token:    _auth.credentials.token,
         secret: _auth.credentials.secret,
       )
 

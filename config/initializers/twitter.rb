@@ -5,7 +5,7 @@ class TwitterClient
     Twitter::REST::Client.new do |config|
       config.consumer_key        = TwitterClient.REST.consumer_key
       config.consumer_secret     = TwitterClient.REST.consumer_secret
-      config.access_token        = auth.key
+      config.access_token        = auth.token
       config.access_token_secret = auth.secret
     end
   end
