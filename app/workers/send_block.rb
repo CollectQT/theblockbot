@@ -23,6 +23,11 @@ class SendBlock
         next
       end
 
+      # dont block users that are already blocked
+      if user_client.block?(report.target.account_id.to_i)
+        next
+      end
+
       # expiration
       if user_model.let_expire
         expires = DateTime.now + report.block_list.expires
@@ -36,7 +41,7 @@ class SendBlock
         user: user_model,
         target: report.target,
         report: report,
-        expires: expires
+        expires: expires,
       )
 
     end
