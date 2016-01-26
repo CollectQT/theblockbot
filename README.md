@@ -1,10 +1,29 @@
 # TheBlockBot
 
-## Install
+## Requirements
 
-Requires:
+ * Rails
+ * Twitter API keys
+ * Postgres
+ * Redis
+ * Foreman
 
-* Rails
-* Redis
-* Postgres
-* Foreman
+## Start
+
+`$ foreman start`
+
+## Production Requirements
+
+The following environment variables:
+
+[Twitter](https://apps.twitter.com/)
+ * `twitter_consumer_key`
+ * `twitter_consumer_secret`
+ * `twitter_access_token`
+ * `twitter_access_token_secret`
+
+Postgres
+ * ???
+
+Redis
+ * `REDIS_URL`
