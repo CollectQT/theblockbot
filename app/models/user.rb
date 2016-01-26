@@ -66,11 +66,13 @@ class User < ActiveRecord::Base
 
     return user
 
+  # deals with a user being created twice, simultaneously
   rescue ActiveRecord::RecordNotUnique
     tries ||= 0
     (tries += 1) < 3 ? retry : raise
   end
 
+  # randomizes User.id
   private
   def randomize_id
     begin
