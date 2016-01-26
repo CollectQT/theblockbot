@@ -3,10 +3,21 @@
 $stdout.sync = true
 
 
-track = 'lynncyrin #block'
-
-puts 'Starting Watcher for "'+track+'"'
-
-TweetStream::Client.new.track(track) do |status|
-  Report.parse(status.text, status.user)
+begin
+  track = 'lynncyrin #block'
+  puts 'Starting Watcher for "'+track+'"'
+  TweetStream::Client.new.track(track) do |status|
+    Report.parse(status.text, status.user)
+  end
+# todo: not this
+rescue Exception
+  puts $!.backtrace
+  puts $!.message
+  tries ||= 0
+  tries += 1
+  if tries > 5 then raise end
+  sleep_time = 5**tries
+  puts "Watcher crashed. Retrying in #{sleep_time} seconds..."
+  sleep(sleep_time.seconds)
+  retry
 end
