@@ -4,7 +4,13 @@ class SendBlock
   def perform(report_id, approver_id)
 
     report = Report.find(report_id)
-    report.update_attributes(approver_id: approver_id)
+    approver = User.find(approver_id)
+
+    unless approver in report.block_list.blockers
+      puts 'User(#{approver_id}) Not Authorized to approve Report(#{report_id})'
+      return
+
+    report.update_attributes(approver: approver)
     report.target.increment(:times_blocked)
     report.reporter.increment(:reports_approved)
 
