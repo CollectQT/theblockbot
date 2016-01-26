@@ -3,6 +3,7 @@ class CreateReports < ActiveRecord::Migration
     create_table :reports do |t|
       t.text :text
       t.boolean :processed, null: false, default: false, index: true
+      t.boolean :approved, default: false, null: false
       t.boolean :expired, default: false
 
       t.references :target, references: :user, null: false, index: true

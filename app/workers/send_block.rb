@@ -11,7 +11,7 @@ class SendBlock
       return
     end
 
-    report.update_attributes(approver: approver)
+    report.update_attributes(approver: approver, approved: true)
     report.target.increment(:times_blocked)
     report.reporter.increment(:reports_approved)
 
