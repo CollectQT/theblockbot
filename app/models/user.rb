@@ -4,10 +4,22 @@ class User < ActiveRecord::Base
   has_many :block_lists, through: :subscriptions
   has_many :reports_by, class_name: "Report", foreign_key: "reporter_id"
   has_many :reports_against, class_name: "Report", foreign_key: "target_id"
+  has_many :blocker
+  has_many :blocker_for, through: :blocker, source: :block_list
+  has_many :admin
+  has_many :admin_for, through: :admin, source: :block_list
 
   validates :website, presence: true
   validates :account_id, presence: true
   validates_uniqueness_of :account_id, scope: :website
+
+  def is_blocker
+    self.blocker_for.length > 0
+  end
+
+  def is_admin
+    self.admin_for.length > 0
+  end
 
   def self.get(_user, website='twitter')
 
