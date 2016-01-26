@@ -1,7 +1,7 @@
 class CreateBlocks < ActiveRecord::Migration
   def change
     create_table :blocks do |t|
-      t.text :text
+      t.datetime :expires
 
       t.references :user, index: true, foreign_key: true, null: false
       t.references :report, foreign_key: true, index: true

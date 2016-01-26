@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
     t.string   "name",                        null: false
     t.boolean  "hidden",      default: false, null: false
     t.boolean  "show_blocks", default: true,  null: false
+    t.integer  "expires",     default: 372,   null: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
@@ -48,7 +49,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   add_index "blockers", ["user_id"], name: "index_blockers_on_user_id", using: :btree
 
   create_table "blocks", force: :cascade do |t|
-    t.text     "text"
+    t.datetime "expires"
     t.integer  "user_id",    null: false
     t.integer  "report_id"
     t.integer  "target_id",  null: false
@@ -63,6 +64,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   create_table "reports", force: :cascade do |t|
     t.text     "text"
     t.boolean  "processed",     default: false, null: false
+    t.boolean  "expired",       default: false
     t.integer  "target_id",                     null: false
     t.integer  "reporter_id",                   null: false
     t.integer  "approver_id"
@@ -104,8 +106,9 @@ ActiveRecord::Schema.define(version: 20160125045946) do
     t.integer  "times_blocked",         default: 0
     t.integer  "reports_created",       default: 0
     t.integer  "reports_approved",      default: 0
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.boolean  "let_expire",            default: true
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   add_index "users", ["account_id", "website"], name: "index_users_on_account_id_and_website", unique: true, using: :btree

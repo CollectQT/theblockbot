@@ -14,14 +14,24 @@ class SendBlock
       # dont block users that our client user is following
       if user_client.friendship?(user_client, report.target.account_id.to_i)
         next
-      else
-        user_client.block(report.target.account_id.to_i)
-        Block.create(
-          user: user_model,
-          target: report.target,
-          report: report,
-        )
       end
+
+      # expiration
+      if user_model.let_expire
+        expires = DateTime.now + report.block_list.expires
+      else
+        expires = nil
+      end
+
+      # block
+      user_client.block(report.target.account_id.to_i)
+      block = Block.create(
+        user: user_model,
+        target: report.target,
+        report: report,
+        expires: expires
+      )
+
     end
 
     report.update_attributes(processed: true)

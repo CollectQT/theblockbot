@@ -17,6 +17,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :times_blocked, :default => 0
       t.integer :reports_created, :default => 0
       t.integer :reports_approved, :default => 0
+      t.boolean :let_expire, default: true
 
       t.timestamps null: false
     end
