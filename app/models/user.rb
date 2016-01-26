@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  before_create :randomize_id
+
   has_one :auth, :dependent => :destroy
   has_many :subscriptions
   has_many :block_lists, through: :subscriptions
@@ -67,6 +69,13 @@ class User < ActiveRecord::Base
   rescue ActiveRecord::RecordNotUnique
     tries ||= 0
     (tries += 1) < 3 ? retry : raise
+  end
+
+  private
+  def randomize_id
+    begin
+      self.id = SecureRandom.random_number(1_000_000_000)
+    end while User.where(id: self.id).exists?
   end
 
 end
