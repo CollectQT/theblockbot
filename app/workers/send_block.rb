@@ -6,9 +6,10 @@ class SendBlock
     report = Report.find(report_id)
     approver = User.find(approver_id)
 
-    unless approver in report.block_list.blockers
+    unless approver.in? report.block_list.blockers
       puts 'User(#{approver_id}) Not Authorized to approve Report(#{report_id})'
       return
+    end
 
     report.update_attributes(approver: approver)
     report.target.increment(:times_blocked)
