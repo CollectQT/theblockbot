@@ -19,19 +19,6 @@ class BlockListsController < ApplicationController
   def edit
   end
 
-  # POST /block_lists
-  def create
-    @block_list = BlockList.new(block_list_params)
-
-    respond_to do |format|
-      if @block_list.save
-        format.html { redirect_to @block_list, notice: 'Block list was successfully created.' }
-      else
-        format.html { render :new }
-      end
-    end
-  end
-
   # PATCH/PUT /block_lists/1
   def update
     respond_to do |format|
