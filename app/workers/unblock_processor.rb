@@ -14,7 +14,7 @@ class UnblockProcessor
       end
 
       # unblock
-      user_client.unblock(target.account_id.to_i)
+      user_client.unblock(block.target.account_id.to_i)
       block.delete
     end
 
