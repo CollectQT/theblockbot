@@ -1,3 +1,5 @@
+# For testing! Not actual seed values!
+
 me = User.get(TwitterClient.REST.user)
 
 list1 = BlockList.create(
