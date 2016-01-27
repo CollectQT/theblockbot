@@ -23,7 +23,7 @@ The following environment variables:
  * `twitter_access_token_secret`
 
 Postgres
- * ???
+ * `PG_URL` or `DATABASE_URL`
 
 Redis
  * `REDIS_URL`
