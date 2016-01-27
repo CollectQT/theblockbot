@@ -4,16 +4,22 @@
 - if (@reports.where(processed: false).length == 0) and (not params['show_processed'])
   .page-header
     %h1 All Reports Processed!
+
   - if not params['show_processed']
+    = link_to 'Create new report', '/reports/new', :class => 'btn btn-default'
     = link_to 'Show processed reports', '/reports/?show_processed=true', :class => 'btn btn-default'
 
 - elsif @reports.length > 0
+
   .page-header
     %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
+
+  = link_to 'Create new report', '/reports/new', :class => 'btn btn-default'
   - if not params['show_processed']
     = link_to 'Show processed reports', '/reports/?show_processed=true', :class => 'btn btn-default'
   - else
     = link_to 'Hide processed reports', '/reports', :class => 'btn btn-default'
+
   %table.table.table-striped
     %thead
       %tr
