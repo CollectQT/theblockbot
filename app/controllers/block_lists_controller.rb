@@ -43,14 +43,6 @@ class BlockListsController < ApplicationController
     end
   end
 
-  # DELETE /block_lists/1
-  def destroy
-    @block_list.destroy
-    respond_to do |format|
-      format.html { redirect_to block_lists_url, notice: 'Block list was successfully destroyed.' }
-    end
-  end
-
   # POST /block_lists/1/subscribe
   def subscribe
     Subscription.create(user_id: current_user.id, block_list_id: @block_list.id)
