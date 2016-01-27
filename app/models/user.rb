@@ -24,6 +24,12 @@ class User < ActiveRecord::Base
     self.admin_for.length > 0
   end
 
+  def update_log(entry)
+    self.log << entry
+    self.save
+    puts "(@#{self.user_name}) #{entry}"
+  end
+
   def self.get(_user, website='twitter')
 
     # get user from string (username) / integer (id) + website

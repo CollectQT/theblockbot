@@ -18,9 +18,9 @@ Admin.create(block_list: list1, user: me)
 Admin.create(block_list: list2, user: me)
 Admin.create(block_list: list3, user: me)
 
-Subscription.create(user: me, block_list: list1)
-Subscription.create(user: me, block_list: list2)
-Subscription.create(user: me, block_list: list3)
+Subscription.add(me.id, list1.id)
+Subscription.add(me.id, list2.id)
+Subscription.add(me.id, list3.id)
 
 Report.parse('@lynncyrin #block +cyrin_test_2 #badcats knocked over my water', me)
 Report.parse('@lynncyrin #block +cyrin_test_2 #dogs knocked over my water', me)

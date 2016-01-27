@@ -5,7 +5,9 @@ class Unblock
     auth = User.find(user_id).auth
     user = TwitterClient.user(auth)
     user.unblock(target_account_id)
-    Block.find(block_id).delete
+    block = Block.find(block_id)
+    user.update_log("[REMOVE] Unblocked user #{block.target.user_name}")
+    block.delete
   end
 
 end

@@ -32,6 +32,7 @@ class CreateBlock
       report: report,
       block_list: report.block_list,
     )
+    user_model.update_log("[ADD] Blocked user #{report.target.user_name}")
 
   end
 end

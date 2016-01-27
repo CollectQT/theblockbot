@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
     t.integer  "reports_approved",      default: 0
     t.boolean  "let_expire",            default: true
     t.boolean  "dont_block_followers",  default: false
+    t.string   "log",                   default: [],                 array: true
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
   end
