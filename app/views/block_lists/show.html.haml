@@ -33,7 +33,7 @@
       %dd= link_to "#{blocker.name} (@#{blocker.user_name})", "http://#{blocker.website}.com/#{blocker.user_name}"
   %dt
     %strong Blocked Users:
-  %dd= @block_list.blocks.length
+  %dd= @block_list.targets.length
   - if @block_list.blocker? current_user
     %br
     %dt
