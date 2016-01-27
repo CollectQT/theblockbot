@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :blocker_for, through: :blocker, source: :block_list
   has_many :admin
   has_many :admin_for, through: :admin, source: :block_list
+  has_many :blocked_users, through: :block_lists, source: :targets
 
   validates :website, presence: true
   validates :account_id, presence: true
