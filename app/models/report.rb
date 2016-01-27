@@ -14,6 +14,7 @@ class Report < ActiveRecord::Base
   validates_uniqueness_of :text, scope: :reporter_id,
     message: "You have already created this report"
 
+
   def self.visible(user)
     if user == nil
       self.none
@@ -21,6 +22,7 @@ class Report < ActiveRecord::Base
       self.joins(:block_list => :blockers).where(:blockers => {user_id: user.id})
     end
   end
+
 
   def self.parse(text, reporter)
     puts '[Incoming Report] '+text.squish
@@ -72,5 +74,18 @@ class Report < ActiveRecord::Base
     return report
 
   end
+
+
+  def approve(approver)
+    unless approver.in? self.block_list.blockers
+      puts 'User(#{approver_id}) Not Authorized to approve Report(#{report_id})'
+      return
+    end
+    CreateBlocks.perform_async(self.id)
+    self.update_attributes(approver: approver, approved: true, processed: true)
+    self.target.increment(:times_blocked)
+    self.reporter.increment(:reports_approved)
+  end
+
 
 end

@@ -32,7 +32,7 @@ class ReportsController < ApplicationController
 
   # POST /reposts/1
   def approve
-    ApproveBlock.perform_async(@report.id, current_user.id)
+    @report.approve(current_user)
     respond_to do |format|
       format.html { redirect_to reports_url, notice: 'Report approved' }
     end
@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_report
-      @report = Report.visible(current_user)[params[:id].to_i]
+      @report = Report.visible(current_user).find(params[:id].to_i)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
