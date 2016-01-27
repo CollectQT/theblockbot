@@ -8,8 +8,7 @@ class UnsubscribeFrom
     Subscription.find_by(user_id: user_id, block_list_id: block_list_id).delete
 
     for block in Block.where(user_id: user_id, block_list_id: block_list_id)
-      user_client.unblock(block.target.account_id.to_i)
-      block.delete
+      Unblock.perform_async(user_id, block.target.account_id.to_i, block.id)
     end
 
   end
