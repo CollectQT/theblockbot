@@ -36,7 +36,7 @@ class BlockListsController < ApplicationController
   def subscribe
     Subscription.add(current_user.id, @block_list.id)
     respond_to do |format|
-      format.html { redirect_to block_lists_url, notice: 'Subscribed to '+@block_list.name}
+      format.html { redirect_to :back, notice: 'Subscribed to '+@block_list.name}
     end
   end
 
@@ -44,7 +44,7 @@ class BlockListsController < ApplicationController
   def unsubscribe
     Subscription.remove(current_user.id, @block_list.id)
     respond_to do |format|
-      format.html { redirect_to block_lists_url, notice: 'Unsubscribed from '+@block_list.name}
+      format.html { redirect_to :back, notice: 'Unsubscribed from '+@block_list.name}
     end
   end
 
