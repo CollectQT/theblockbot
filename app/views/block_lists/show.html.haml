@@ -2,10 +2,6 @@
 .page-header
   %h1= @block_list.name
   %p= @block_list.description
-  - if @block_list.admin? current_user
-    = link_to 'Add Blocker',
-      block_list_path(@block_list)+'/add/blocker',
-      :class => 'btn btn-primary'
   - if current_user.in? @block_list.users
     = link_to 'Unsubscribe + Remove Blocks',
       list_unsubscribe_path(@block_list),
@@ -42,6 +38,12 @@
     %dt
       %strong Active Blocks:
     %dd= @block_list.blocks.length
+
+%dl.dl-horizontal
+  - if @block_list.admin? current_user
+    = form_tag add_blocker_path(@block_list), :method => 'post' do
+      %dt= submit_tag "Add Blocker", :class => 'btn btn-primary btn-sm'
+      %dd= text_field_tag :user_name, nil, :placeholder => "@name, like @lynncyrin"
 
 %h2 Blocked Users
 %table.table.table-striped

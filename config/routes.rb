@@ -2,9 +2,11 @@ Rails.application.routes.draw do
 
   root 'index#index'
 
+  # delete '/block_lists/:id/remove/blocker/:user_id' => 'block_lists#remove_blocker', :as => :remove_blocker
+  post   '/block_lists/:id/add/blocker/' => 'block_lists#add_blocker', :as => :add_blocker
+  post   '/block_lists/:id/subscribe'    => 'block_lists#subscribe',   :as => :list_subscribe
+  delete '/block_lists/:id/subscribe'    => 'block_lists#unsubscribe', :as => :list_unsubscribe
   resources :block_lists
-  post   '/block_lists/:id/subscribe' => 'block_lists#subscribe',   :as => :list_subscribe
-  delete '/block_lists/:id/subscribe' => 'block_lists#unsubscribe', :as => :list_unsubscribe
 
   post   'reports/:id/approve' => 'reports#approve', :as => :report_approve
   get    'reports/new'         => 'reports#new',     :as => :report_new

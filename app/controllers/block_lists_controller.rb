@@ -1,5 +1,5 @@
 class BlockListsController < ApplicationController
-  before_action :set_block_list, only: [:show, :edit, :update, :destroy, :subscribe, :unsubscribe]
+  before_action :set_block_list
 
   # GET /block_lists
   def index
@@ -62,10 +62,28 @@ class BlockListsController < ApplicationController
     end
   end
 
+  # POST /block_lists/1/add/blocker
+  def add_blocker
+    blocker = Blocker.create(block_list: @block_list, user: User.get(params[:user_name]))
+    if blocker.save
+      notice = "Blocker #{params[:user_name]} added"
+    else
+      notice = blocker.errors.full_messages
+    end
+    redirect_to :back, notice: notice
+  end
+
+  # def remove_blocker
+  #   Blocker.find_by(block_list: @block_list, user: User.find(params[:user_id])).delete
+  #   redirect_to :back, notice: 'Blocker removed'
+  # end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_block_list
-      @block_list = BlockList.find(params[:id])
+      if params[:id]
+        @block_list = BlockList.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
