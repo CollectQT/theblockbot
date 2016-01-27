@@ -9,7 +9,6 @@ class Block < ActiveRecord::Base
   delegate :text, to: :report
   delegate :approver, to: :report
   delegate :reporter, to: :report
-  delegate :block_list, to: :report
   delegate :expires, to: :report
 
 end

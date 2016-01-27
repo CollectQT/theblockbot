@@ -30,6 +30,7 @@ class CreateBlock
       user: user_model,
       target: report.target,
       report: report,
+      block_list: report.block_list,
     )
 
   end
