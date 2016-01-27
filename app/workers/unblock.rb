@@ -4,7 +4,7 @@ class Unblock
   def perform(user_id, target_account_id, block_id)
     auth = User.find(user_id).auth
     user = TwitterClient.user(auth)
-    user.unblock(target_id)
+    user.unblock(target_account_id)
     Block.find(block_id).delete
   end
 
