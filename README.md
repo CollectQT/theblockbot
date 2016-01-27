@@ -27,3 +27,7 @@ Postgres
 
 Redis
  * `REDIS_URL`
+
+Sidekiq
+ * `SIDEKIQ_USERNAME`
+ * `SIDEKIQ_PASSWORD`
