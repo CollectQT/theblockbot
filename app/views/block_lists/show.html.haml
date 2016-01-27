@@ -1,7 +1,18 @@
 - model_class = BlockList
 .page-header
   %h1= @block_list.name
+  - if current_user.in? @block_list.users
+    = button_to 'Unsubscribe + Remove Blocks',
+      list_unsubscribe_path(@block_list),
+      :method => :delete,
+      :class => 'btn btn-xs btn-danger'
+  - else
+    = button_to 'Subscribe',
+      list_subscribe_path(@block_list),
+      :method => :post,
+      :class => 'btn btn-xs btn-primary'
   %p= @block_list.description
+
 %dl.dl-horizontal
   %dt
     %strong Subscribers:
@@ -17,11 +28,31 @@
     - for blocker in (@block_list.blockers - @block_list.admins)
       %dd= link_to "#{blocker.name} (@#{blocker.user_name})", "http://#{blocker.website}.com/#{blocker.user_name}"
   %dt
+    %strong Blocked Users:
+  %dd= @block_list.blocks.length
+  %br
+  %dt
     %strong Pending Reports:
   %dd= link_to @block_list.reports.where(processed: false).length, '/reports'
   %dt
     %strong Active Blocks:
   %dd= @block_list.blocks.length
+
+%h2 Blocked Users
+%table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th Time Reported
+      %th View Reports
+  %tbody
+    - @block_list.reports.where(approved: true, expired: false).each do |report|
+      %tr
+        %td= link_to "#{report.target.name} (#{report.target.user_name})", "http://twitter.com/#{report.target.user_name}"
+        %td= report.target.description
+        %td= time_ago_in_words(report.created_at) + ' ago'
+        %td= link_to 'Reports', '/user/reports/#{report.target.id}'
 
 = link_to 'Back to Block Lists',
   block_lists_path, :class => 'btn btn-default'

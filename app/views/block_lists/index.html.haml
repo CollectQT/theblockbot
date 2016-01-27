@@ -19,10 +19,10 @@
         %td= block_list.description
         %td= block_list.users.length
         %td= block_list.blockers.length
-        %td= block_list.reports.where(approved: true).length
+        %td= block_list.targets.length
         %td
           - if current_user.in? block_list.users
-            = button_to 'Unsubscribe',
+            = button_to 'Unsubscribe + Remove Blocks',
               list_unsubscribe_path(block_list),
               :method => :delete,
               :class => 'btn btn-xs btn-danger'
