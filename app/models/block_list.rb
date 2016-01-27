@@ -21,10 +21,12 @@ class BlockList < ActiveRecord::Base
     user.in? self.admins
   end
 
-  def self.visible(user)
-    blocker_for = BlockList.joins(:blocker_records).where(:blockers => {user_id: user.id}).to_a
-    not_hidden = BlockList.where(hidden: false).to_a
-    (blocker_for + not_hidden).uniq
+  def self.where_blocker(user)
+    self.joins(:blocker_records).where(:blockers => {user_id: user.id})
+  end
+
+  def self.where_admin(user)
+    self.joins(:admin_records).where(:admins => {user_id: user.id})
   end
 
 end
