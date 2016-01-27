@@ -9,10 +9,12 @@ class UsersController < ApplicationController
 
   # GET /user/reports/?id=00000
   # GET /user/reports/?user_name=@cyrin
-  def report
+  def reports
     # todo: make shorter
     if params[:id]
-      @user = User.get(params[:id])
+      @user = User.find(params[:id])
+    elsif params[:account_id]
+      @user = User.get(params[:account_id])
     elsif params[:user_name]
       @user = User.get(params[:user_name])
     else

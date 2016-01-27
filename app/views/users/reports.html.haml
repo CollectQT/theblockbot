@@ -1,0 +1,7 @@
+- model_class = BlockList
+.page-header
+  %h1= "Reports about #{@user.name}"
+
+%ul
+  - @user.reports_against.take(1000).reverse_each do |report|
+    %li= report.text
