@@ -17,5 +17,7 @@
     - if current_user.log.length == 0
       %li Nothing yet!
     - else
-      - current_user.log.reverse_each do |entry|
+      - current_user.log.take(1000).reverse_each do |entry|
         %li= entry
+    - if current_user.log.length >= 1000
+      %li ...
