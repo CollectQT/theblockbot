@@ -1,6 +1,9 @@
 - model_class = Report
 <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 
+- unless params['show_processed']
+  - @reports = @reports.where(processed: false)
+
 - if (@reports.where(processed: false).length == 0) and (not params['show_processed'])
   .page-header
     %h1 All Reports Processed!

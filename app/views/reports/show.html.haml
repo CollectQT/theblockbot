@@ -1,7 +1,7 @@
 - model_class = Report
 - if @report == nil
   .page-header
-    %h1 Could not Access this Report
+    %h1 Report not accessible
 - else
   .page-header
     %h1= t '.title', :default => model_class.model_name.human.titleize
@@ -11,5 +11,5 @@
         = model_class.human_attribute_name(:text)
         \:
     %dd= @report.text
-  = link_to t('.back', :default => t("helpers.links.back")),
-    reports_path, :class => 'btn btn-default'
+    %dt= link_to t('.back', :default => t("helpers.links.back")),
+      reports_path, :class => 'btn btn-default'
