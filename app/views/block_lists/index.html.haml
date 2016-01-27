@@ -25,9 +25,9 @@
             = button_to 'Unsubscribe + Remove Blocks',
               list_unsubscribe_path(block_list),
               :method => :delete,
-              :class => 'btn btn-xs btn-danger'
+              :class => 'btn btn-sm btn-danger'
           - else
             = button_to 'Subscribe',
               list_subscribe_path(block_list),
               :method => :post,
-              :class => 'btn btn-xs btn-primary'
+              :class => 'btn btn-sm btn-primary'

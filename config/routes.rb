@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get '/signout' => 'sessions#destroy', :as => :signout
 
   get '/profile' => 'users#index', :as => :profile
+  get '/user/reports' => 'users#reports', :as => :user_reports
 
   # config/routes.rb
   require "sidekiq/web"

@@ -21,11 +21,13 @@ class BlockListsController < ApplicationController
 
   # PATCH/PUT /block_lists/1
   def update
-    respond_to do |format|
-      if @block_list.update(block_list_params)
-        format.html { redirect_to @block_list, notice: 'Block list was successfully updated.' }
-      else
-        format.html { render :edit }
+    if @block_list.admin? current_user
+      respond_to do |format|
+        if @block_list.update(block_list_params)
+          format.html { redirect_to @block_list, notice: 'Block list was successfully updated.' }
+        else
+          format.html { render :edit }
+        end
       end
     end
   end

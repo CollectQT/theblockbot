@@ -13,6 +13,14 @@ class BlockList < ActiveRecord::Base
 
   validates :name, presence: true
 
+  def blocker?(user)
+    user.in? self.blockers
+  end
+
+  def admin?(user)
+    user.in? self.admins
+  end
+
   def self.visible(user)
     blocker_for = BlockList.joins(:blocker_records).where(:blockers => {user_id: user.id}).to_a
     not_hidden = BlockList.where(hidden: false).to_a
