@@ -9,12 +9,12 @@ list1 = BlockList.create(
 list2 = BlockList.create(
   name: 'Dogs',
   description: 'v smells',
-  hidden: true,
   expires: nil)
 list3 = BlockList.create(
   name: 'Birbs',
-  description: 'stole all the bread',
-  expires: 0)
+  description: 'stole all the bread, list is softblocks only',
+  expires: 0,
+  showcase: true)
 
 Admin.create(block_list: list1, user: me)
 Admin.create(block_list: list2, user: me)

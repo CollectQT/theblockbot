@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   create_table "block_lists", force: :cascade do |t|
     t.string   "name",                        null: false
     t.string   "description"
-    t.boolean  "hidden",      default: false, null: false
+    t.boolean  "showcase",    default: false
     t.boolean  "show_blocks", default: true,  null: false
     t.integer  "expires",     default: 365
     t.datetime "created_at",                  null: false

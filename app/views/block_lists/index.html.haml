@@ -12,7 +12,7 @@
       %th Blocked Users
       %th Actions
   %tbody
-    - @block_lists.each do |block_list|
+    - @block_lists.where(showcase: true).each do |block_list|
       %tr
         %td= link_to block_list.name, block_list_path(block_list)
         %td= '#'+block_list.name.downcase.delete(' ')

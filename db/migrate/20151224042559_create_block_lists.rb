@@ -3,7 +3,7 @@ class CreateBlockLists < ActiveRecord::Migration
     create_table :block_lists do |t|
       t.string :name, null: false
       t.string :description
-      t.boolean :hidden, null: false, default: false
+      t.boolean :showcase, default: false
       t.boolean :show_blocks, null: false, default: true
       t.integer :expires, default: 365
 
