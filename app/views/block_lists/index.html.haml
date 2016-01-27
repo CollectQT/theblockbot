@@ -4,16 +4,18 @@
 %table.table.table-striped
   %thead
     %tr
-      %th= model_class.human_attribute_name(:name)
-      %th= model_class.human_attribute_name(:description)
-      %th= 'Subscribers'
-      %th= 'Blockers'
-      %th= 'Blocked Users'
-      %th= t '.actions', :default => t("helpers.actions")
+      %th Name
+      %th Hashtag
+      %th Description
+      %th Subscribers
+      %th Blockers
+      %th Blocked Users
+      %th Actions
   %tbody
     - @block_lists.each do |block_list|
       %tr
         %td= link_to block_list.name, block_list_path(block_list)
+        %td= '#'+block_list.name.downcase.delete(' ')
         %td= block_list.description
         %td= block_list.users.length
         %td= block_list.blockers.length
