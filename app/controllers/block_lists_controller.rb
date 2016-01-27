@@ -15,6 +15,20 @@ class BlockListsController < ApplicationController
     @block_list = BlockList.new
   end
 
+  # POST /block_list
+  def create
+    @block_list = BlockList.create(:name => block_list_params['name'])
+    Admin.create(block_list: @block_list, user: current_user)
+
+    respond_to do |format|
+      if @block_list.save
+        format.html { redirect_to block_list_url(@block_list), notice: 'Block List created' }
+      else
+        format.html { render :new }
+      end
+    end
+  end
+
   # GET /block_lists/1/edit
   def edit
   end
