@@ -32,7 +32,7 @@ class ReportsController < ApplicationController
 
   # POST /reposts/1
   def approve
-    SendBlock.perform_async(@report.id, current_user.id)
+    ApproveBlock.perform_async(@report.id, current_user.id)
     respond_to do |format|
       format.html { redirect_to reports_url, notice: 'Report approved' }
     end

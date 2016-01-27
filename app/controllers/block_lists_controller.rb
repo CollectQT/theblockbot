@@ -32,7 +32,7 @@ class BlockListsController < ApplicationController
 
   # POST /block_lists/1/subscribe
   def subscribe
-    Subscription.create(user_id: current_user.id, block_list_id: @block_list.id)
+    Subscribe_to.perform_async(user_id: current_user.id, block_list_id: @block_list.id)
     respond_to do |format|
       format.html { redirect_to block_lists_url, notice: 'Subscribed to '+@block_list.name}
     end
@@ -40,7 +40,7 @@ class BlockListsController < ApplicationController
 
   # DELETE /block_lists/1/subscribe
   def unsubscribe
-    Subscription.find_by(user_id: current_user, block_list_id: @block_list.id).delete
+    Unsubscribe_from.perform_async(user_id: current_user, block_list_id: @block_list.id).delete
     respond_to do |format|
       format.html { redirect_to block_lists_url, notice: 'Unsubscribed from '+@block_list.name}
     end
