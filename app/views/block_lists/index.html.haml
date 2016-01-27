@@ -5,15 +5,19 @@
   %thead
     %tr
       %th= model_class.human_attribute_name(:name)
-      %th= model_class.human_attribute_name(:created_at)
+      %th= model_class.human_attribute_name(:description)
       %th= 'Subscribers'
+      %th= 'Blockers'
+      %th= 'Blocked Users'
       %th= t '.actions', :default => t("helpers.actions")
   %tbody
     - @block_lists.each do |block_list|
       %tr
         %td= link_to block_list.name, block_list_path(block_list)
-        %td= l block_list.created_at
+        %td= block_list.description
         %td= block_list.users.length
+        %td= block_list.blockers.length
+        %td= block_list.reports.where(approved: true).length
         %td
           - if current_user.in? block_list.users
             = button_to 'Unsubscribe',

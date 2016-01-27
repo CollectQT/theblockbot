@@ -1,11 +1,27 @@
 - model_class = BlockList
 .page-header
-  %h1= t '.title', :default => model_class.model_name.human.titleize
+  %h1= @block_list.name
+  %p= @block_list.description
 %dl.dl-horizontal
   %dt
-    %strong
-      = model_class.human_attribute_name(:name)
-      \:
-  %dd= @block_list.name
+    %strong Subscribers:
+  %dd= @block_list.users.length
+  - if @block_list.admins.length > 0
+    %dt
+      %strong Admins:
+    - for admin in @block_list.admins
+      %dd= link_to "#{admin.name} (@#{admin.user_name})", "http://#{admin.website}.com/#{admin.user_name}"
+  - if (@block_list.blockers - @block_list.admins).length > 0
+    %dt
+      %strong Blockers:
+    - for blocker in (@block_list.blockers - @block_list.admins)
+      %dd= link_to "#{blocker.name} (@#{blocker.user_name})", "http://#{blocker.website}.com/#{blocker.user_name}"
+  %dt
+    %strong Pending Reports:
+  %dd= link_to @block_list.reports.where(processed: false).length, '/reports'
+  %dt
+    %strong Active Blocks:
+  %dd= @block_list.blocks.length
+
 = link_to 'Back to Block Lists',
   block_lists_path, :class => 'btn btn-default'

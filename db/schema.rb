@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
 
   create_table "block_lists", force: :cascade do |t|
     t.string   "name",                        null: false
+    t.string   "description"
     t.boolean  "hidden",      default: false, null: false
     t.boolean  "show_blocks", default: true,  null: false
     t.integer  "expires",     default: 372,   null: false
@@ -50,13 +51,15 @@ ActiveRecord::Schema.define(version: 20160125045946) do
 
   create_table "blocks", force: :cascade do |t|
     t.datetime "expires"
-    t.integer  "user_id",    null: false
+    t.integer  "user_id",       null: false
     t.integer  "report_id"
-    t.integer  "target_id",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "target_id",     null: false
+    t.integer  "block_list_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
+  add_index "blocks", ["block_list_id"], name: "index_blocks_on_block_list_id", using: :btree
   add_index "blocks", ["report_id"], name: "index_blocks_on_report_id", using: :btree
   add_index "blocks", ["target_id"], name: "index_blocks_on_target_id", using: :btree
   add_index "blocks", ["user_id"], name: "index_blocks_on_user_id", using: :btree
@@ -64,6 +67,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   create_table "reports", force: :cascade do |t|
     t.text     "text"
     t.boolean  "processed",     default: false, null: false
+    t.boolean  "approved",      default: false, null: false
     t.boolean  "expired",       default: false
     t.integer  "target_id",                     null: false
     t.integer  "reporter_id",                   null: false
@@ -107,8 +111,9 @@ ActiveRecord::Schema.define(version: 20160125045946) do
     t.integer  "reports_created",       default: 0
     t.integer  "reports_approved",      default: 0
     t.boolean  "let_expire",            default: true
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.boolean  "dont_block_followers",  default: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   add_index "users", ["account_id", "website"], name: "index_users_on_account_id_and_website", unique: true, using: :btree
@@ -116,6 +121,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   add_foreign_key "auths", "users"
   add_foreign_key "blockers", "block_lists"
   add_foreign_key "blockers", "users"
+  add_foreign_key "blocks", "block_lists"
   add_foreign_key "blocks", "reports"
   add_foreign_key "blocks", "users"
   add_foreign_key "reports", "block_lists"
