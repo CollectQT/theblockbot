@@ -5,8 +5,9 @@ class Report < ActiveRecord::Base
   belongs_to :approver, class_name: "User"
   has_many :blocks
 
-  validates :block_list, presence: true
   validates :reporter, presence: true
+  validates_presence_of :block_list,
+    message: "Must include a block list"
   validates_presence_of :text,
     message: 'Report cannot be blank'
   validates_presence_of :target,
@@ -63,7 +64,14 @@ class Report < ActiveRecord::Base
 
     unless text_included_a_list
       puts "[!Error! (no list)] #{text.squish}"
+      report = Report.create(
+        text: text,
+        reporter: reporter,
+        target: target,
+        expires: expires,
+      )
     end
+
     unless target
       puts "[!Error! (no target)] #{text.squish}"
     end
