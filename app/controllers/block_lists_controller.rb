@@ -64,13 +64,19 @@ class BlockListsController < ApplicationController
 
   # POST /block_lists/1/add/blocker
   def add_blocker
-    blocker = Blocker.create(block_list: @block_list, user: User.get(params[:user_name]))
-    if blocker.save
-      notice = "Blocker #{params[:user_name]} added"
+    if @block_list.admin? current_user
+      blocker = Blocker.create(block_list: @block_list, user: User.get(params[:user_name]))
+
+      if blocker.save
+        notice = "Blocker #{params[:user_name]} added"
+      else
+        notice = blocker.errors.full_messages
+      end
+
+      redirect_to :back, notice: notice
     else
-      notice = blocker.errors.full_messages
+      redirect_to :back, notice: 'Not authorized'
     end
-    redirect_to :back, notice: notice
   end
 
   # def remove_blocker
