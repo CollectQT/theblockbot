@@ -38,13 +38,23 @@ class Report < ActiveRecord::Base
 
     for block_list in BlockList.all()
       if ('#'+block_list.name).downcase.delete(' ').in? text.downcase
+
         puts "[Created Report(#{block_list.name})] #{text.squish}"
+
+        if block_list.expires
+          expires = DateTime.now + block_list.expires
+        else
+          expires = nil
+        end
+
         report = Report.create(
           text: text,
           block_list: block_list,
           reporter: reporter,
-          target: target
+          target: target,
+          expires: expires,
         )
+
         text_included_a_list = true
       end
     end

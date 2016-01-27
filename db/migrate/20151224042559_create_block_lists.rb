@@ -5,7 +5,7 @@ class CreateBlockLists < ActiveRecord::Migration
       t.string :description
       t.boolean :hidden, null: false, default: false
       t.boolean :show_blocks, null: false, default: true
-      t.integer :expires, null: false, default: 31*12
+      t.integer :expires, default: 365
 
       t.timestamps null: false
     end

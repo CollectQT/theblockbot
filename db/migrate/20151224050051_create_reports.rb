@@ -2,6 +2,8 @@ class CreateReports < ActiveRecord::Migration
   def change
     create_table :reports do |t|
       t.text :text
+      t.datetime :expires
+
       t.boolean :processed, null: false, default: false, index: true
       t.boolean :approved, default: false, null: false
       t.boolean :expired, default: false

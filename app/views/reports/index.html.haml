@@ -17,14 +17,15 @@
       - @reports.each do |report|
         %tr
           %td= link_to report.text, report_url(report.id)
-          %td= l report.created_at
+          %td= time_ago_in_words(report.created_at) + ' ago'
           %td
             = link_to report.reporter.name+' (@'+report.reporter.user_name+')',
-              "https://twitter.com/intent/user?user_id="+report.reporter.account_id
+              "https://twitter.com/"+report.reporter.user_name
           %td
             = link_to report.target.name+' (@'+report.target.user_name+')',
-              "https://twitter.com/intent/user?user_id="+report.target.account_id
-          %td= BlockList.find(report.block_list_id).name
+              "https://twitter.com/"+report.target.user_name
+          - block_list = BlockList.find(report.block_list_id)
+          %td= link_to block_list.name, block_list_url(block_list)
           %td
             = button_to 'Approve',
               report_approve_path(report),

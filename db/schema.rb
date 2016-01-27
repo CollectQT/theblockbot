@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
     t.string   "description"
     t.boolean  "hidden",      default: false, null: false
     t.boolean  "show_blocks", default: true,  null: false
-    t.integer  "expires",     default: 372,   null: false
+    t.integer  "expires",     default: 365
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20160125045946) do
 
   create_table "reports", force: :cascade do |t|
     t.text     "text"
+    t.datetime "expires"
     t.boolean  "processed",     default: false, null: false
     t.boolean  "approved",      default: false, null: false
     t.boolean  "expired",       default: false

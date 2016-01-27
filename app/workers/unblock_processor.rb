@@ -8,7 +8,7 @@ class UnblockProcessor
       user_client = TwitterClient.user(user_model.auth)
       block.report.update_attributes(expired: true)
 
-      # expires
+      # if user doesn't allow blocks to expire
       if not user_model.let_expire
         next
       end
