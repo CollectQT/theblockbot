@@ -19,5 +19,5 @@
     - else
       - current_user.log.take(1000).reverse_each do |entry|
         %li= entry
-    - if current_user.log.length >= 1000
+    - if current_user.log.length > 1000
       %li ...
