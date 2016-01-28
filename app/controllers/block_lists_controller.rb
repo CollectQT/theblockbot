@@ -12,25 +12,29 @@ class BlockListsController < ApplicationController
 
   # GET /block_lists/new
   def new
-    @block_list = BlockList.new
+    if current_user
+      @block_list = BlockList.new
+    else
+      redirect_to default
+    end
   end
 
   # POST /block_list
   def create
-    @block_list = BlockList.create(:name => block_list_params['name'])
-    Admin.create(block_list: @block_list, user: current_user)
+    if current_user
+      @block_list = BlockList.create(:name => block_list_params['name'])
+      Admin.create(block_list: @block_list, user: current_user)
 
-    respond_to do |format|
-      if @block_list.save
-        format.html { redirect_to block_list_url(@block_list), notice: 'Block List created' }
-      else
-        format.html { render :new }
+      respond_to do |format|
+        if @block_list.save
+          format.html { redirect_to block_list_url(@block_list), notice: 'Block List created' }
+        else
+          format.html { render :new }
+        end
       end
+    else
+      redirect_to :back
     end
-  end
-
-  # GET /block_lists/1/edit
-  def edit
   end
 
   # PATCH/PUT /block_lists/1
@@ -48,17 +52,25 @@ class BlockListsController < ApplicationController
 
   # POST /block_lists/1/subscribe
   def subscribe
-    Subscription.add(current_user.id, @block_list.id)
-    respond_to do |format|
-      format.html { redirect_to :back, notice: 'Subscribed to '+@block_list.name}
+    if current_user
+      Subscription.add(current_user.id, @block_list.id)
+      respond_to do |format|
+        format.html { redirect_to :back, notice: 'Subscribed to '+@block_list.name}
+      end
+    else
+      redirect_to :back
     end
   end
 
   # DELETE /block_lists/1/subscribe
   def unsubscribe
-    Subscription.remove(current_user.id, @block_list.id)
-    respond_to do |format|
-      format.html { redirect_to :back, notice: 'Unsubscribed from '+@block_list.name}
+    if current_user
+      Subscription.remove(current_user.id, @block_list.id)
+      respond_to do |format|
+        format.html { redirect_to :back, notice: 'Unsubscribed from '+@block_list.name}
+      end
+    else
+      redirect_to :back
     end
   end
 

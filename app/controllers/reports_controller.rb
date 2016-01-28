@@ -13,36 +13,52 @@ class ReportsController < ApplicationController
 
   # GET /reports/new
   def new
-    @report = Report.new
+    if current_user
+      @report = Report.new
+    else
+      redirect_to default
+    end
   end
 
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.parse(report_params['text'], current_user)
+    if current_user
+      @report = Report.parse(report_params['text'], current_user)
 
-    respond_to do |format|
-      if @report.save
-        format.html { redirect_to @report, notice: 'Report was successfully created' }
-      else
-        format.html { render :new }
+      respond_to do |format|
+        if @report.save
+          format.html { redirect_to @report, notice: 'Report was successfully created' }
+        else
+          format.html { render :new }
+        end
       end
+    else
+      redirect_to default
     end
   end
 
   # POST /reposts/1
   def approve
-    @report.approve(current_user)
-    respond_to do |format|
-      format.html { redirect_to reports_url, notice: 'Report approved' }
+    if @report.block_list.blocker? current_user
+      @report.approve(current_user)
+      respond_to do |format|
+        format.html { redirect_to reports_url, notice: 'Report approved' }
+      end
+    else
+      redirect_to :back
     end
   end
 
   # DELETE /reports/1
   def deny
-    @report.update_attributes(processed: true)
-    respond_to do |format|
-      format.html { redirect_to reports_url, notice: 'Report denied' }
+    if @report.block_list.blocker? current_user
+      @report.update_attributes(processed: true)
+      respond_to do |format|
+        format.html { redirect_to reports_url, notice: 'Report denied' }
+      end
+    else
+      redirect_to :back
     end
   end
 
