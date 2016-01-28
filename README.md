@@ -36,7 +36,7 @@ Secret key
  * `twitter_access_token_secret`
 
 Postgres
- * `PG_URL` or `DATABASE_URL` ?
+ * `DATABASE_URL`
 
 Redis
  * `REDIS_URL`
