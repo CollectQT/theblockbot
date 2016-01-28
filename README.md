@@ -10,11 +10,24 @@
 
 ## Start
 
+**Main application:**
+
 `$ foreman start`
+
+**Cron job (`crontab -e`) for unblocks:**
+
+`00 * * * * cd /home/lynn/theblockbot/ && /usr/share/rvm/rubies/ruby-2.2.1/bin/rake RAILS_ENV=development sidekiq:unblock_processor`
+
+on Heroku its
+
+`$ rake sidekiq:unblock_processor`
 
 ## Production Requirements
 
 The following environment variables:
+
+Secret key
+* `SECRET_KEY_BASE`
 
 [Twitter](https://apps.twitter.com/)
  * `twitter_consumer_key`
@@ -23,7 +36,7 @@ The following environment variables:
  * `twitter_access_token_secret`
 
 Postgres
- * ???
+ * `PG_URL` or `DATABASE_URL` ?
 
 Redis
  * `REDIS_URL`
