@@ -15,7 +15,7 @@ class BlockListsController < ApplicationController
     if current_user
       @block_list = BlockList.new
     else
-      redirect_to default
+      redirect_to '/'
     end
   end
 

@@ -16,7 +16,7 @@ class ReportsController < ApplicationController
     if current_user
       @report = Report.new
     else
-      redirect_to default
+      redirect_to '/'
     end
   end
 
@@ -34,7 +34,7 @@ class ReportsController < ApplicationController
         end
       end
     else
-      redirect_to default
+      redirect_to '/'
     end
   end
 
