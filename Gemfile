@@ -29,7 +29,7 @@ gem 'attr_encrypted'
 
 group :development, :test do
   gem 'byebug'
-  gem 'rspec'
+  gem 'rspec-rails'
 end
 
 group :development do

@@ -191,10 +191,6 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
     redis (3.2.2)
-    rspec (3.4.0)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
     rspec-core (3.4.3)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -202,6 +198,14 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-mocks (3.4.1)
       diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-rails (3.4.2)
+      actionpack (>= 3.0, < 4.3)
+      activesupport (>= 3.0, < 4.3)
+      railties (>= 3.0, < 4.3)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     ruby_parser (3.7.2)
@@ -299,7 +303,7 @@ DEPENDENCIES
   puma
   rails (= 4.2.5)
   rails_12factor
-  rspec
+  rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
