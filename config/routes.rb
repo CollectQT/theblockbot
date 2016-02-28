@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+
   root 'index#index'
 
   # delete '/block_lists/:id/remove/blocker/:user_id' => 'block_lists#remove_blocker', :as => :remove_blocker
@@ -21,7 +23,6 @@ Rails.application.routes.draw do
   get '/profile' => 'users#index', :as => :profile
   get '/user/reports' => 'users#reports', :as => :user_reports
 
-  # config/routes.rb
   require "sidekiq/web"
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == ENV["SIDEKIQ_USERNAME"] && password == ENV["SIDEKIQ_PASSWORD"]

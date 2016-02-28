@@ -29,6 +29,8 @@ gem 'attr_encrypted'
 
 group :development, :test do
   gem 'byebug'
+  gem 'jasmine-rails'
+  gem 'jasmine-jquery-rails'
 end
 
 group :development do
