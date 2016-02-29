@@ -8,5 +8,8 @@
 
 describe 'Foo', ->
 
+  beforeEach ->
+    browser.get('/')
+
   it 'does something', ->
-    expect(document.title).toBe "TheBlockBot"
+    expect(browser.getTitle()).toBe "TheBlockBot"

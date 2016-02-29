@@ -7,14 +7,14 @@ exports.config = {
 
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
-        'browserName': 'chrome'
+        'browserName': 'chrome',
     },
 
     // Spec patterns are relative to the current working directly when
     // protractor is called.
-    specs: ['example_spec.js ', 'protractor_specs/**/*.js', 'protractor_specs/**/*.coffee'],
+    specs: ['*_spec.js', '*_spec.coffee'],
 
-    baseUrl: 'http://localhost:4000',
+    baseUrl: 'http://localhost:3000',
 
     // Options to be passed to Jasmine-node.
     jasmineNodeOpts: {
