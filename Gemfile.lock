@@ -57,6 +57,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    colorize (0.7.7)
     commonjs (0.2.7)
     concurrent-ruby (1.0.0)
     connection_pool (2.2.0)
@@ -160,6 +161,9 @@ GEM
       omniauth-oauth (~> 1.1)
     pg (0.18.4)
     phantomjs (2.1.1.0)
+    protractor-rails (0.0.18)
+      colorize
+      railties
     puma (2.15.3)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -292,6 +296,7 @@ DEPENDENCIES
   omniauth
   omniauth-twitter
   pg
+  protractor-rails
   puma
   rails (= 4.2.5)
   rails_12factor
