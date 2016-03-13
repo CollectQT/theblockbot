@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /profile
-Disallow: /user/
-Disallow: /reports/
-Disallow: /block_lists/
