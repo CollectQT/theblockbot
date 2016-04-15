@@ -26,6 +26,10 @@ describe "Twitter", :type => :feature do
     find("#oauth_form .submit.selected").click
   end
 
+  it "starts with the test account (@cyrin_test_2) unblocked" do
+    # use the gem for this
+  end
+
 end
 
 
@@ -36,8 +40,52 @@ describe "TheBlockBot", :type => :feature do
     expect(page).to have_title "TheBlockBot"
   end
 
-  it "allows you to subscribe to a block list" do
-    visit '/'
-    click_link('Block Lists')
+  it "allows you to subscribe to a test block list (#TestNoExpire)" do
+  end
+
+  it "blocks the test account when you subscribe" do
+  end
+
+  it "allows you to unsubscribe from a block list" do
+  end
+
+  it "keeps a log of subscription changes" do
+  end
+
+  it "unblocks the test account when you unsubscribe" do
+  end
+
+  it "keeps a log of blocks and unblocks" do
+  end
+
+  it "allows you to create a block list" do
+  end
+
+  it "allows you to create a report" do
+  end
+
+  it "informs you of incorrectly formatted reports" do
+  end
+
+  it "keeps a log of created reports" do
+  end
+
+  it "shows admin commands for admins" do
+  end
+
+  it "shows pending reports on the reports page" do
+  end
+
+  it "allows admins to approve reports" do
+  end
+
+  it "keeps a log of approved reports" do
+  end
+
+  it "allows admins of a block list to add other admins" do
+  end
+
+  it "allows admins of a block list to add other blockers" do
+  end
 
 end
