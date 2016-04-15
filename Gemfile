@@ -27,15 +27,17 @@ gem 'haml'
 gem 'haml-rails'
 gem 'attr_encrypted'
 
-group :development, :test do
-  gem 'byebug'
-end
-
 group :development do
+  gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'capybara'
+  gem 'rspec-rails'
+  gem 'selenium-webdriver'
+  gem 'capybara-mechanize'
   gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :production do

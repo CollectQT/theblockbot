@@ -44,3 +44,7 @@ Redis
 Sidekiq
  * `SIDEKIQ_USERNAME`
  * `SIDEKIQ_PASSWORD`
+
+## Tests
+
+    $ bin/rspec spec/features/test.rb
