@@ -101,6 +101,8 @@ class BlockListsController < ApplicationController
     def set_block_list
       if params[:id]
         @block_list = BlockList.find(params[:id])
+      elsif params[:name]
+        @block_list = BlockList.where("lower(name) = ?", params[:name].downcase).first
       end
     end
 
