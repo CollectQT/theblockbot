@@ -31,6 +31,9 @@
 
               %li= link_to 'Profile', '/profile'
               %li= link_to 'Sign Out', signout_path
+              %li.login(title="You!")
+                %span.name= current_user.name
+                %img.avatar(src="#{current_user.profile_image_url}")
 
             - else
               %li= link_to "Sign in with Twitter", "/auth/twitter"
