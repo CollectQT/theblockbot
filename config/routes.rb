@@ -20,8 +20,10 @@ Rails.application.routes.draw do
   post   'reports'             => 'reports#create',  :as => :report_create
   get    'reports'             => 'reports#index',   :as => :reports
 
-  get '/auth/:provider/callback' => 'sessions#create'
-  get '/signout' => 'sessions#destroy', :as => :signout
+  get  '/signin'                  => 'sessions#new',      :as => :signin
+  get  '/signout'                 => 'sessions#destroy',  :as => :signout
+  get  '/auth/failure'            => 'sessions#failure'
+  get  '/auth/:provider/callback' => 'sessions#create'
 
   get '/profile' => 'users#index', :as => :profile
   get '/user/reports' => 'users#reports', :as => :user_reports
