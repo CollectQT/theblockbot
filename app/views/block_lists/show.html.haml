@@ -44,6 +44,9 @@
     = form_tag add_blocker_path(@block_list), :method => 'post' do
       %dt= submit_tag "Add Blocker", :class => 'btn btn-primary btn-sm'
       %dd= text_field_tag :user_name, nil, :placeholder => "@name, like @lynncyrin"
+    = form_tag add_admin_path(@block_list), :method => 'post' do
+      %dt= submit_tag "Add Admin", :class => 'btn btn-primary btn-sm'
+      %dd= text_field_tag :user_name, nil, :placeholder => "@name, like @lynncyrin"
 
 %h2 Blocked Users
 %table.table.table-striped

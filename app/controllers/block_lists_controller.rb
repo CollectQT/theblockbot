@@ -91,6 +91,23 @@ class BlockListsController < ApplicationController
     end
   end
 
+  # POST /block_lists/1/add/admin
+  def add_admin
+    if @block_list.admin? current_user
+      admin = Admin.create(block_list: @block_list, user: User.get(params[:user_name]))
+
+      if admin.save
+        notice = "Admin #{params[:user_name]} added"
+      else
+        notice = admin.errors.full_messages
+      end
+
+      redirect_to :back, notice: notice
+    else
+      redirect_to :back, notice: 'Not authorized'
+    end
+  end
+
   # def remove_blocker
   #   Blocker.find_by(block_list: @block_list, user: User.find(params[:user_id])).delete
   #   redirect_to :back, notice: 'Blocker removed'

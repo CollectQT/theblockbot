@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get    '/block_lists/:id'              => 'block_lists#show', :constraints => { :id => /[0-9]+/ }, :as => :block_list_path
   get    '/block_lists/:name'            => 'block_lists#show'
   post   '/block_lists/:id/add/blocker/' => 'block_lists#add_blocker', :as => :add_blocker
+  post   '/block_lists/:id/add/admin/'   => 'block_lists#add_admin',   :as => :add_admin
   post   '/block_lists/:id/subscribe'    => 'block_lists#subscribe',   :as => :list_subscribe
   delete '/block_lists/:id/subscribe'    => 'block_lists#unsubscribe', :as => :list_unsubscribe
 
