@@ -34,7 +34,7 @@ class Report < ActiveRecord::Base
     #todo: make this shorter
     match = text.match('(?<=\+)\w*')
     if match
-      target = User.get(TwitterClient.REST.user('@'+match[0]))
+      target = User.get(TwitterClient.REST.user(match[0]))
     else
       target = nil
     end
