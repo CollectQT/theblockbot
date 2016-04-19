@@ -31,8 +31,7 @@ class Report < ActiveRecord::Base
 
     reporter = User.get(reporter)
 
-    #todo: make this shorter
-    match = text.match('(?<=\+)\w*')
+    match = text.match('(?<=\+)\@*\w*')
     if match
       target = User.get(TwitterClient.REST.user(match[0]))
     else
