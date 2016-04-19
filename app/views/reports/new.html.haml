@@ -13,6 +13,13 @@
           - @report.errors.messages.values.each do |msg|
             - msg.each do |m|
               %li= msg[0]
+  .description
+    %p Create a new report for a block list. Reports have to be formatted like:
+    %p
+      %code #BlockListName +ThePersonToBlock a description of why you are blocking them
+    %p Example:
+    %p
+      %code #TerribleCompanies +SallieMae exports millions of students with loans
   .form-group
     = f.label :text, :class => 'control-label col-lg-2'
     .col-lg-10
