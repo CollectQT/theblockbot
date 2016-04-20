@@ -53,7 +53,7 @@ class ReportsController < ApplicationController
   # DELETE /reports/1
   def deny
     if @report.block_list.blocker? current_user
-      @report.update_attributes(processed: true)
+      @report.deny(current_user)
       respond_to do |format|
         format.html { redirect_to reports_url, notice: 'Report denied' }
       end

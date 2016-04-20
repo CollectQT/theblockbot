@@ -84,15 +84,22 @@ class Report < ActiveRecord::Base
 
 
   def approve(approver)
-    unless approver.in? self.block_list.blockers
-      puts 'User(#{approver_id}) Not Authorized to approve Report(#{report_id})'
-      return
+    if approver.in? self.block_list.blockers
+      CreateBlocksFromReport.perform_async(self.id)
+      self.update_attributes(approver: approver, approved: true, processed: true)
+      self.target.increment(:times_blocked)
+      self.reporter.increment(:reports_approved)
+    else
+      puts 'User(#{approver.id}) Not Authorized to approve Report(#{self.id})'
     end
-    CreateBlocks.perform_async(self.id)
-    self.update_attributes(approver: approver, approved: true, processed: true)
-    self.target.increment(:times_blocked)
-    self.reporter.increment(:reports_approved)
   end
 
+  def deny(approver)
+    if approver.in? self.block_list.blockers
+      self.update_attributes(processed: true)
+    else
+      puts 'User(#{approver.id}) Not Authorized to deny Report(#{self.id})'
+    end
+  end
 
 end
