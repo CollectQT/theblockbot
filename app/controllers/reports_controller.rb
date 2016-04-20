@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     if current_user
-      @report = CreateReport.new.perform(report_params['text'], current_user.id)
+      Report.parse(report_params['text'], current_user)
 
       respond_to do |format|
         if @report.save
@@ -42,6 +42,7 @@ class ReportsController < ApplicationController
   def approve
     if @report.block_list.blocker? current_user
       @report.approve(current_user)
+
       respond_to do |format|
         format.html { redirect_to reports_url, notice: 'Report approved' }
       end
@@ -54,6 +55,7 @@ class ReportsController < ApplicationController
   def deny
     if @report.block_list.blocker? current_user
       @report.deny(current_user)
+
       respond_to do |format|
         format.html { redirect_to reports_url, notice: 'Report denied' }
       end

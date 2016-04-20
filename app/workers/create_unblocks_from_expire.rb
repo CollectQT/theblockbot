@@ -1,4 +1,4 @@
-class UnblockProcessor
+class CreateUnblocksFromExpire
   include Sidekiq::Worker
 
   def perform
@@ -13,7 +13,8 @@ class UnblockProcessor
       end
 
       # unblock
-      Unblock.perform_async(user.id, block.target.account_id.to_i, block.id)
+      PostUnblock.perform_async(user.id, block.target.account_id.to_i, block.id)
+      user.update_log("[REMOVE] Unblocking user #{block.target.user_name}")
     end
 
   end

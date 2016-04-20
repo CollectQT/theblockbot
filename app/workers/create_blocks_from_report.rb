@@ -1,4 +1,4 @@
-class CreateBlocks
+class CreateBlocksFromReport
   include Sidekiq::Worker
 
   def perform(report_id)

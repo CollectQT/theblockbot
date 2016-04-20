@@ -2,37 +2,29 @@ class CreateBlock
   include Sidekiq::Worker
 
   def perform(user_id, report_id)
-    user_model = User.find(user_id)
-    user_client = TwitterClient.user(user_model.auth)
+    user = User.find(user_id)
     report = Report.find(report_id)
+    target = report.target.account_id.to_i
 
     # dont block users that our client user is following
-    if user_client.friendship?(user_client, report.target.account_id.to_i)
-      return
+    if ReadFollowing.new.perform(user.id, target)
+        return
     end
 
     # dont block users that are already blocked
-    if user_client.block?(report.target.account_id.to_i)
-      return
+    if ReadBlock.new.perform(user.id, target)
+        return
     end
 
-    # if the user does not want to block followers
-    if user_model.dont_block_followers
-      # dont block followers
-      if user_client.friendship?(report.target.account_id.to_i, user_client)
+    # if the user does not want to block followers...
+    if user.dont_block_followers
+      # ...then dont block followers
+      if ReadFollower.new.perform(user.id target)
         return
       end
     end
 
-    # block
-    user_client.block(report.target.account_id.to_i)
-    Block.create(
-      user: user_model,
-      target: report.target,
-      report: report,
-      block_list: report.block_list,
-    )
-    user_model.update_log("[ADD] Blocked user #{report.target.user_name}")
-
+    PostBlock.perform_async(user.id, report.id)
+    user.update_log("[ADD] Blocking user #{report.target.user_name}")
   end
 end

@@ -1,4 +1,4 @@
-class SubscribeTo
+class CreateBlocksFromSubscribe
   include Sidekiq::Worker
 
   def perform(user_id, block_list_id)
