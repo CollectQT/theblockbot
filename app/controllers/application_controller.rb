@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def failure
-    redirect_to root_url, :notice => "Authentication error: #{params[:message].humanize}"
+    redirect_to request.env['omniauth.origin'] || :back || root_url, :notice => "Authentication error: #{params[:message].humanize}"
   end
 
   private
