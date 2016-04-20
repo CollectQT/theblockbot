@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     if current_user
-      @report = CreateReport.perform(report_params['text'], current_user.id)
+      @report = CreateReport.new.perform(report_params['text'], current_user.id)
 
       respond_to do |format|
         if @report.save
