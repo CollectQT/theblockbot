@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def new
-    redirect_to '/signin'
+    redirect_to '/auth/twitter'
   end
 
   def signin
