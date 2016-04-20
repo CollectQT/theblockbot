@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def new
-    redirect_to '/auth/twitter'
+    redirect_to '/signin'
   end
 
   def signin
@@ -12,9 +12,9 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :notice => "Signed in!"
   end
 
-  def signout
+  def signout(notice="Signed out!")
     session[:user_id] = nil
-    redirect_to root_url, :notice => "Signed out!"
+    redirect_to root_url, :notice => notice
   end
 
   def failure
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     def current_user
       @current_user ||= User.find(session[:user_id]) if session[:user_id]
     rescue ActiveRecord::RecordNotFound
-      signout
+      signout("A login error occured, you have been signed out")
     end
 
 end
