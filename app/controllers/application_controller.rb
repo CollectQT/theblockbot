@@ -9,12 +9,12 @@ class ApplicationController < ActionController::Base
   def signin
     user = Auth.parse(request.env["omniauth.auth"])
     session[:user_id] = user.id
-    redirect_to root_url, :notice => "Signed in!"
+    redirect_to request.env['omniauth.origin'] || root_url, :notice => "Signed in!"
   end
 
   def signout(notice="Signed out!")
     session[:user_id] = nil
-    redirect_to root_url, :notice => notice
+    redirect_to :back || root_url, :notice => notice
   end
 
   def failure
