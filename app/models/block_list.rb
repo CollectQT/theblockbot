@@ -30,4 +30,10 @@ class BlockList < ActiveRecord::Base
     self.joins(:admin_records).where(:admins => {user_id: user.id})
   end
 
+  def make(name, user)
+    block_list = BlockList.create(:name => name)
+    Admin.create(block_list: block_list, user: user)
+    return block_list
+  end
+
 end

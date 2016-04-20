@@ -22,8 +22,7 @@ class BlockListsController < ApplicationController
   # POST /block_list
   def create
     if current_user
-      @block_list = BlockList.create(:name => block_list_params['name'])
-      Admin.create(block_list: @block_list, user: current_user)
+      @block_list = BlockList.make(block_list_params['name'], current_user)
 
       respond_to do |format|
         if @block_list.save
