@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # GET /profile
   def index
     if not current_user
-      redirect_to '/auth/twitter'
+      redirect_to '/signin'
     end
   end
 
