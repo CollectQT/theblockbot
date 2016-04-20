@@ -32,9 +32,12 @@ class User < ActiveRecord::Base
 
   def self.get(_user, website='twitter')
 
+    if _user.is_a? User
+      user = _user
+
     # get user from string (username) / integer (id) + website
     # example: User.get('nasa', 'twitter')
-    if _user.is_a? String or _user.is_a? Integer
+    elsif _user.is_a? String or _user.is_a? Integer
       if website == 'twitter'
         _user = TwitterClient.REST.user(_user)
 
@@ -48,10 +51,6 @@ class User < ActiveRecord::Base
         raise 'invalid website???'
       end
     end
-
-    # sometimes you're tired coding and dont know that you already have a User
-    if _user.is_a? User
-      user = _user
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
