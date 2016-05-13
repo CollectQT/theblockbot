@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
   validates :account_id, presence: true
   validates_uniqueness_of :account_id, scope: :website
 
+  delegate :token, to: :auth
+  delegate :secret, to: :auth
+
   def is_blocker
     self.blocker_for.length > 0
   end
