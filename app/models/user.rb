@@ -50,7 +50,6 @@ class User < ActiveRecord::Base
       else
         raise 'invalid website???'
       end
-    end
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
