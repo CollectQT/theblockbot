@@ -16,9 +16,6 @@ class User < ActiveRecord::Base
   validates :account_id, presence: true
   validates_uniqueness_of :account_id, scope: :website
 
-  delegate :token, to: :auth
-  delegate :secret, to: :auth
-
   def is_blocker
     self.blocker_for.length > 0
   end
@@ -37,11 +34,10 @@ class User < ActiveRecord::Base
 
     if _user.is_a? User
       user = _user
-    end
 
     # get user from string (username) / integer (id) + website
     # example: User.get('nasa', 'twitter')
-    if _user.is_a? String or _user.is_a? Integer
+    elsif _user.is_a? String || _user.is_a? Integer
       if website == 'twitter'
         _user = TwitterClient.REST.user(_user)
 
@@ -54,11 +50,10 @@ class User < ActiveRecord::Base
       else
         raise 'invalid website???'
       end
-    end
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    if _user.is_a? Twitter::User
+    elsif _user.is_a? Twitter::User
       user = User.find_or_create_by(account_id: _user.id.to_s, website: website)
       user.update_attributes(
         name:                   _user.name,
