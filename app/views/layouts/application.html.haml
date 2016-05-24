@@ -19,11 +19,19 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        %a.navbar-brand{:href => "/"} TheBlockBot
         .navbar-collapse.collapse.navbar-responsive-collapse
-          %ul.nav.navbar-nav
+          %ul.nav.navbar-nav.container-fluid
+
+            %a.navbar-brand{:href => "/"} TheBlockBot
 
             %li= link_to "Block Lists", "/block_lists"
+
+            %li.dropdown
+              %a#toolMenu.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                Tools
+                %span.caret
+              %ul.dropdown-menu{"aria-labelledby" => "toolMenu"}
+                %li= link_to "Tool1", "/tool1"
 
             - if current_user
               - if current_user.is_blocker
@@ -36,7 +44,7 @@
                 %img.avatar(src="#{current_user.profile_image_url}")
 
             - else
-              %li= link_to "Sign in with Twitter", signin_path
+              %li.pull-right= link_to "Sign in with Twitter", signin_path
     .container
       %main.row
         .col-lg-12
