@@ -50,10 +50,11 @@ class User < ActiveRecord::Base
       else
         raise 'invalid website???'
       end
+    end
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    elsif _user.is_a? Twitter::User
+    if _user.is_a? Twitter::User
       user = User.find_or_create_by(account_id: _user.id.to_s, website: website)
       user.update_attributes(
         name:                   _user.name,
