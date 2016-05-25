@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   has_many :admin_for, through: :admin, source: :block_list
   has_many :blocked_users, through: :block_lists, source: :targets
 
+  delegate :token, to: :auth
+  delegate :secret, to: :auth
+
   validates :website, presence: true
   validates :account_id, presence: true
   validates_uniqueness_of :account_id, scope: :website
