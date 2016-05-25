@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
 
     # get user from string (username) / integer (id) + website
     # example: User.get('nasa', 'twitter')
-    elsif _user.is_a? String || _user.is_a? Integer
+    elsif _user.is_a? String or _user.is_a? Integer
       if website == 'twitter'
         _user = TwitterClient.REST.user(_user)
 
