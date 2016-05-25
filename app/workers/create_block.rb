@@ -7,19 +7,19 @@ class CreateBlock
     target = report.target.account_id.to_i
 
     # dont block users that our client user is following
-    if ReadFollowing.new.perform(user.id, target)
+    if ReadFollowing.new.read(user.id, target)
         return
     end
 
     # dont block users that are already blocked
-    if ReadBlock.new.perform(user.id, target)
+    if ReadBlock.new.read(user.id, target)
         return
     end
 
     # if the user does not want to block followers...
     if user.dont_block_followers
       # ...then dont block followers
-      if ReadFollower.new.perform(user.id target)
+      if ReadFollower.new.read(user.id target)
         return
       end
     end
