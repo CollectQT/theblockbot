@@ -22,7 +22,7 @@ class ReadFriendsOrFollowers
       user = TwitterClient.user(User.find(user_id))
 
       if type == 'followers'
-        response = user.follower_ids(:cursor => cursor, :count => 1000)
+        response = user.follower_ids(:cursor => cursor)
       elsif type == 'following' or type == 'friends'
         response = user.friend_ids(:cursor => cursor)
       end
