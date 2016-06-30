@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.1'
+ruby '2.3.1'
 
 gem 'rails', '4.2.5'
 gem 'dotenv-rails'
@@ -38,6 +38,7 @@ group :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'capybara-mechanize'
+  gem 'guard-rspec'
   gem 'spring'
   gem 'spring-commands-rspec'
 end
