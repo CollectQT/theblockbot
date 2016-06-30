@@ -22,9 +22,12 @@ repo: <https://gitlab.com/collectqt/theblockbot>
 ```
 $ cp example.env .env
 $ subl .env # fill with your information from https://apps.twitter.com
+$ rspec # should be all green
 $ foreman start
 ```
 
-## Tests
+## testing
 
-    $ spring rspec
+`$ guard` in its own terminal window
+
+`$ spring rspec` if that's doing too much
