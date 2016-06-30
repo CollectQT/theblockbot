@@ -9,9 +9,29 @@ describe "create_blocks_from_report" do
       ])
   )}
 
-  it "starts a create_block for every user on the report" do
+  it "creates 3 blocks for 3 block list subscribers from an approved report" do
     expect(worker).to receive(:block).exactly(3).times
     worker.work(report)
   end
 
+end
+
+
+describe "create_blocks_from_subscribe" do
+
+  it "creates 3 blocks for user from 3 previously approved reports" do
+  end
+
+end
+
+
+describe "create_unblocks_from_expire" do
+end
+
+
+describe "create_unblocks_from_unsubscribe" do
+end
+
+
+describe "create_block" do
 end
