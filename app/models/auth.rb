@@ -1,8 +1,8 @@
 class Auth < ActiveRecord::Base
   belongs_to :user
 
-  attr_encrypted :token, :key => Rails.application.secrets.secret_key_base
-  attr_encrypted :secret, :key => Rails.application.secrets.secret_key_base
+  attr_encrypted :token, :key => Rails.application.secrets.secret_key_base, algorithm: 'aes-256-cbc', mode: :single_iv_and_salt
+  attr_encrypted :secret, :key => Rails.application.secrets.secret_key_base, algorithm: 'aes-256-cbc', mode: :single_iv_and_salt
 
   validates :token, presence: true
   validates :secret, presence: true
