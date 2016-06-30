@@ -1,10 +1,8 @@
 # TheBlockBot
 
-live site: <http://theblockbot.herokuapp.com>
-
-repo: <https://gitlab.com/collectqt/theblockbot>
-
-(mirror repo at <https://github.com/collectqt/theblockbot>)
+* live site: <http://theblockbot.herokuapp.com>
+* repo: <https://gitlab.com/collectqt/theblockbot>
+* mirror repo: <https://github.com/collectqt/theblockbot>
 
 ## requirements
 
@@ -15,14 +13,16 @@ repo: <https://gitlab.com/collectqt/theblockbot>
 
 ## quickstart
 
-`$ foreman start`, then open <http://localhost:5000/>
+`$ foreman start` then open <http://localhost:5000/>
 
 ## slowstart
 
 ```
 $ cp example.env .env
-$ subl .env # fill with your information from https://apps.twitter.com
-$ rspec # should be all green
+$ subl .env
+    # fill with your information from https://apps.twitter.com
+$ spring rspec
+    # should be all green
 $ foreman start
 ```
 
