@@ -30,6 +30,7 @@ gem 'haml-rails'
 gem 'attr_encrypted'
 
 group :development do
+  gem 'foreman'
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'better_errors'
