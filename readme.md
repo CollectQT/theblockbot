@@ -15,7 +15,7 @@ repo: <https://gitlab.com/collectqt/theblockbot>
 
 ## quickstart
 
-`$ foreman start`, then open <http://localhost:3000/>
+`$ foreman start`, then open <http://localhost:5000/>
 
 ## slowstart
 
