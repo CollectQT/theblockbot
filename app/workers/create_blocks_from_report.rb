@@ -2,8 +2,7 @@ class CreateBlocksFromReport
   include Sidekiq::Worker
 
   def perform(report_id)
-    report = Report.find(report_id)
-    work_on(report)
+    work_on(Report.find(report_id))
   end
 
   def work_on(report)
