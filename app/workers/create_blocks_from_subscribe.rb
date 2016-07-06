@@ -2,9 +2,17 @@ class CreateBlocksFromSubscribe
   include Sidekiq::Worker
 
   def perform(user_id, block_list_id)
-    for report_id in Report.where(approved: true, expired: false, block_list_id: block_list_id).pluck(:id)
-      CreateBlock.perform_async(user_id, report_id)
+    work_on(user_id, BlockList.find(block_list_id))
+  end
+
+  def work_on(user_id, block_list)
+    for report in block_list.active_reports
+      block(user_id, report.id)
     end
+  end
+
+  private def block(user, report)
+    CreateBlock.perform_async(user, report)
   end
 
 end
