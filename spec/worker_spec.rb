@@ -10,7 +10,7 @@ describe "create_blocks_from_report" do
   )}
 
   it "creates 3 blocks for 3 block list subscribers from an approved report" do
-    expect(worker).to receive(:block).exactly(3).times
+    expect(worker).to receive(:block).exactly(3).times.with(1, 1)
     worker.work_on(report)
   end
 

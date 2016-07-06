@@ -7,12 +7,12 @@ class CreateBlocksFromReport
 
   def work_on(report)
     for user in report.block_list.users
-      block(user, report)
+      block(user.id, report.id)
     end
   end
 
   private def block(user, report)
-    CreateBlock.perform_async(user.id, report.id)
+    CreateBlock.perform_async(user, report)
   end
 
 end
