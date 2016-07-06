@@ -3,10 +3,10 @@ class CreateBlocksFromReport
 
   def perform(report_id)
     report = Report.find(report_id)
-    work(report)
+    work_on(report)
   end
 
-  def work(report)
+  def work_on(report)
     for user in report.block_list.users
       block(user, report)
     end
