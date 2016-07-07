@@ -13,13 +13,10 @@ class ReadMutuals
 
   def read(user_id, type)
     Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
+      user = get_user(user_id)
       target_users = friends_or_followers(user_id, type)
-      user = TwitterClient.user(User.find(user_id))
       page(user, type, target_users)
     end
-  rescue Twitter::Error::TooManyRequests => error
-    sleep error.rate_limit.reset_in + 1
-    retry
   end
 
 
@@ -61,7 +58,7 @@ class ReadMutuals
 
 
   private def process_page(user, target_users)
-    response = user.friendships(target_users)
+    response = get_friendships(user, target_users)
     mutuals = []
     nonmutuals = []
 
@@ -76,11 +73,22 @@ class ReadMutuals
     end
 
     return mutuals, nonmutuals
+  end
 
+
+  private def get_user(user_id)
+    TwitterClient.user(User.find(user_id))
   rescue Twitter::Error::TooManyRequests => error
     sleep error.rate_limit.reset_in + 1
     retry
   end
 
+
+  private def get_friendships(user, target_users)
+    user.friendships(target_users)
+  rescue Twitter::Error::TooManyRequests => error
+    sleep error.rate_limit.reset_in + 1
+    retry
+  end
 
 end

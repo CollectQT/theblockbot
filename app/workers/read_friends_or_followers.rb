@@ -13,12 +13,9 @@ class ReadFriendsOrFollowers
 
   def read(user_id, type)
     Rails.cache.fetch("fof/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-      user = TwitterClient.user(User.find(user_id))
+      user = get_user(user_id)
       fof = page(user, type)
     end
-  rescue Twitter::Error::TooManyRequests => error
-    sleep error.rate_limit.reset_in + 1
-    retry
   end
 
 
@@ -40,13 +37,19 @@ class ReadFriendsOrFollowers
 
 
   private def process_page(user, type, fof, cursor, count: 5000)
+    if type == 'followers'
+      user.follower_ids(:cursor => cursor, :count => count)
+    elsif type == 'following'
+      user.friend_ids(:cursor => cursor, :count => count)
+    end
+  rescue Twitter::Error::TooManyRequests => error
+    sleep error.rate_limit.reset_in + 1
+    retry
+  end
 
-      if type == 'followers'
-        user.follower_ids(:cursor => cursor, :count => count)
-      elsif type == 'following'
-        user.friend_ids(:cursor => cursor, :count => count)
-      end
 
+  private def get_user(user_id)
+    TwitterClient.user(User.find(user_id))
   rescue Twitter::Error::TooManyRequests => error
     sleep error.rate_limit.reset_in + 1
     retry
