@@ -10,7 +10,7 @@ class ReadMutuals
 
   def read(user_id, type)
     Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-      target_users = ReadFriendsOrFollowers.new.read(user_id, type)
+      target_users = friends_or_followers(user_id, type)
       page(user_id, type, target_users)
     end
   end
@@ -34,6 +34,10 @@ class ReadMutuals
     depth        = depth + 1
 
     return user_id, type, target_users, mutuals, nonmutuals, depth
+  end
+
+  private def friends_or_followers(user_id, type)
+    ReadFriendsOrFollowers.new.read(user_id, type)
   end
 
   private def lookup(user_id, target_users)
