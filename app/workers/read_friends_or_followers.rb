@@ -1,43 +1,56 @@
 class ReadFriendsOrFollowers
 
-  def read(type, user_id, count)
-    Rails.cache.fetch("fof/all/#{type}/#{user_id}", expires_in: 1.days) do
-      user = TwitterClient.user(User.find(user_id))
-      cursor = -1
-      fof_all = []
 
-      if ['following', 'followers', 'friends'].include? type
-        while cursor != 0
-          fof_page, cursor = page(type, user, cursor, count)
-          fof_all += fof_page
-        end
-      end
-
-      return fof_all
-
-    end
+  def followers(user_id)
+    read(user_id, "followers")
   end
 
-  private def page(type, user, cursor, count)
-    Rails.cache.fetch("fof/page/#{type}/#{user.user.id}/#{cursor}", expires_in: 1.days) do
 
-      puts "fof/page/#{type}/#{user.user.id}/#{cursor}"
+  def following(user_id)
+    read(user_id, "following")
+  end
 
-      if type == 'followers'
-        response = user.follower_ids(:cursor => cursor, :count => count)
-      elsif type == 'following' or type == 'friends'
-        response = user.friend_ids(:cursor => cursor)
-      end
 
-      fof_page = response.to_a
-      cursor = response.to_h[:next_cursor]
-
-      return fof_page, cursor
-
+  def read(user_id, type)
+    Rails.cache.fetch("fof/all/#{user_id}/#{type}", expires_in: 1.weeks) do
+      user = TwitterClient.user(User.find(user_id))
+      fof = page(user, type)
     end
   rescue Twitter::Error::TooManyRequests => error
     sleep error.rate_limit.reset_in + 1
     retry
   end
+
+
+  private def page(user, type, fof: [], cursor: -1)
+    Rails.cache.fetch("fof/page/#{user.user.id}/#{type}/#{cursor}", expires_in: 1.weeks) do
+
+      if cursor != 0
+        response = process_page(user, type, fof, cursor)
+        page(user, type,
+          fof: fof + response.to_a,
+          cursor: response.to_h[:next_cursor],
+        )
+      else
+        return fof
+      end
+
+    end
+  end
+
+
+  private def process_page(user, type, fof, cursor, count: 5000)
+
+      if type == 'followers'
+        user.follower_ids(:cursor => cursor, :count => count)
+      elsif type == 'following'
+        user.friend_ids(:cursor => cursor, :count => count)
+      end
+
+  rescue Twitter::Error::TooManyRequests => error
+    sleep error.rate_limit.reset_in + 1
+    retry
+  end
+
 
 end
