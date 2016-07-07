@@ -28,11 +28,6 @@ class ReadMutuals
   private def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
     Rails.cache.fetch("readmutuals/page/#{user.user.id}/#{type}/#{depth}", expires_in: 1.weeks) do
 
-      puts "readmutuals/page/#{user.user.id}/#{type}/#{depth}"
-      puts "target users #{target_users.length}"
-      puts "mutuals #{mutuals.length}"
-      puts "nonmutuals #{nonmutuals.length}"
-
       if target_users.length > 0
 
         _mutuals, _nonmutuals = process_page(user, target_users.take(count))
