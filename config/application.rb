@@ -9,6 +9,8 @@ Bundler.require(*Rails.groups)
 module RailsApp
   class Application < Rails::Application
 
+    config.autoload_paths << "#{Rails.root}/lib"
+
     config.cache_store = :redis_store, "redis://localhost:6379/0/cache", { expires_in: 1.days }
 
     # Settings in config/environments/* take precedence over those specified here.
