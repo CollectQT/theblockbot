@@ -21,9 +21,7 @@ module MetaTwitter
 
   rate_limit_rescue def get_user(user_id)
   # user_id => User.id
-    Rails.cache.fetch("get_user/#{user_id}/", expires_in: 1.hours) do
-      TwitterClient.user(User.find(user_id))
-    end
+    TwitterClient.user(User.find(user_id))
   end
 
   rate_limit_rescue def get_following?(user, target_id)
