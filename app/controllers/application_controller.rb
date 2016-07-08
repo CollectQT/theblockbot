@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   def signout(notice="Signed out!")
     session[:user_id] = nil
     redirect_to :back || root_url, :notice => notice
+  rescue ActionController::RedirectBackError
+    redirect_to root_url, :notice => notice
   end
 
   def failure
