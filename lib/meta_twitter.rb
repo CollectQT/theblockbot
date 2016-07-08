@@ -27,7 +27,7 @@ module MetaTwitter
   rate_limit_rescue def get_following?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{user.user.id}/#{target_id}/following", expires_in: 1.days) do
+    Rails.cache.fetch("#{user.user.id}/following?/#{target_id}", expires_in: 1.days) do
       user.friendship?(user, target_id)
     end
   end
@@ -36,7 +36,7 @@ module MetaTwitter
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
-    Rails.cache.fetch("#{user.user.id}/#{target_id}/follower", expires_in: 1.days) do
+    Rails.cache.fetch("#{user.user.id}/all_following/#{cursor}", expires_in: 1.weeks) do
       user.friend_ids(:cursor => cursor, :count => count)
     end
   end
@@ -44,7 +44,7 @@ module MetaTwitter
   rate_limit_rescue def get_follower?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{user.user.id}/#{target_id}/follower", expires_in: 1.days) do
+    Rails.cache.fetch("#{user.user.id}/follower?/#{target_id}", expires_in: 1.days) do
       user.friendship?(target_id, user)
     end
   end
@@ -53,7 +53,7 @@ module MetaTwitter
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
-    Rails.cache.fetch("#{user.user.id}/#{target_id}/follower", expires_in: 1.days) do
+    Rails.cache.fetch("#{user.user.id}/all_followers/#{cursor}", expires_in: 1.weeks) do
       user.follower_ids(:cursor => cursor, :count => count)
     end
   end
@@ -61,7 +61,7 @@ module MetaTwitter
   rate_limit_rescue def get_blocked?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{user.user.id}/#{target_id}/follower", expires_in: 1.days) do
+    Rails.cache.fetch("#{user.user.id}/blocked?/#{target_id}", expires_in: 1.days) do
       user.friendship?(target_id, user)
     end
   end
