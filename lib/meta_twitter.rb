@@ -17,6 +17,9 @@ def rate_limit_rescue(name)
 end
 
 
+############################################
+
+
 module MetaTwitter
 
   rate_limit_rescue def get_user(user_id)
@@ -65,5 +68,115 @@ module MetaTwitter
       user.friendship?(target_id, user)
     end
   end
+
+  ############################################
+
+  class ReadAllFollows
+
+    def followers(user_id)
+      read(user_id, "followers")
+    end
+
+    def following(user_id)
+      read(user_id, "following")
+    end
+
+    def read(user_id, type)
+      Rails.cache.fetch("fof/all/#{user_id}/#{type}", expires_in: 1.weeks) do
+        user = get_user(user_id)
+        fof = page(user, type)
+      end
+    end
+
+    private def page(user, type, fof: [], cursor: -1)
+      Rails.cache.fetch("fof/page/#{user.user.id}/#{type}/#{cursor}", expires_in: 1.weeks) do
+        if cursor != 0
+          fof, cursor = process_page(user, type, fof, cursor)
+          page(user, type, fof: fof, cursor: cursor)
+        else
+          fof
+        end
+      end
+    end
+
+    private def process_page(user, type, fof, cursor, count: 5000)
+      if type == 'followers'
+        response = get_follower_ids(user, cursor, count)
+      elsif type == 'following'
+        response = get_friend_ids(user, cursor, count)
+      end
+      fof = fof + response.to_a
+      cursor = response.to_h[:next_cursor]
+      return fof, cursor
+    end
+
+  end
+
+  ############################################
+
+  class ReadMutuals
+
+    def from_following(user_id)
+      read(user_id, "following")
+    end
+
+    def from_followers(user_id)
+      read(user_id, "followers")
+    end
+
+    def read(user_id, type)
+      Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
+        user = get_user(user_id)
+        target_users = friends_or_followers(user_id, type)
+        page(user, type, target_users)
+      end
+    end
+
+    private def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
+      Rails.cache.fetch("readmutuals/page/#{user.user.id}/#{type}/#{depth}", expires_in: 1.weeks) do
+
+        if target_users.length > 0
+
+          _mutuals, _nonmutuals = process_page(user, target_users.take(count))
+
+          target_users = target_users.drop(count)
+          mutuals      = mutuals + _mutuals
+          nonmutuals   = nonmutuals + _nonmutuals
+          depth        = depth + 1
+
+          page(user, type, target_users,
+            mutuals: mutuals,
+            nonmutuals: nonmutuals,
+            depth: depth,
+            count: count,
+          )
+
+        else
+          return mutuals, nonmutuals
+
+        end
+      end
+    end
+
+    private def process_page(user, target_users)
+      response = get_friendships(user, target_users)
+      mutuals = []
+      nonmutuals = []
+
+      for item in response
+        connections = item.connections
+
+        if connections.include? "following" and connections.include? "followed_by"
+          mutuals.concat([item.id])
+        else
+          nonmutuals.concat([item.id])
+        end
+      end
+
+      return mutuals, nonmutuals
+    end
+
+  end
+
 
 end
