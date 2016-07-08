@@ -11,8 +11,8 @@ class CreateBlocksFromReport
     end
   end
 
-  private def block(user, report)
-    CreateBlock.perform_async(user, report)
+  private def block(user_id, report)
+    CreateBlock.perform_async(user_id, report)
   end
 
 end

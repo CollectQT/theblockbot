@@ -1,4 +1,5 @@
 class ReadMutuals
+  include MetaTwitter
 
 
   def from_following(user_id)
@@ -70,20 +71,5 @@ class ReadMutuals
     return mutuals, nonmutuals
   end
 
-
-  private def get_user(user_id)
-    TwitterClient.user(User.find(user_id))
-  rescue Twitter::Error::TooManyRequests => error
-    sleep error.rate_limit.reset_in + 1
-    retry
-  end
-
-
-  private def get_friendships(user, target_users)
-    user.friendships(target_users)
-  rescue Twitter::Error::TooManyRequests => error
-    sleep error.rate_limit.reset_in + 1
-    retry
-  end
 
 end

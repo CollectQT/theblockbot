@@ -384,7 +384,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  attr_encrypted
+  attr_encrypted (~> 3.0.0)
   better_errors
   binding_of_caller
   byebug

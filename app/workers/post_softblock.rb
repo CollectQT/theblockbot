@@ -1,4 +1,5 @@
 class PostSoftblock
+  include MetaTwitter
   include Sidekiq::Worker
 
   sidekiq_retry_in do |count|
@@ -7,7 +8,7 @@ class PostSoftblock
   end
 
   def perform(user_database_id, target_twitter_id)
-    user = TwitterClient.user(User.find(user_database_id))
+    user = get_user(user_database_id)
 
     user.block(target_twitter_id)
     user.unblock(target_twitter_id)

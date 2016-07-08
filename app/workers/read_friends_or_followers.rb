@@ -1,4 +1,5 @@
 class ReadFriendsOrFollowers
+  include MetaTwitter
 
 
   def followers(user_id)
@@ -23,13 +24,10 @@ class ReadFriendsOrFollowers
     Rails.cache.fetch("fof/page/#{user.user.id}/#{type}/#{cursor}", expires_in: 1.weeks) do
 
       if cursor != 0
-        response = process_page(user, type, fof, cursor)
-        page(user, type,
-          fof: fof + response.to_a,
-          cursor: response.to_h[:next_cursor],
-        )
+        fof, cursor = process_page(user, type, fof, cursor)
+        page(user, type, fof: fof, cursor: cursor)
       else
-        return fof
+        fof
       end
 
     end
@@ -38,21 +36,14 @@ class ReadFriendsOrFollowers
 
   private def process_page(user, type, fof, cursor, count: 5000)
     if type == 'followers'
-      user.follower_ids(:cursor => cursor, :count => count)
+      response = get_follower_ids(user, cursor, count)
     elsif type == 'following'
-      user.friend_ids(:cursor => cursor, :count => count)
+      response = get_friend_ids(user, cursor, count)
     end
-  rescue Twitter::Error::TooManyRequests => error
-    sleep error.rate_limit.reset_in + 1
-    retry
-  end
+    fof = fof + response.to_a
+    cursor = response.to_h[:next_cursor]
 
-
-  private def get_user(user_id)
-    TwitterClient.user(User.find(user_id))
-  rescue Twitter::Error::TooManyRequests => error
-    sleep error.rate_limit.reset_in + 1
-    retry
+    return fof, cursor
   end
 
 
