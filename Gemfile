@@ -39,7 +39,7 @@ group :development do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'capybara-mechanize'
-  gem 'guard-rspec'
+  gem 'guard-rspec', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
 end
