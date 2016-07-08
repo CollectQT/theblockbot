@@ -37,9 +37,9 @@
               - if current_user.is_blocker
                 %li= link_to "Reports",   "/reports"
 
-              %li= link_to 'Profile', '/profile'
-              %li= link_to 'Sign Out', signout_path
-              %li.login(title="You!")
+              %li.pull-right= link_to 'Sign Out', signout_path
+              %li.pull-right= link_to 'Profile', '/profile'
+              %li.pull-right.login(title="You!")
                 %span.name= current_user.name
                 %img.avatar(src="#{current_user.profile_image_url}")
 
