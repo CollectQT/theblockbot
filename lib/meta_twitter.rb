@@ -22,6 +22,11 @@ end
 
 module MetaTwitter
 
+  def get_id(user)
+  # user => Twitter::REST::Client (with user context auth)
+    user.access_token.split('-')[0]
+  end
+
   rate_limit_rescue def get_user(user_id)
   # user_id => User.id
     TwitterClient.user(User.find(user_id))
@@ -30,7 +35,7 @@ module MetaTwitter
   rate_limit_rescue def get_following?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{user.user.id}/following?/#{target_id}", expires_in: 1.days) do
+    Rails.cache.fetch("#{get_id(user)}/following?/#{target_id}", expires_in: 1.days) do
       user.friendship?(user, target_id)
     end
   end
@@ -39,7 +44,7 @@ module MetaTwitter
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
-    Rails.cache.fetch("#{user.user.id}/all_following/#{cursor}", expires_in: 1.weeks) do
+    Rails.cache.fetch("#{get_id(user)}/all_following/#{cursor}", expires_in: 1.weeks) do
       user.friend_ids(:cursor => cursor, :count => count)
     end
   end
@@ -47,7 +52,7 @@ module MetaTwitter
   rate_limit_rescue def get_follower?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{user.user.id}/follower?/#{target_id}", expires_in: 1.days) do
+    Rails.cache.fetch("#{get_id(user)}/follower?/#{target_id}", expires_in: 1.days) do
       user.friendship?(target_id, user)
     end
   end
@@ -56,7 +61,7 @@ module MetaTwitter
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
-    Rails.cache.fetch("#{user.user.id}/all_followers/#{cursor}", expires_in: 1.weeks) do
+    Rails.cache.fetch("#{get_id(user)}/all_followers/#{cursor}", expires_in: 1.weeks) do
       user.follower_ids(:cursor => cursor, :count => count)
     end
   end
@@ -64,9 +69,15 @@ module MetaTwitter
   rate_limit_rescue def get_blocked?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{user.user.id}/blocked?/#{target_id}", expires_in: 1.days) do
+    Rails.cache.fetch("#{get_id(user)}/blocked?/#{target_id}", expires_in: 1.days) do
       user.friendship?(target_id, user)
     end
+  end
+
+  rate_limit_rescue def get_connections(user, target_users)
+  # user => Twitter::REST::Client (with user context auth)
+  # target_users => [Twitter.user.id,]
+    user.friendships(target_users)
   end
 
   ############################################
@@ -89,7 +100,7 @@ module MetaTwitter
     end
 
     private def page(user, type, fof: [], cursor: -1)
-      Rails.cache.fetch("fof/page/#{user.user.id}/#{type}/#{cursor}", expires_in: 1.weeks) do
+      Rails.cache.fetch("fof/page/#{get_id(user)}/#{type}/#{cursor}", expires_in: 1.weeks) do
         if cursor != 0
           fof, cursor = process_page(user, type, fof, cursor)
           page(user, type, fof: fof, cursor: cursor)
@@ -103,7 +114,7 @@ module MetaTwitter
       if type == 'followers'
         response = get_follower_ids(user, cursor, count)
       elsif type == 'following'
-        response = get_friend_ids(user, cursor, count)
+        response = get_following_ids(user, cursor, count)
       end
       fof = fof + response.to_a
       cursor = response.to_h[:next_cursor]
@@ -127,13 +138,13 @@ module MetaTwitter
     def read(user_id, type)
       Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
         user = get_user(user_id)
-        target_users = friends_or_followers(user_id, type)
+        target_users = ReadAllFollows.new.read(user_id, type)
         page(user, type, target_users)
       end
     end
 
     private def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
-      Rails.cache.fetch("readmutuals/page/#{user.user.id}/#{type}/#{depth}", expires_in: 1.weeks) do
+      Rails.cache.fetch("readmutuals/page/#{get_id(user)}/#{type}/#{depth}", expires_in: 1.weeks) do
 
         if target_users.length > 0
 
@@ -159,7 +170,7 @@ module MetaTwitter
     end
 
     private def process_page(user, target_users)
-      response = get_friendships(user, target_users)
+      response = get_connections(user, target_users)
       mutuals = []
       nonmutuals = []
 
@@ -177,6 +188,5 @@ module MetaTwitter
     end
 
   end
-
 
 end
