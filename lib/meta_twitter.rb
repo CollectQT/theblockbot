@@ -168,12 +168,12 @@ module MetaTwitter
     # user_id -> User.id
     # type -> string ("followers" or "following")
       Rails.cache.fetch("fof/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-        user = MetaTwitter.create_user_from_db_id(user_id)
-        fof = page(user, type)
+        user = MetaTwitter::Auth.from_database_id(user_id)
+        self.new.page(user, type)
       end
     end
 
-    private def page(user, type, fof: [], cursor: -1)
+    def page(user, type, fof: [], cursor: -1)
       Rails.cache.fetch("fof/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{cursor}", expires_in: 1.weeks) do
         if cursor != 0
           fof, cursor = process_page(user, type, fof, cursor)
@@ -217,13 +217,13 @@ module MetaTwitter
     # user_id -> User.id
     # type -> string ("followers" or "following")
       Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-        user = MetaTwitter.create_user_from_db_id(user_id)
+        user = MetaTwitter::Auth.from_database_id(user_id)
         target_users = MetaTwitter::ReadFollows.read(user_id, type)
-        page(user, type, target_users)
+        self.new.page(user, type, target_users)
       end
     end
 
-    private def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
+    def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
       Rails.cache.fetch("readmutuals/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{depth}", expires_in: 1.weeks) do
 
         if target_users.length > 0
