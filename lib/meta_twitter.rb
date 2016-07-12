@@ -16,6 +16,17 @@ def rate_limit_rescue(name)
   end
 end
 
+def rescue_not_found(name)
+  m = instance_method(name)
+  define_method(name) do |*args|
+    begin
+      m.bind(self).call(*args)
+    rescue Twitter::Error::NotFound
+      nil
+    end
+  end
+end
+
 
 ############################################
 
@@ -38,7 +49,7 @@ module MetaTwitter
     TwitterClient.user(User.find(user_id))
   end
 
-  rate_limit_rescue def read_user_from_twitter_name(id)
+  rate_limit_rescue rescue_not_found def read_user_from_twitter_name(id)
   # id => int or string (ex '@cyrin')
     TwitterClient.REST.user(id)
   end
