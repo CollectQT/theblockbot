@@ -11,4 +11,6 @@ class Block < ActiveRecord::Base
   delegate :reporter, to: :report
   delegate :expires, to: :report
 
+  scope :expired, -> { where('expires < ?', DateTime.now).where.not(expires: nil) }
+
 end

@@ -5,7 +5,7 @@ class CreateUnblocksFromExpire
 
   def perform
 
-    for block in Block.where('expires < ?', DateTime.now).where.not(expires: nil)
+    for block in Block.expired
       user = block.user
       block.report.update_attributes(expired: true)
 
