@@ -27,9 +27,20 @@ module MetaTwitter
     user.access_token.split('-')[0]
   end
 
+  # TODO phase this out
   rate_limit_rescue def get_user(user_id)
   # user_id => User.id
     TwitterClient.user(User.find(user_id))
+  end
+
+  rate_limit_rescue def create_user_from_db_id(user_id)
+  # user_id => User.id
+    TwitterClient.user(User.find(user_id))
+  end
+
+  rate_limit_rescue def read_user_from_twitter_name(id)
+  # id => int or string (ex '@cyrin')
+    TwitterClient.REST.user(id)
   end
 
   rate_limit_rescue def get_following?(user, target_id)
