@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   end
 
   # TODO phase this out
-  def self.get(_user, website='twitter')
+  def self.get(_user)
 
     if _user.is_a? User
       user = _user
@@ -46,18 +46,7 @@ class User < ActiveRecord::Base
     # get user from string (username) / integer (id) + website
     # example: User.get('nasa', 'twitter')
     elsif _user.is_a? String or _user.is_a? Integer
-      if website == 'twitter'
-        _user = TwitterClient.REST.user(_user)
-
-      elsif website == 'facebook'
-        raise 'facebook not yet implemented'
-
-      elsif website == 'tumblr'
-        raise 'tumblr not yet implemented'
-
-      else
-        raise 'invalid website???'
-      end
+      _user = TwitterClient.REST.user(_user)
     end
 
     # Update Twitter user info
