@@ -10,24 +10,15 @@ class Auth < ActiveRecord::Base
   # returns a user object instead of an auth object
   def self.parse(_auth)
 
-    user = User.get(_auth.extra.raw_info.id, _auth.provider)
+    user = User.get_from_twitter_id(_auth.extra.raw_info.id.to_i)
 
-    if _auth.provider == 'twitter'
-      auth = Auth.find_or_create_by(user_id: user.id)
-      auth.update_attributes(
-        token:    _auth.credentials.token,
-        secret: _auth.credentials.secret,
-      )
-
-    elsif website == 'facebook'
-      raise 'facebook not yet implemented'
-
-    elsif website == 'tumblr'
-      raise 'tumblr not yet implemented'
-
-    end
+    Auth.find_or_create_by(user: user).update_attributes(
+      token:    _auth.credentials.token,
+      secret:   _auth.credentials.secret,
+    )
 
     return user
+
   end
 
 end

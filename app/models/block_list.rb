@@ -51,7 +51,7 @@ class BlockList < ActiveRecord::Base
   end
 
   def self.find_by_name(name)
-    name = name[0] == '#' ? name[1..name.length] : name
+    name = MetaTwitter.strip_if_leading_character(name, '#')
     self.where("replace(lower(name), ' ', '') = ?", name.downcase).first
   end
 

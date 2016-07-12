@@ -15,9 +15,9 @@ class UsersController < ApplicationController
       if params[:id]
         @user = User.find(params[:id])
       elsif params[:account_id]
-        @user = User.get(params[:account_id])
+        @user = User.get_from_twitter_id(params[:account_id])
       elsif params[:user_name]
-        @user = User.get(params[:user_name])
+        @user = User.get_from_twitter_name(params[:user_name])
       else
         @user = nil
       end

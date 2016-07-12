@@ -1,4 +1,4 @@
-me = User.get(TwitterClient.REST.user)
+me = User.get_from_authed_user
 
 list_1 = BlockList.create(
   name: 'TestNoExpire',

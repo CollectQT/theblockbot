@@ -80,7 +80,7 @@ class BlockListsController < ApplicationController
   # POST /block_lists/1/add/blocker
   def add_blocker
     if @block_list.admin? current_user
-      blocker = Blocker.create(block_list: @block_list, user: User.get(params[:user_name]))
+      blocker = Blocker.create(block_list: @block_list, user: User.get_from_twitter_name(params[:user_name]))
 
       if blocker.save
         notice = "Blocker #{params[:user_name]} added"
@@ -97,7 +97,7 @@ class BlockListsController < ApplicationController
   # POST /block_lists/1/add/admin
   def add_admin
     if @block_list.admin? current_user
-      admin = Admin.create(block_list: @block_list, user: User.get(params[:user_name]))
+      admin = Admin.create(block_list: @block_list, user: User.get_from_twitter_name(params[:user_name]))
 
       if admin.save
         notice = "Admin #{params[:user_name]} added"

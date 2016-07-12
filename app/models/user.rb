@@ -33,39 +33,37 @@ class User < ActiveRecord::Base
     puts "(@#{self.user_name}) #{entry}"
   end
 
+  def self.get_from_twitter_id(id)
+    self.update_or_create( MetaTwitter.read_user_from_twitter_id(id) )
+  end
+
   def self.get_from_twitter_name(name)
-    self.get( MetaTwitter.read_user_from_twitter_name(name) )
+    self.update_or_create( MetaTwitter.read_user_from_twitter_name(name) )
+  end
+
+  def self.get_from_authed_user
+    self.update_or_create( MetaTwitter.read_user_from_auth )
   end
 
   # TODO phase this out
-  def self.get(_user)
-
-    if _user.is_a? User
-      user = _user
-
-    # get user from string (username) / integer (id) + website
-    # example: User.get('nasa', 'twitter')
-    elsif _user.is_a? String or _user.is_a? Integer
-      _user = TwitterClient.REST.user(_user)
-    end
+  def self.update_or_create(_user)
+  # _user -> Twitter::Client::User.to_h
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    if _user.is_a? Twitter::User
-      user = User.find_or_create_by(account_id: _user.id.to_s, website: website)
-      user.update_attributes(
-        name:                   _user.name,
-        user_name:              _user.screen_name,
-        account_created:        _user.created_at,
-        default_profile_image:  _user.default_profile_image?,
-        description:            _user.description,
-        incoming_follows:       _user.followers_count,
-        outgoing_follows:       _user.friends_count,
-        profile_image_url:      _user.profile_image_url,
-        posts:                  _user.statuses_count,
-        url:                    _user.url.to_s
-      )
-    end
+    user = User.find_or_create_by(account_id: _user.id.to_s)
+    user.update_attributes(
+      name:                   _user.name,
+      user_name:              _user.screen_name,
+      account_created:        _user.created_at,
+      default_profile_image:  _user.default_profile_image?,
+      description:            _user.description,
+      incoming_follows:       _user.followers_count,
+      outgoing_follows:       _user.friends_count,
+      profile_image_url:      _user.profile_image_url,
+      posts:                  _user.statuses_count,
+      url:                    _user.url.to_s
+    )
 
     return user
 
