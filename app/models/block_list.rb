@@ -50,7 +50,7 @@ class BlockList < ActiveRecord::Base
 
   def self.find_by_name(name)
     name = name[0] == '#' ? name[1..name.length] : name
-    self.where("lower(name) = ?", name.downcase).first
+    self.where("replace(lower(name), ' ', '') = ?", name.downcase).first
   end
 
 end
