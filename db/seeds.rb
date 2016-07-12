@@ -12,5 +12,5 @@ list_2 = BlockList.create(
 Admin.create(block_list: list_1, user: me)
 Admin.create(block_list: list_2, user: me)
 
-Report.parse('@lynncyrin #block +cyrin_test_2 #testsoftblocks testing', me).approve(me)
-Report.parse('@lynncyrin #block +cyrin_test_2 #testnoexpire testing', me).approve(me)
+Report.parse('@lynncyrin #block +cyrin_test_2 #testsoftblocks testing', me)
+Report.parse('@lynncyrin #block +cyrin_test_2 #testnoexpire testing', me)
