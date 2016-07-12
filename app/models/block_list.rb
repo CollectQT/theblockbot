@@ -44,8 +44,10 @@ class BlockList < ActiveRecord::Base
     return block_list
   end
 
-  def get_expiration
-    self.expires ? DateTime.now + self.expires : nil
+  def self.get_expiration(block_list)
+    block_list.expires ? DateTime.now + block_list.expires : nil
+  rescue NoMethodError
+    nil
   end
 
   def self.find_by_name(name)

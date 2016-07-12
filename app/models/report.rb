@@ -29,9 +29,7 @@ class Report < ActiveRecord::Base
 
   def self.parse_regex(text, reporter)
   # text -> string ("+lynncyrin #cats")
-  # reports -> User
-
-    reporter = User.get(reporter)
+  # reporter -> User
 
     match_target = text.match('(?<=\+)\@*\w*')
     target = match_target ? User.get_from_twitter_name(match_target[0]) : nil
@@ -39,47 +37,47 @@ class Report < ActiveRecord::Base
     match_list = text.match('(?<=\#)\w*')
     block_list = match_list ? BlockList.find_by_name(match_list[0]) : nil
 
-    self.parse_objects(text, block_list, reporter, target)
+    self.parse_objects(block_list, target, text, reporter)
   end
 
-  def self.parse_text_args(text, reporter, block_list, target)
-  # text -> string
+  def self.parse_text_args(block_list, target, text, reporter)
+  # block_list -> string ("cats")
+  # target -> string ("lynncyrin")
+  # text -> string ("knocked my mouse off the desk")
   # reporter -> User
-  # block_list -> string
-  # target -> string
 
     block_list = BlockList.find_by_name(block_list)
     target = User.get_from_twitter_name(target)
 
-    # self.parse_objects(text, block_list, reporter, target, expires)
+    self.parse_objects(block_list, target, text, reporter)
   end
 
-  def self.parse_objects(text, block_list, reporter, target)
-  # text -> string
+  def self.parse_objects(block_list, target, text, reporter)
   # block_list -> BlockList
-  # reporter -> User
   # target -> User
-  # expires -> DateTime
+  # text -> string
+  # reporter -> User
 
     report = Report.create(
       text: text,
       block_list: block_list,
       reporter: reporter,
       target: target,
-      expires: block_list.get_expiration,
+      expires: BlockList.get_expiration(block_list),
     )
 
     reporter.increment(:reports_created)
     target.increment(:times_reported)
-    report.check_autoapprove(report.reporter)
+    report.autoapprove
 
     return report
   end
 
-  def check_autoapprove(approver)
-    if (self.block_list.blocker_autoapprove? approver) or (self.block_list.admin_autoapprove? approver)
-      self.approve(approver)
+  def autoapprove
+    if (self.block_list.blocker_autoapprove? self.reporter) or (self.block_list.admin_autoapprove? self.reporter)
+      self.approve(self.reporter)
     end
+  rescue NoMethodError
   end
 
   def approve(approver)
