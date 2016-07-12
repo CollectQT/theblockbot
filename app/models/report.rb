@@ -7,7 +7,7 @@ class Report < ActiveRecord::Base
 
   validates :reporter, presence: true
   validates_presence_of :block_list,
-    message: "Must include a block list"
+    message: "Must include a valid block list"
   validates_presence_of :text,
     message: 'Report cannot be blank'
   validates_presence_of :target,
