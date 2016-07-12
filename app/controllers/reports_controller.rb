@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     if current_user
-      Report.parse(report_params['text'], current_user)
+      @report = Report.parse(report_params['text'], current_user)
 
       respond_to do |format|
         if @report.save
