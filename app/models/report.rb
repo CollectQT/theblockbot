@@ -74,12 +74,6 @@ class Report < ActiveRecord::Base
 
     unless text_included_a_list
       puts "[!Error! (no list)] #{text.squish}"
-      report = Report.create(
-        text: text,
-        reporter: reporter,
-        target: target,
-        expires: expires,
-      )
     end
 
     unless target
