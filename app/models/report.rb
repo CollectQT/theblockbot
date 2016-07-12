@@ -15,17 +15,9 @@ class Report < ActiveRecord::Base
   validates_uniqueness_of :text, scope: :reporter_id,
     message: "You have already created this report"
 
-  def self.pending
-    self.where(processed: false)
-  end
-
-  def self.active
-    self.where(approved: true, expired: false)
-  end
-
-  def self.denied
-    self.where(processed: true, approved: false)
-  end
+  scope :pending, -> { where(processed: false) }
+  scope :active, -> { where(approved: true, expired: false) }
+  scope :denied, -> { where(processed: true, approved: false) }
 
   def self.visible(user)
     if user == nil
