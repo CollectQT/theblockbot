@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include MetaTwitter
+
   before_create :randomize_id
 
   has_one :auth, :dependent => :destroy
@@ -33,6 +35,11 @@ class User < ActiveRecord::Base
     puts "(@#{self.user_name}) #{entry}"
   end
 
+  def self.get_from_twitter_name(name)
+    self.get( read_user_from_twitter_name(name) )
+  end
+
+  # TODO phase this out
   def self.get(_user, website='twitter')
 
     if _user.is_a? User
