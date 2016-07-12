@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20160712025827) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.boolean  "autoapprove_admin",   default: true,  null: false
-    t.boolean  "autoapprove_blocker", default: true,  null: false
+    t.boolean  "autoapprove_blocker", default: false, null: false
   end
 
   add_index "block_lists", ["name"], name: "index_block_lists_on_name", unique: true, using: :btree
