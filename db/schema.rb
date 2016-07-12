@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125045946) do
+ActiveRecord::Schema.define(version: 20160712025827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,13 +29,15 @@ ActiveRecord::Schema.define(version: 20160125045946) do
   add_index "auths", ["user_id"], name: "index_auths_on_user_id", using: :btree
 
   create_table "block_lists", force: :cascade do |t|
-    t.string   "name",                        null: false
+    t.string   "name",                                null: false
     t.string   "description"
-    t.boolean  "showcase",    default: false
-    t.boolean  "show_blocks", default: true,  null: false
-    t.integer  "expires",     default: 365
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.boolean  "showcase",            default: false
+    t.boolean  "show_blocks",         default: true,  null: false
+    t.integer  "expires",             default: 365
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.boolean  "autoapprove_admin",   default: true,  null: false
+    t.boolean  "autoapprove_blocker", default: true,  null: false
   end
 
   add_index "block_lists", ["name"], name: "index_block_lists_on_name", unique: true, using: :btree

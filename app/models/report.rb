@@ -89,10 +89,17 @@ class Report < ActiveRecord::Base
     if target then target.increment(:times_reported) end
     if reporter then reporter.increment(:reports_created) end
 
+    report.check_autoapprove(report.reporter)
+
     return report
 
   end
 
+  def check_autoapprove(approver)
+    if (self.block_list.blocker_autoapprove? approver) or (self.block_list.admin_autoapprove? approver)
+      self.approve(approver)
+    end
+  end
 
   def approve(approver)
     if approver.in? self.block_list.blockers

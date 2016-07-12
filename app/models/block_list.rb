@@ -22,6 +22,14 @@ class BlockList < ActiveRecord::Base
     user.in? self.admins
   end
 
+  def blocker_autoapprove?(user)
+    (self.autoapprove_blocker?) and (self.blocker? user)
+  end
+
+  def admin_autoapprove?(user)
+    (self.autoapprove_admin?) and (self.admin? user)
+  end
+
   def self.where_blocker(user)
     self.joins(:blocker_records).where(:blockers => {user_id: user.id})
   end
