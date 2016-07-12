@@ -1,30 +1,20 @@
-def rate_limit_rescue(name)
-  m = instance_method(name)
-  define_method(name) do |*args|
-    begin
-      m.bind(self).call(*args)
-    rescue Twitter::Error::TooManyRequests => error
-      tries ||= 0
-      tries += 1
-      if tries < 6
-        sleep error.rate_limit.reset_in + tries + 1
-        retry
-      else
-        raise
-      end
-    end
+def rescue_rate_limit
+  yield
+rescue Twitter::Error::TooManyRequests => error
+  tries ||= 0
+  tries += 1
+  if tries < 6
+    sleep error.rate_limit.reset_in + tries + 1
+    retry
+  else
+    raise
   end
 end
 
-def rescue_not_found(name)
-  m = instance_method(name)
-  define_method(name) do |*args|
-    begin
-      m.bind(self).call(*args)
-    rescue Twitter::Error::NotFound
-      nil
-    end
-  end
+def rescue_not_found
+  yield
+rescue Twitter::Error::NotFound
+  nil
 end
 
 
@@ -33,73 +23,94 @@ end
 
 module MetaTwitter
 
-  def get_id(user)
+  def MetaTwitter.get_id(user)
   # user => Twitter::REST::Client (with user context auth)
-    user.access_token.split('-')[0]
+    rescue_rate_limit {
+      user.access_token.split('-')[0]
+    }
   end
 
   # TODO phase this out
-  rate_limit_rescue def get_user(user_id)
+  def MetaTwitter.get_user(user_id)
   # user_id => User.id
-    TwitterClient.user(User.find(user_id))
+    rescue_rate_limit {
+      TwitterClient.user(User.find(user_id))
+    }
   end
 
-  rate_limit_rescue def create_user_from_db_id(user_id)
+  def MetaTwitter.create_user_from_db_id(user_id)
   # user_id => User.id
-    TwitterClient.user(User.find(user_id))
+    rescue_rate_limit {
+      TwitterClient.user(User.find(user_id))
+    }
   end
 
-  rate_limit_rescue rescue_not_found def read_user_from_twitter_name(id)
+  def MetaTwitter.read_user_from_twitter_name(id)
   # id => int or string (ex '@cyrin')
-    TwitterClient.REST.user(id)
+    rescue_not_found {
+    rescue_rate_limit {
+      TwitterClient.REST.user(id)
+    }}
   end
 
-  rate_limit_rescue def get_following?(user, target_id)
+  def MetaTwitter.get_following?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
     Rails.cache.fetch("#{get_id(user)}/following?/#{target_id}", expires_in: 1.days) do
-      user.friendship?(user, target_id)
+      rescue_rate_limit {
+        user.friendship?(user, target_id)
+      }
     end
   end
 
-  rate_limit_rescue def get_following_ids(user, cursor, count)
+  def MetaTwitter.get_following_ids(user, cursor, count)
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
     Rails.cache.fetch("#{get_id(user)}/all_following/#{cursor}", expires_in: 1.weeks) do
-      user.friend_ids(:cursor => cursor, :count => count)
+      rescue_rate_limit {
+        user.friend_ids(:cursor => cursor, :count => count)
+      }
     end
   end
 
-  rate_limit_rescue def get_follower?(user, target_id)
+  def MetaTwitter.get_follower?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
     Rails.cache.fetch("#{get_id(user)}/follower?/#{target_id}", expires_in: 1.days) do
-      user.friendship?(target_id, user)
+      rescue_rate_limit {
+        user.friendship?(target_id, user)
+      }
     end
   end
 
-  rate_limit_rescue def get_follower_ids(user, cursor, count)
+  def MetaTwitter.get_follower_ids(user, cursor, count)
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
     Rails.cache.fetch("#{get_id(user)}/all_followers/#{cursor}", expires_in: 1.weeks) do
-      user.follower_ids(:cursor => cursor, :count => count)
+      rescue_rate_limit {
+        user.follower_ids(:cursor => cursor, :count => count)
+      }
     end
   end
 
-  rate_limit_rescue def get_blocked?(user, target_id)
+  def MetaTwitter.get_blocked?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
     Rails.cache.fetch("#{get_id(user)}/blocked?/#{target_id}", expires_in: 1.days) do
-      user.friendship?(target_id, user)
+      rescue_rate_limit {
+        user.friendship?(target_id, user)
+      }
     end
   end
 
-  rate_limit_rescue def get_connections(user, target_users)
+  def MetaTwitter.get_connections(user, target_users)
   # user => Twitter::REST::Client (with user context auth)
   # target_users => [Twitter.user.id,]
-    user.friendships(target_users)
+    rescue_rate_limit {
+      user.friendships(target_users)
+    }
   end
 
   ############################################
@@ -116,7 +127,7 @@ module MetaTwitter
 
     def read(user_id, type)
       Rails.cache.fetch("fof/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-        user = get_user(user_id)
+        user = MetaTwitter.get_user(user_id)
         fof = page(user, type)
       end
     end
@@ -134,9 +145,9 @@ module MetaTwitter
 
     private def process_page(user, type, fof, cursor, count: 5000)
       if type == 'followers'
-        response = get_follower_ids(user, cursor, count)
+        response = MetaTwitter.get_follower_ids(user, cursor, count)
       elsif type == 'following'
-        response = get_following_ids(user, cursor, count)
+        response = MetaTwitter.get_following_ids(user, cursor, count)
       end
       fof = fof + response.to_a
       cursor = response.to_h[:next_cursor]
@@ -159,7 +170,7 @@ module MetaTwitter
 
     def read(user_id, type)
       Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-        user = get_user(user_id)
+        user = MetaTwitter.get_user(user_id)
         target_users = ReadAllFollows.new.read(user_id, type)
         page(user, type, target_users)
       end
@@ -192,7 +203,7 @@ module MetaTwitter
     end
 
     private def process_page(user, target_users)
-      response = get_connections(user, target_users)
+      response = MetaTwitter.get_connections(user, target_users)
       mutuals = []
       nonmutuals = []
 

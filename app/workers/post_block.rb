@@ -1,5 +1,4 @@
 class PostBlock
-  include MetaTwitter
   include Sidekiq::Worker
 
   sidekiq_retry_in do |count|
@@ -8,7 +7,7 @@ class PostBlock
   end
 
   def perform(user_database_id, report_id)
-    user = get_user(user_database_id)
+    user = MetaTwitter.get_user(user_database_id)
     report = Report.find(report_id)
 
     user.block(report.target.account_id.to_i)
