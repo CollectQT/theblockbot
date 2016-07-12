@@ -27,58 +27,53 @@ class Report < ActiveRecord::Base
     end
   end
 
-
-  def self.parse(text, reporter)
-    puts '[Incoming Report] '+text.squish
-    text_included_a_list = false
+  def self.parse_regex(text, reporter)
+  # text -> string ("+lynncyrin #cats")
+  # reports -> User
 
     reporter = User.get(reporter)
 
-    match = text.match('(?<=\+)\@*\w*')
-    if match
-      target = User.get(TwitterClient.REST.user(match[0]))
-    else
-      target = nil
-    end
+    match_target = text.match('(?<=\+)\@*\w*')
+    target = match_target ? User.get_from_twitter_name(match_target[0]) : nil
 
-    for block_list in BlockList.all()
-      if ('#'+block_list.name).downcase.delete(' ').in? text.downcase
+    match_list = text.match('(?<=\#)\w*')
+    block_list = match_list ? BlockList.find_by_name(match_list[0]) : nil
 
-        puts "[Created Report(#{block_list.name})] #{text.squish}"
+    self.parse_objects(text, block_list, reporter, target)
+  end
 
-        if block_list.expires
-          expires = DateTime.now + block_list.expires
-        else
-          expires = nil
-        end
+  def self.parse_text_args(text, reporter, block_list, target)
+  # text -> string
+  # reporter -> User
+  # block_list -> string
+  # target -> string
 
-        report = Report.create(
-          text: text,
-          block_list: block_list,
-          reporter: reporter,
-          target: target,
-          expires: expires,
-        )
+    block_list = BlockList.find_by_name(block_list)
+    target = User.get_from_twitter_name(target)
 
-        text_included_a_list = true
-      end
-    end
+    # self.parse_objects(text, block_list, reporter, target, expires)
+  end
 
-    unless text_included_a_list
-      puts "[!Error! (no list)] #{text.squish}"
-    end
+  def self.parse_objects(text, block_list, reporter, target)
+  # text -> string
+  # block_list -> BlockList
+  # reporter -> User
+  # target -> User
+  # expires -> DateTime
 
-    unless target
-      puts "[!Error! (no target)] #{text.squish}"
-    end
+    report = Report.create(
+      text: text,
+      block_list: block_list,
+      reporter: reporter,
+      target: target,
+      expires: block_list.get_expiration,
+    )
 
-    if target then target.increment(:times_reported) end
-    if reporter then reporter.increment(:reports_created) end
-
+    reporter.increment(:reports_created)
+    target.increment(:times_reported)
     report.check_autoapprove(report.reporter)
 
     return report
-
   end
 
   def check_autoapprove(approver)

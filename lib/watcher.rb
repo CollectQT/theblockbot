@@ -12,7 +12,7 @@ begin
   track = 'lynncyrin #block'
   puts 'Starting Watcher for "'+track+'"'
   TweetStream::Client.new.track(track) do |status|
-    Report.parse(status.text, status.user)
+    Report.parse_regex(status.text, status.user)
   end
 # todo: not this
 rescue Exception
