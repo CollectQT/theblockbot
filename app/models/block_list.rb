@@ -12,7 +12,7 @@ class BlockList < ActiveRecord::Base
   has_many :blocker_records, class_name: 'Blocker', dependent: :destroy
   has_many :blockers, through: :blocker_records, source: :user, dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   def blocker?(user)
     user.in? self.blockers
