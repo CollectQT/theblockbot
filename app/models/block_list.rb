@@ -44,4 +44,13 @@ class BlockList < ActiveRecord::Base
     return block_list
   end
 
+  def get_expiration
+    self.expires ? DateTime.now + self.expires : nil
+  end
+
+  def self.find_by_name(name)
+    name = name[0] == '#' ? name[1..name.length] : name
+    self.where("lower(name) = ?", name.downcase).first
+  end
+
 end
