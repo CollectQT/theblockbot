@@ -38,7 +38,7 @@ module MetaTwitter
 
   def MetaTwitter.read_user_from_auth
     MetaTwitter.read_user_from_twitter_id(
-      MetaTwitter.get_account_id(Twitter::REST::Client)
+      MetaTwitter.get_account_id(TwitterClient)
     )
   end
 
@@ -47,7 +47,7 @@ module MetaTwitter
     Rails.cache.fetch("/read_from_id/#{id}", expires_in: 1.hours) do
       rescue_not_found {
       rescue_rate_limit {
-        TwitterClient.REST.user(id).to_h
+        TwitterClient.user(id.to_i).to_h
       }}
     end
   end
@@ -58,7 +58,7 @@ module MetaTwitter
     Rails.cache.fetch("/read_from_name/#{name}", expires_in: 1.hours) do
       rescue_not_found {
       rescue_rate_limit {
-        TwitterClient.REST.user(name).to_h
+        TwitterClient.user(name).to_h
       }}
     end
   end
