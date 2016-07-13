@@ -47,27 +47,24 @@ class User < ActiveRecord::Base
     self.update_or_create( MetaTwitter.read_user_from_auth )
   end
 
-  # TODO phase this out
-  def self.update_or_create(_user)
-  # _user -> Twitter::Client::User.to_h
+  def self.update_or_create(user)
+  # user => dictionary (MetaTwitter.read_user_from_twitter_*)
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    user = User.find_or_create_by(account_id: _user.id.to_s)
-    user.update_attributes(
-      name:                   _user.name,
-      user_name:              _user.screen_name,
-      account_created:        _user.created_at,
-      default_profile_image:  _user.default_profile_image?,
-      description:            _user.description,
-      incoming_follows:       _user.followers_count,
-      outgoing_follows:       _user.friends_count,
-      profile_image_url:      _user.profile_image_url,
-      posts:                  _user.statuses_count,
-      url:                    _user.url.to_s
-    )
-
-    return user
+    User.find_or_create_by(account_id: user[:id].to_s)
+      .update_attributes(
+        name:                   user[:name],
+        user_name:              user[:screen_name],
+        account_created:        user[:created_at],
+        default_profile_image:  user[:default_profile_image?],
+        description:            user[:description],
+        incoming_follows:       user[:followers_count],
+        outgoing_follows:       user[:friends_count],
+        profile_image_url:      user[:profile_image_url],
+        posts:                  user[:statuses_count],
+        url:                    user[:url].to_s,
+      )
 
   # deals with a user being created twice, simultaneously
   rescue ActiveRecord::RecordNotUnique
