@@ -74,14 +74,16 @@ class Report < ActiveRecord::Base
   end
 
   def autoapprove
-    if (self.block_list.blocker_autoapprove? self.reporter) or (self.block_list.admin_autoapprove? self.reporter)
-      self.approve(self.reporter)
+    if not self.processed?
+      if (self.block_list.blocker_autoapprove? self.reporter) or (self.block_list.admin_autoapprove? self.reporter)
+        self.approve(self.reporter)
+      end
     end
   rescue NoMethodError
   end
 
   def approve(approver)
-    if approver.in? self.block_list.blockers
+    if (approver.in? self.block_list.blockers) and (not self.processed?)
       CreateBlocksFromReport.perform_async(self.id)
       self.update_attributes(approver: approver, approved: true, processed: true)
       self.target.increment(:times_blocked)
@@ -92,7 +94,7 @@ class Report < ActiveRecord::Base
   end
 
   def deny(approver)
-    if approver.in? self.block_list.blockers
+    if (approver.in? self.block_list.blockers) and (not self.processed?)
       self.update_attributes(processed: true)
     else
       puts 'User(#{approver.id}) Not Authorized to deny Report(#{self.id})'
