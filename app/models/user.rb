@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
   private
   def randomize_id
     begin
-      self.id = SecureRandom.random_number(1_000_000)
+      self.id = SecureRandom.random_number(10_000_000)
     end while User.where(id: self.id).exists?
   end
 
