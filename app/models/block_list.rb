@@ -1,8 +1,10 @@
 class BlockList < ActiveRecord::Base
   has_many :reports
   has_many :blocks
+
   has_many :subscriptions
   has_many :users, through: :subscriptions
+
   has_many :active_reports, -> { where(approved: true, expired: false) }, class_name: 'Report'
   has_many :targets, through: :active_reports
 
