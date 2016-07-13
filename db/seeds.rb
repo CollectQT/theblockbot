@@ -1,16 +1,15 @@
-me = User.get_from_authed_user
+admin = User.get_from_authed_user
 
-list_1 = BlockList.create(
-  name: 'TestNoExpire',
-  description: 'for testing and maintenence',
-  expires: nil,)
-list_2 = BlockList.create(
-  name: 'TestSoftBlocks',
-  description: 'for testing and maintenence',
-  expires: 0,)
+block_list = BlockList.create(
+  :name         => 'Testing12',
+  :description  => 'for testing, maintenence, etc',
+  :expires      => nil,
+)
 
-Admin.create(block_list: list_1, user: me)
-Admin.create(block_list: list_2, user: me)
+Admin.create(
+  :block_list => block_list,
+  :user       => admin,
+)
 
-Report.parse_regex('+cyrin_test_2 #testsoftblocks testing', me)
-Report.parse_regex('+cyrin_test_2 #testnoexpire testing', me)
+# was getting weird argument errors?
+Report.parse_objects(block_list, admin, 'Global parent report, used for reference purposes', admin)
