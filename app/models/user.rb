@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    user_model = User.find_or_create_by(account_id: user[:id].to_s)
+    user_model = User.find_or_create_by(account_id: user[:id].to_s, website: 'twitter')
     user_model.update_attributes(
       name:                   user[:name],
       user_name:              user[:screen_name],
