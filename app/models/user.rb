@@ -34,10 +34,12 @@ class User < ActiveRecord::Base
   end
 
   def self.get_from_twitter_id(id)
+  # id => int (1111111111111111)
     self.update_or_create( MetaTwitter.read_user_from_twitter_id(id) )
   end
 
   def self.get_from_twitter_name(name)
+  # name => string ('@cyrin')
     self.update_or_create( MetaTwitter.read_user_from_twitter_name(name) )
   end
 
