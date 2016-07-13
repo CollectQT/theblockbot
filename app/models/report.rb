@@ -5,6 +5,9 @@ class Report < ActiveRecord::Base
   belongs_to :approver, class_name: "User"
   has_many :blocks
 
+  has_many :children, class_name: "Report", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "Report"
+
   validates :reporter, presence: true
   validates_presence_of :block_list,
     message: "Must include a valid block list"
@@ -12,12 +15,17 @@ class Report < ActiveRecord::Base
     message: 'Report cannot be blank'
   validates_presence_of :target,
     message: "Need to specify who to report with \"+USERNAME\""
-  validates_uniqueness_of :text, scope: [:block_list, :reporter, :target,]
+  validates_uniqueness_of :text, scope: [:block_list, :reporter, :target,],
     message: "You have already created this report"
 
-  scope :pending, -> { where(processed: false) }
-  scope :active, -> { where(approved: true, expired: false) }
-  scope :denied, -> { where(processed: true, approved: false) }
+  scope :pending, -> { where(processed: false, parent_id: 1) }
+  scope :active, -> { where(approved: true, expired: false, parent_id: 1) }
+  scope :denied, -> { where(processed: true, approved: false, parent_id: 1) }
+  scope :is_parent, -> { where(parent_id: 1) }
+
+  def child?
+    self.parent_id != 1
+  end
 
   def self.visible(user)
     if user == nil
@@ -64,17 +72,35 @@ class Report < ActiveRecord::Base
       reporter: reporter,
       target: target,
       expires: BlockList.get_expiration(block_list),
+      parent_id: Report.set_parent(block_list, target)
     )
 
     reporter.increment(:reports_created)
     target.increment(:times_reported)
+    report.process_child
     report.autoapprove
 
     return report
   end
 
+  def self.set_parent(block_list, target)
+    parent = self.get_parent(block_list, target)
+    parent != nil ? parent.id : 1
+  end
+
+  def self.get_parent(block_list, target)
+    self.is_parent.where(
+      :block_list => block_list,
+      :target     => target,
+    ).first
+  end
+
+  def process_child
+    if self.child? then self.update_attributes(processed: true) end
+  end
+
   def autoapprove
-    if not self.processed?
+    if not (self.processed? or self.child?)
       if (self.block_list.blocker_autoapprove? self.reporter) or (self.block_list.admin_autoapprove? self.reporter)
         self.approve(self.reporter)
       end
@@ -83,7 +109,7 @@ class Report < ActiveRecord::Base
   end
 
   def approve(approver)
-    if (approver.in? self.block_list.blockers) and (not self.processed?)
+    if (approver.in? self.block_list.blockers) and not (self.processed? or self.child?)
       CreateBlocksFromReport.perform_async(self.id)
       self.update_attributes(approver: approver, approved: true, processed: true)
       self.target.increment(:times_blocked)

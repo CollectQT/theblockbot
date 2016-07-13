@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160712025827) do
+ActiveRecord::Schema.define(version: 20160713082627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20160712025827) do
     t.integer  "block_list_id",                 null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.integer  "parent_id",     default: 1
   end
 
   add_index "reports", ["approver_id"], name: "index_reports_on_approver_id", using: :btree
