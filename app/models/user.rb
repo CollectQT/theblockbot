@@ -52,19 +52,21 @@ class User < ActiveRecord::Base
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    User.find_or_create_by(account_id: user[:id].to_s)
-      .update_attributes(
-        name:                   user[:name],
-        user_name:              user[:screen_name],
-        account_created:        user[:created_at],
-        default_profile_image:  user[:default_profile_image?],
-        description:            user[:description],
-        incoming_follows:       user[:followers_count],
-        outgoing_follows:       user[:friends_count],
-        profile_image_url:      user[:profile_image_url],
-        posts:                  user[:statuses_count],
-        url:                    user[:url].to_s,
-      )
+    user_model = User.find_or_create_by(account_id: user[:id].to_s)
+    user_model.update_attributes(
+      name:                   user[:name],
+      user_name:              user[:screen_name],
+      account_created:        user[:created_at],
+      default_profile_image:  user[:default_profile_image?],
+      description:            user[:description],
+      incoming_follows:       user[:followers_count],
+      outgoing_follows:       user[:friends_count],
+      profile_image_url:      user[:profile_image_url],
+      posts:                  user[:statuses_count],
+      url:                    user[:url].to_s,
+    )
+
+    return user_model
 
   # deals with a user being created twice, simultaneously
   rescue ActiveRecord::RecordNotUnique
