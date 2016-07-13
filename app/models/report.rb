@@ -12,7 +12,7 @@ class Report < ActiveRecord::Base
     message: 'Report cannot be blank'
   validates_presence_of :target,
     message: "Need to specify who to report with \"+USERNAME\""
-  validates_uniqueness_of :text, scope: :reporter_id,
+  validates_uniqueness_of :text, scope: [:block_list, :reporter, :target,]
     message: "You have already created this report"
 
   scope :pending, -> { where(processed: false) }
