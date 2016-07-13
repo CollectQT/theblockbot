@@ -28,6 +28,7 @@ gem 'omniauth-twitter'
 gem 'haml'
 gem 'haml-rails'
 gem "attr_encrypted", "~> 3.0.0"
+gem 'rack-attack'
 
 group :development do
   gem 'foreman'

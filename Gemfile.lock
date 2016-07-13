@@ -213,6 +213,8 @@ GEM
       slop (~> 3.4)
     puma (3.4.0)
     rack (1.6.4)
+    rack-attack (4.4.1)
+      rack
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -401,6 +403,7 @@ DEPENDENCIES
   omniauth-twitter
   pg
   puma
+  rack-attack
   rails (= 4.2.5)
   rails_12factor
   rake (= 11.1.2)
