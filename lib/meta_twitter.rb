@@ -4,9 +4,11 @@ rescue Twitter::Error::TooManyRequests => error
   tries ||= 0
   tries += 1
   if tries < 6
+    puts "[WARNING] Hit Twitter rate limit in lib/meta_twitter.rb, current retries: #{tries}/5"
     sleep error.rate_limit.reset_in + tries + 1
     retry
   else
+    puts "[ERROR] Exhausted all rate limit retries in lib/meta_twitter.rb"
     raise
   end
 end
@@ -66,7 +68,7 @@ module MetaTwitter
   def MetaTwitter.get_following?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/following?/#{target_id}", expires_in: 1.days) do
+    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/following?/#{target_id}", expires_in: 1.weeks) do
       rescue_rate_limit {
         user.friendship?(user, target_id)
       }
@@ -77,7 +79,7 @@ module MetaTwitter
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
-    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/all_following/#{cursor}", expires_in: 1.weeks) do
+    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/all_following/#{cursor}", expires_in: 1.months) do
       rescue_rate_limit {
         user.friend_ids(:cursor => cursor, :count => count)
       }
@@ -87,7 +89,7 @@ module MetaTwitter
   def MetaTwitter.get_follower?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/follower?/#{target_id}", expires_in: 1.days) do
+    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/follower?/#{target_id}", expires_in: 1.weeks) do
       rescue_rate_limit {
         user.friendship?(target_id, user)
       }
@@ -98,7 +100,7 @@ module MetaTwitter
   # user => Twitter::REST::Client (with user context auth)
   # cursor => int
   # count => int
-    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/all_followers/#{cursor}", expires_in: 1.weeks) do
+    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/all_followers/#{cursor}", expires_in: 1.months) do
       rescue_rate_limit {
         user.follower_ids(:cursor => cursor, :count => count)
       }
@@ -108,7 +110,7 @@ module MetaTwitter
   def MetaTwitter.get_blocked?(user, target_id)
   # user => Twitter::REST::Client (with user context auth)
   # target_id => int
-    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/blocked?/#{target_id}", expires_in: 1.days) do
+    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/blocked?/#{target_id}", expires_in: 1.weeks) do
       rescue_rate_limit {
         user.friendship?(target_id, user)
       }
@@ -125,17 +127,9 @@ module MetaTwitter
 
   ############################################
 
-  # MetaTwitter::Auth.from_database_id(User.first.id)
+  # MetaTwitter::Auth.config(User)
 
   class Auth
-
-    def self.from_database_id(user_id)
-    # user_id => User.id
-      rescue_rate_limit {
-        MetaTwitter::Auth.config(User.find(user_id))
-      }
-    end
-
     def self.config(user)
     # user -> User
       Twitter::REST::Client.new do |c|
@@ -150,31 +144,30 @@ module MetaTwitter
 
   ############################################
 
-  # MetaTwitter::ReadFollows.from_followers(User.first.id)
+  # MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.first ) )
 
   class ReadFollows
 
-    def self.from_followers(user_id)
-    # user_id -> User.id
-      self.read(user_id, "followers")
+    def self.from_followers(user)
+    # user => Twitter::REST::Client (with user context auth)
+      self.read(user, "followers")
     end
 
-    def self.from_following(user_id)
-    # user_id -> User.id
-      self.read(user_id, "following")
+    def self.from_following(user)
+    # user => Twitter::REST::Client (with user context auth)
+      self.read(user, "following")
     end
 
-    def self.read(user_id, type)
-    # user_id -> User.id
-    # type -> string ("followers" or "following")
-      Rails.cache.fetch("fof/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-        user = MetaTwitter::Auth.from_database_id(user_id)
+    def self.read(user, type)
+    # user => Twitter::REST::Client (with user context auth)
+    # type => string ("followers" or "following")
+      Rails.cache.fetch("fof/all/#{MetaTwitter.get_account_id(user)}/#{type}", expires_in: 1.months) do
         self.new.page(user, type)
       end
     end
 
     def page(user, type, fof: [], cursor: -1)
-      Rails.cache.fetch("fof/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{cursor}", expires_in: 1.weeks) do
+      Rails.cache.fetch("fof/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{cursor}", expires_in: 1.months) do
         if cursor != 0
           fof, cursor = process_page(user, type, fof, cursor)
           page(user, type, fof: fof, cursor: cursor)
@@ -199,32 +192,31 @@ module MetaTwitter
 
   ############################################
 
-  # MetaTwitter::ReadMutuals.from_following(User.first.id)
+  # MetaTwitter::ReadMutuals.from_following( MetaTwitter::Auth.config( User.first ) )
 
   class ReadMutuals
 
-    def self.from_following(user_id)
-    # user_id -> User.id
-      read(user_id, "following")
+    def self.from_following(user)
+    # user => Twitter::REST::Client (with user context auth)
+      read(user, "following")
     end
 
-    def self.from_followers(user_id)
-    # user_id -> User.id
-      self.read(user_id, "followers")
+    def self.from_followers(user)
+    # user => Twitter::REST::Client (with user context auth)
+      self.read(user, "followers")
     end
 
-    def self.read(user_id, type)
-    # user_id -> User.id
-    # type -> string ("followers" or "following")
-      Rails.cache.fetch("readmutuals/all/#{user_id}/#{type}", expires_in: 1.weeks) do
-        user = MetaTwitter::Auth.from_database_id(user_id)
-        target_users = MetaTwitter::ReadFollows.read(user_id, type)
+    def self.read(user, type)
+    # user => Twitter::REST::Client (with user context auth)
+    # type => string ("followers" or "following")
+      Rails.cache.fetch("readmutuals/all/#{MetaTwitter.get_account_id(user)}/#{type}", expires_in: 1.months) do
+        target_users = MetaTwitter::ReadFollows.read(user, type)
         self.new.page(user, type, target_users)
       end
     end
 
     def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
-      Rails.cache.fetch("readmutuals/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{depth}", expires_in: 1.weeks) do
+      Rails.cache.fetch("readmutuals/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{depth}", expires_in: 1.months) do
 
         if target_users.length > 0
 
