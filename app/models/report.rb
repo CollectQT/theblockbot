@@ -60,7 +60,7 @@ class Report < ActiveRecord::Base
     self.parse_objects(block_list, target, text, reporter)
   end
 
-  def self.parse_objects(block_list, target, text, reporter)
+  def self.parse_objects(block_list, target, text, reporter, parent_id: nil)
   # block_list -> BlockList
   # target -> User
   # text -> string
@@ -72,7 +72,7 @@ class Report < ActiveRecord::Base
       reporter: reporter,
       target: target,
       expires: BlockList.get_expiration(block_list),
-      parent_id: Report.set_parent(block_list, target)
+      parent_id: parent_id ? parent_id : Report.set_parent(block_list, target),
     )
 
     reporter.increment(:reports_created)
