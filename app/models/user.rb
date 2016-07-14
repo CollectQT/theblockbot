@@ -74,6 +74,14 @@ class User < ActiveRecord::Base
     (tries += 1) < 3 ? retry : raise
   end
 
+  def get_followers
+    MetaTwitter::ReadFollows.from_followers(self)
+  end
+
+  def get_following
+    MetaTwitter::ReadFollows.from_following(self)
+  end
+
   # randomizes User.id
   private
   def randomize_id
