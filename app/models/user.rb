@@ -49,8 +49,8 @@ class User < ActiveRecord::Base
     users = (users).map { |user| self.update_or_create(user) }
   end
 
-  def self.get_from_authed_user
-    self.update_or_create( MetaTwitter.read_user_from_auth )
+  def self.get_from_ENV
+    Auth.get_from_ENV
   end
 
   def self.update_or_create(user)

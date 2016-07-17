@@ -21,4 +21,17 @@ class Auth < ActiveRecord::Base
 
   end
 
+  def self.get_from_ENV
+
+    user = User.update_or_create( MetaTwitter.read_user_from_ENV )
+
+    Auth.find_or_create_by(user: user).update_attributes(
+      token: TwitterClient.access_token,
+      secret: TwitterClient.access_token_secret,
+    )
+
+    return user
+
+  end
+
 end

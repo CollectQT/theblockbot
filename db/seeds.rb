@@ -1,4 +1,4 @@
-admin = User.get_from_authed_user
+admin = User.get_from_ENV
 
 block_list = BlockList.create(
   :name         => 'Testing12',
