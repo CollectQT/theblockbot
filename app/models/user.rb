@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   validates :account_id, presence: true
   validates_uniqueness_of :account_id, scope: :website
 
+  scope :id_only, -> { where(:user_name => nil) }
+
   def is_blocker
     self.blocker_for.length > 0
   end
