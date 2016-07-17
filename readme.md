@@ -18,9 +18,16 @@
 ## slowstart
 
 ```
-$ cp example.env .env
 $ subl .env
-    # fill with your information from https://apps.twitter.com
+    PORT=5000
+    SECRET_KEY_BASE=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    # from https://apps.twitter.com
+    twitter_consumer_key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    twitter_consumer_secret=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    twitter_access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    twitter_access_token_secret=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 $ spring rspec
     # should be all green
 $ foreman start
