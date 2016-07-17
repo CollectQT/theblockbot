@@ -43,6 +43,12 @@ class User < ActiveRecord::Base
     self.update_or_create( MetaTwitter.read_user_from_twitter_name(name) )
   end
 
+  def self.get_from_twitter_ids(ids)
+  # ids => array[int] ([111111,])
+    users = MetaTwitter.read_users_from_ids(ids)
+    users = (users).map { |user| self.update_or_create(user) }
+  end
+
   def self.get_from_authed_user
     self.update_or_create( MetaTwitter.read_user_from_auth )
   end
