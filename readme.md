@@ -7,8 +7,8 @@
 ## requirements
 
  * Ruby
- * Redis (does the gem take care of this? idk)
- * Postgres (same as above)
+ * Redis
+ * Postgres
  * Twitter API keys
 
 ## quickstart
@@ -28,6 +28,7 @@ $ subl .env
     TWITTER_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXX
     TWITTER_ACCESS_TOKEN_SECRET=XXXXXXXXXXXXXXXXXXXX
 
+$ rake db:drop db:create db:migrate db:seed
 $ spring rspec
     # should be all green
 $ foreman start
