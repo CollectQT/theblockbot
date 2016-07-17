@@ -63,6 +63,18 @@ module MetaTwitter
     end
   end
 
+  def MetaTwitter.read_users_from_ids(ids)
+  # ids => array(int) ([111111,], max size: 100)
+    key = Digest::MD5.hexdigest(ids.to_s)
+    Rails.cache.fetch("/read_from_bulk_ids/#{key}", expires_in: 1.days) do
+      rescue_not_found {
+      rescue_rate_limit {
+        users = TwitterClient.users(ids)
+      }}
+      users = (users).map { |user| user.to_h }
+    end
+  end
+
   ############################################
 
   def MetaTwitter.get_following?(user, target_id)
