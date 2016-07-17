@@ -54,25 +54,25 @@ class User < ActiveRecord::Base
   end
 
   def self.update_or_create(user)
-  # user => dictionary (MetaTwitter.read_user_from_twitter_*)
+  # user => {id: 11111111,}
 
     # Update Twitter user info
     # https://dev.twitter.com/overview/api/users
-    user_model = User.find_or_create_by(account_id: user[:id].to_s, website: 'twitter')
-    user_model.update_attributes(
-      name:                   user[:name],
-      user_name:              user[:screen_name],
-      account_created:        user[:created_at],
-      default_profile_image:  user[:default_profile_image?],
-      description:            user[:description],
-      incoming_follows:       user[:followers_count],
-      outgoing_follows:       user[:friends_count],
-      profile_image_url:      user[:profile_image_url],
-      posts:                  user[:statuses_count],
-      url:                    user[:url].to_s,
+    model = User.find_or_create_by(account_id: user[:id].to_s, website: 'twitter')
+    model.update_attributes(
+      name:                   user.fetch(:name, nil),
+      user_name:              user.fetch(:screen_name, nil),
+      account_created:        user.fetch(:created_at, nil),
+      default_profile_image:  user.fetch(:default_profile_image?, nil),
+      description:            user.fetch(:description, nil),
+      incoming_follows:       user.fetch(:followers_count, nil),
+      outgoing_follows:       user.fetch(:friends_count, nil),
+      profile_image_url:      user.fetch(:profile_image_url, nil),
+      posts:                  user.fetch(:statuses_count, nil),
+      url:                    user.fetch(:url, nil).to_s,
     )
 
-    return user_model
+    return model
 
   # deals with a user being created twice, simultaneously
   rescue ActiveRecord::RecordNotUnique
