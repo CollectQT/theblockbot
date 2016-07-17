@@ -82,12 +82,24 @@ class User < ActiveRecord::Base
     (tries += 1) < 3 ? retry : raise
   end
 
+  def self.ids_to_models(ids)
+    (ids).map { |id| self.update_or_create({:id => id}) }
+  end
+
   def get_followers
-    MetaTwitter::ReadFollows.from_followers(self)
+    User.ids_to_models(
+      MetaTwitter::ReadFollows.from_followers(
+        MetaTwitter::Auth.config(self)
+      )
+    )
   end
 
   def get_following
-    MetaTwitter::ReadFollows.from_following(self)
+    User.ids_to_models(
+      MetaTwitter::ReadFollows.from_following(
+        MetaTwitter::Auth.config(self)
+      )
+    )
   end
 
   # randomizes User.id
