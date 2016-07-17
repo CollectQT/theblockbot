@@ -36,7 +36,7 @@ module MetaTwitter
     user.access_token.split('-')[0]
   end
 
-  def MetaTwitter.read_user_from_auth
+  def MetaTwitter.read_user_from_ENV
     MetaTwitter.read_user_from_twitter_id(
       MetaTwitter.get_account_id(TwitterClient)
     )
