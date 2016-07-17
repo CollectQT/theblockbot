@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'rails', '4.2.5'
+gem 'rails', '~> 4.2.5'
 gem 'dotenv-rails'
-gem 'rake', '11.1.2'
+gem 'rake'
 gem 'pg'
 gem 'redis-rails'
 
@@ -15,7 +15,6 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'jquery-rails'
 gem 'turbolinks'
-gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'twitter'
 gem 'tweetstream'
@@ -27,7 +26,7 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'haml'
 gem 'haml-rails'
-gem "attr_encrypted", "~> 3.0.0"
+gem 'attr_encrypted', '~> 3.0.0'
 gem 'rack-attack'
 
 group :development do
