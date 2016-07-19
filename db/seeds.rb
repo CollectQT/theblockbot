@@ -12,4 +12,9 @@ Admin.find_or_create_by(
 )
 
 # was getting weird argument errors?
-Report.parse_objects(block_list, admin, 'Global parent report, used for reference purposes', admin)
+Report.parse_objects(
+  block_list: block_list,
+  target:     admin,
+  text:       'Global parent report, used for reference purposes',
+  reporter:   admin,
+)

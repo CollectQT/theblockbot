@@ -24,7 +24,10 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     if current_user
-      @report = Report.parse_regex(report_params['text'], current_user)
+      @report = Report.parse_regex(
+        text:     report_params['text'],
+        reporter: current_user,
+      )
 
       respond_to do |format|
         if @report.save

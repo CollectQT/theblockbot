@@ -35,7 +35,7 @@ class Report < ActiveRecord::Base
     end
   end
 
-  def self.parse_regex(text, reporter)
+  def self.parse_regex(text:, reporter:)
   # text -> string ("+lynncyrin #cats")
   # reporter -> User
 
@@ -45,22 +45,30 @@ class Report < ActiveRecord::Base
     match_list = text.match('(?<=\#)\w*')
     block_list = match_list ? BlockList.find_by_name(match_list[0]) : nil
 
-    self.parse_objects(block_list, target, text, reporter)
+    self.parse_objects(
+      block_list: block_list,
+      target:     target,
+      text:       text,
+      reporter:   reporter,
+    )
+
   end
 
-  def self.parse_text_args(block_list, target, text, reporter)
+  def self.parse_text_args(block_list:, target:, text:, reporter:)
   # block_list -> string ("cats")
   # target -> string ("lynncyrin")
   # text -> string ("knocked my mouse off the desk")
   # reporter -> User
 
-    block_list = BlockList.find_by_name(block_list)
-    target = User.get_from_twitter_name(target)
-
-    self.parse_objects(block_list, target, text, reporter)
+    self.parse_objects(
+      block_list: BlockList.find_by_name(block_list),
+      target:     User.get_from_twitter_name(target),
+      text:       text,
+      reporter:   reporter,
+    )
   end
 
-  def self.parse_objects(block_list, target, text, reporter, parent_id: nil)
+  def self.parse_objects(block_list:, target:, text:, reporter:, parent_id: nil)
   # block_list -> BlockList
   # target -> User
   # text -> string
