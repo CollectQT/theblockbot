@@ -25,24 +25,24 @@ end
 
 module MetaTwitter
 
-  def MetaTwitter.strip_if_leading_character(string, character)
+  def self.strip_if_leading_character(string, character)
   # string -> string ('@cats' or '#cats' or 'cats')
   # character -> string ('#' or '@')
     string[0] == character ? string[1..string.length] : string
   end
 
-  def MetaTwitter.get_account_id(user)
+  def self.get_account_id(user)
   # user => MetaTwitter::Auth.config
     user.access_token.split('-')[0]
   end
 
-  def MetaTwitter.read_user_from_ENV
+  def self.read_user_from_ENV
     MetaTwitter.read_user_from_twitter_id(
       MetaTwitter.get_account_id(TwitterClient)
     )
   end
 
-  def MetaTwitter.read_user_from_twitter_id(id)
+  def self.read_user_from_twitter_id(id)
   # id => int (1111111111111111)
     Rails.cache.fetch("/read_from_id/#{id}", expires_in: 1.hours) do
       rescue_not_found {
@@ -52,7 +52,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.read_user_from_twitter_name(name)
+  def self.read_user_from_twitter_name(name)
   # name => string ('@cyrin')
     name = MetaTwitter.strip_if_leading_character(name, '@')
     Rails.cache.fetch("/read_from_name/#{name}", expires_in: 1.hours) do
@@ -63,7 +63,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.read_users_from_ids(ids)
+  def self.read_users_from_ids(ids)
   # ids => array(int) ([111111,], max size: 100)
     key = Digest::MD5.hexdigest(ids.to_s)
     Rails.cache.fetch("/read_from_bulk_ids/#{key}", expires_in: 1.days) do
@@ -77,7 +77,7 @@ module MetaTwitter
 
   ############################################
 
-  def MetaTwitter.get_following?(user, target_id)
+  def self.get_following?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
     Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/following?/#{target_id}", expires_in: 1.weeks) do
@@ -87,7 +87,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.get_following_ids(user, cursor, count)
+  def self.get_following_ids(user, cursor, count)
   # user => MetaTwitter::Auth.config
   # cursor => int
   # count => int
@@ -98,7 +98,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.get_follower?(user, target_id)
+  def self.get_follower?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
     Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/follower?/#{target_id}", expires_in: 1.weeks) do
@@ -108,7 +108,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.get_follower_ids(user, cursor, count)
+  def self.get_follower_ids(user, cursor, count)
   # user => MetaTwitter::Auth.config
   # cursor => int
   # count => int
@@ -119,7 +119,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.get_blocked?(user, target_id)
+  def self.get_blocked?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
     Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/blocked?/#{target_id}", expires_in: 1.weeks) do
@@ -129,7 +129,7 @@ module MetaTwitter
     end
   end
 
-  def MetaTwitter.get_connections(user, target_users)
+  def self.get_connections(user, target_users)
   # user => MetaTwitter::Auth.config
   # target_users => [Twitter.user.id,] length <= 100
     rescue_rate_limit {
