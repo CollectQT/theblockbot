@@ -74,13 +74,13 @@ class Report < ActiveRecord::Base
   # text -> string
   # reporter -> User
 
-    report = Report.create(
+    report = self.create(
       text: text,
       block_list: block_list,
       reporter: reporter,
       target: target,
       expires: BlockList.get_expiration(block_list),
-      parent_id: parent_id ? parent_id : Report.set_parent(block_list, target),
+      parent_id: parent_id ? parent_id : self.set_parent(block_list, target),
     )
 
     reporter.increment(:reports_created)
