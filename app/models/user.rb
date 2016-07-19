@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   has_one :auth, :dependent => :destroy
   has_many :subscriptions
   has_many :block_lists, through: :subscriptions
-  has_many :reports_by, class_name: "Report", foreign_key: "reporter_id"
-  has_many :reports_against, class_name: "Report", foreign_key: "target_id"
+  has_many :reports_by, class_name: Report, foreign_key: :reporter_id
+  has_many :reports_against, class_name: Report, foreign_key: :target_id
   has_many :blocker
   has_many :blocker_for, through: :blocker, source: :block_list
   has_many :admin

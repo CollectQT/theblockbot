@@ -5,13 +5,13 @@ class BlockList < ActiveRecord::Base
   has_many :subscriptions
   has_many :users, through: :subscriptions
 
-  has_many :active_reports, -> { where(approved: true, expired: false) }, class_name: 'Report'
+  has_many :active_reports, -> { where(approved: true, expired: false) }, class_name: Report
   has_many :targets, through: :active_reports
 
-  has_many :admin_records, class_name: 'Admin', dependent: :destroy
+  has_many :admin_records, class_name: Admin, dependent: :destroy
   has_many :admins, through: :admin_records, source: :user, dependent: :destroy
 
-  has_many :blocker_records, class_name: 'Blocker', dependent: :destroy
+  has_many :blocker_records, class_name: Blocker, dependent: :destroy
   has_many :blockers, through: :blocker_records, source: :user, dependent: :destroy
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}

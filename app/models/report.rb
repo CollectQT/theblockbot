@@ -1,12 +1,12 @@
 class Report < ActiveRecord::Base
   belongs_to :block_list
-  belongs_to :reporter, class_name: "User"
-  belongs_to :target, class_name: "User"
-  belongs_to :approver, class_name: "User"
+  belongs_to :reporter, class_name: User
+  belongs_to :target, class_name: User
+  belongs_to :approver, class_name: User
   has_many :blocks
 
-  has_many :children, class_name: "Report", foreign_key: "parent_id"
-  belongs_to :parent, class_name: "Report"
+  belongs_to :parent, class_name: self
+  has_many :children, class_name: self, foreign_key: :parent_id
 
   validates :reporter, presence: true
   validates_presence_of :block_list,
