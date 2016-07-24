@@ -119,6 +119,17 @@ module MetaTwitter
     end
   end
 
+  def self.get_blocked_ids(user, cursor, count)
+  # user => MetaTwitter::Auth.config
+  # cursor => int
+  # count => int
+    Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/blocked_ids/#{cursor}", expires_in: 1.days) do
+      rescue_rate_limit {
+        user.blocked_ids(cursor: cursor, count: count).to_h
+      }
+    end
+  end
+
   def self.get_blocked?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
@@ -271,6 +282,37 @@ module MetaTwitter
       end
 
       return mutuals, nonmutuals
+    end
+
+  end
+
+  ############################################
+
+  # ids = MetaTwitter::BlockIds.read( MetaTwitter::Auth.config( User.find_by(user_name:'lynncyrin') ) )
+
+  class BlockIds
+
+    def self.read(user)
+    # user => MetaTwitter::Auth.config
+      self.new.page(user)
+    end
+
+    def page(user, ids: [], cursor: -1)
+      Rails.cache.fetch("blockids/page/#{MetaTwitter.get_account_id(user)}/#{cursor}", expires_in: 1.days) do
+        if cursor != 0
+          ids, cursor = process_page(user, ids, cursor)
+          page(user, ids: ids, cursor: cursor)
+        else
+          ids
+        end
+      end
+    end
+
+    private def process_page(user, ids, cursor, count: 5000)
+      response = MetaTwitter.get_blocked_ids(user, cursor, count)
+      ids = ids + response[:ids]
+      cursor = response[:next_cursor]
+      return ids, cursor
     end
 
   end
