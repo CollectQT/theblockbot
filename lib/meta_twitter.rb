@@ -93,7 +93,7 @@ module MetaTwitter
   # count => int
     Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/all_following/#{cursor}", expires_in: 1.months) do
       rescue_rate_limit {
-        user.friend_ids(:cursor => cursor, :count => count)
+        user.friend_ids(:cursor => cursor, :count => count).to_h
       }
     end
   end
@@ -114,7 +114,7 @@ module MetaTwitter
   # count => int
     Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/all_followers/#{cursor}", expires_in: 1.months) do
       rescue_rate_limit {
-        user.follower_ids(:cursor => cursor, :count => count)
+        user.follower_ids(:cursor => cursor, :count => count).to_h
       }
     end
   end
@@ -196,8 +196,8 @@ module MetaTwitter
       elsif type == 'following'
         response = MetaTwitter.get_following_ids(user, cursor, count)
       end
-      fof = fof + response.to_a
-      cursor = response.to_h[:next_cursor]
+      fof = fof + response[:ids]
+      cursor = response[:next_cursor]
       return fof, cursor
     end
 
