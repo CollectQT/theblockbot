@@ -156,7 +156,7 @@ module MetaTwitter
 
   ############################################
 
-  # MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.first ) )
+  # follows = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: lynncyrin) ) )
 
   class ReadFollows
 
@@ -204,7 +204,7 @@ module MetaTwitter
 
   ############################################
 
-  # MetaTwitter::ReadMutuals.from_following( MetaTwitter::Auth.config( User.first ) )
+  # mutuals = MetaTwitter::ReadMutuals.from_following( MetaTwitter::Auth.config( User.find_by(user_name: lynncyrin) ) )
 
   class ReadMutuals
 
