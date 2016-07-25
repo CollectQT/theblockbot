@@ -3,7 +3,7 @@ class ToolUnblockAll
 
   def perform(user_database_id)
     block_ids = MetaTwitter::BlockIds.read(
-      MetaTwitter::Auth.from_database_id(user_database_id)
+      MetaTwitter::Auth.config( User.find(user_database_id) )
     )
 
     for target_id in block_ids

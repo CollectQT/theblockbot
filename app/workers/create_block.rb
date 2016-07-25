@@ -2,7 +2,7 @@ class CreateBlock
   include Sidekiq::Worker
 
   def perform(user_database_id, report_id)
-    user = MetaTwitter::Auth.from_database_id(user_database_id)
+    user = MetaTwitter::Auth.config( User.find(user_database_id) )
     report = Report.find(report_id)
     target = report.target.account_id.to_i
 

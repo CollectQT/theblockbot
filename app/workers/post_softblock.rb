@@ -7,7 +7,7 @@ class PostSoftblock
   end
 
   def perform(user_database_id, target_twitter_id)
-    user = MetaTwitter::Auth.from_database_id(user_database_id)
+    user = MetaTwitter::Auth.config( User.find(user_database_id) )
 
     user.block(target_twitter_id)
     user.unblock(target_twitter_id)

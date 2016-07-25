@@ -7,7 +7,7 @@ class PostUnblock
   end
 
   def perform(user_database_id, target_twitter_id, block_id: nil)
-    user = MetaTwitter::Auth.from_database_id(user_database_id)
+    user = MetaTwitter::Auth.config( User.find(user_database_id) )
 
     user.unblock(target_twitter_id)
     if block_id then Block.find(block_id).delete end
