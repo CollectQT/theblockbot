@@ -6,11 +6,11 @@ class PostUnblock
     900 * (count + 1)
   end
 
-  def perform(user_database_id, target_twitter_id, block_id)
+  def perform(user_database_id, target_twitter_id, block_id: nil)
     user = MetaTwitter::Auth.from_database_id(user_database_id)
 
     user.unblock(target_twitter_id)
-    Block.find(block_id).delete
+    if block_id then Block.find(block_id).delete end
   end
 
 end
