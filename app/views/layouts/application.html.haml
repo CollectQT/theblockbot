@@ -32,6 +32,7 @@
                 %span.caret
               %ul.dropdown-menu{"aria-labelledby" => "toolMenu"}
                 %li= link_to "Hunker Down", "/tools/hunkerdown"
+                %li= link_to "Remove All Blocks", "/tools/unblocker"
 
             - if current_user
               - if current_user.is_blocker

@@ -20,8 +20,11 @@ Rails.application.routes.draw do
   post   '/reports'             => 'reports#create',  :as => :report_create
   get    '/reports'             => 'reports#index',   :as => :reports
 
-  get '/tools/hunkerdown' => 'tools#hunkerdown'
-  get '/tools/blockchain' => 'tools#blockchain'
+  get  '/tools/hunkerdown'  => 'tools#hunkerdown'
+  get  '/tools/blockchain'  => 'tools#blockchain'
+  get  '/unblocker'         => redirect('tools/unblocker')
+  get  '/tools/unblocker'   => 'tools#unblocker'
+  post '/tools/unblocker'   => 'tools#unblocker_perform',   :as => :unblocker_perform
 
   get  '/signin'                  => 'sessions#new',      :as => :signin
   get  '/signout'                 => 'sessions#destroy',  :as => :signout
