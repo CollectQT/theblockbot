@@ -3,10 +3,10 @@
 %p !!! Alpha version software, your input may be wiped !!!
 
 - if current_user
-  = button_to 'Subscribe to block lists',
+  = link_to 'Subscribe to block lists',
     block_lists_path,
     :class => 'btn btn-primary'
 - else
-  =  button_to 'Sign In with Twitter',
-    '/auth/twitter',
+  =  link_to 'Sign In with Twitter',
+    signin_path,
     :class => 'btn btn-primary'
