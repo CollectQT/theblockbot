@@ -7,7 +7,9 @@ class SessionsController < ApplicationController
   def create
     user = Auth.parse(request.env["omniauth.auth"])
     session[:user_id] = user.id
-    redirect_to request.env['omniauth.origin'] || root_url, :notice => "Signed in!"
+    path = request.env['omniauth.origin'] || root_url
+    logger.debug { "Request redirect back path: #{path}" }
+    redirect_to path, :notice => "Signed in!"
   end
 
   def destroy(notice="Signed out!")
