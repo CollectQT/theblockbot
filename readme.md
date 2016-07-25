@@ -28,6 +28,7 @@ $ subl .env
     TWITTER_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXX
     TWITTER_ACCESS_TOKEN_SECRET=XXXXXXXXXXXXXXXXXXXX
 
+$ bundle install
 $ rake db:drop db:create db:migrate db:seed
 $ spring rspec
     # should be all green
