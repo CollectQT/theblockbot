@@ -17,7 +17,6 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 gem 'twitter'
-gem 'tweetstream'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim'
