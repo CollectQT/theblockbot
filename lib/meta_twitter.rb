@@ -135,7 +135,7 @@ module MetaTwitter
   # target_id => int
     Rails.cache.fetch("#{MetaTwitter.get_account_id(user)}/blocked?/#{target_id}", expires_in: 1.weeks) do
       rescue_rate_limit {
-        user.friendship?(target_id, user)
+        user.block?(target_id)
       }
     end
   end
