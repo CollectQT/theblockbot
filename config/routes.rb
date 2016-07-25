@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   post   '/reports'             => 'reports#create',  :as => :report_create
   get    '/reports'             => 'reports#index',   :as => :reports
 
-  get '/tools/test' => 'tools#test'
   get '/tools/hunkerdown' => 'tools#hunkerdown'
   get '/tools/blockchain' => 'tools#blockchain'
 
