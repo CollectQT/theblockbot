@@ -16,8 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def failure
-    puts '[ERROR] Login failure'
-    puts env['omniauth.error'].inspect
+    logger.error env['omniauth.error'].inspect
     redirect_to request.env['omniauth.origin'] || :back || root_url, :notice => "Authentication error: #{params[:message].humanize}"
   end
 

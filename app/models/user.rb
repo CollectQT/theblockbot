@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   def update_log(entry)
     self.log << entry
     self.save
-    puts "(@#{self.user_name}) #{entry}"
+    logger.debug { "User id #{self.id} - #{entry}" }
   end
 
   def self.get_from_twitter_id(id)

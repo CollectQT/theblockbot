@@ -74,14 +74,22 @@ class Report < ActiveRecord::Base
   # text -> string
   # reporter -> User
 
+    expires = BlockList.get_expiration(block_list)
+    parent_id = parent_id ? parent_id : self.set_parent(block_list, target)
+
     report = self.create(
       text: text,
       block_list: block_list,
       reporter: reporter,
       target: target,
-      expires: BlockList.get_expiration(block_list),
-      parent_id: parent_id ? parent_id : self.set_parent(block_list, target),
+      expires: expires,
+      parent_id: parent_id,
     )
+
+    logger.debug {
+      require 'pp'
+      pp report
+    }
 
     reporter.increment(:reports_created)
     target.increment(:times_reported)
@@ -123,7 +131,7 @@ class Report < ActiveRecord::Base
       self.target.increment(:times_blocked)
       self.reporter.increment(:reports_approved)
     else
-      puts 'User(#{approver.id}) Not Authorized to approve Report(#{self.id})'
+      logger.info { 'User(#{approver.id}) Not Authorized to approve Report(#{self.id})' }
     end
   end
 
@@ -131,7 +139,7 @@ class Report < ActiveRecord::Base
     if (approver.in? self.block_list.blockers) and (not self.processed?)
       self.update_attributes(processed: true)
     else
-      puts 'User(#{approver.id}) Not Authorized to deny Report(#{self.id})'
+      logger.info { 'User(#{approver.id}) Not Authorized to deny Report(#{self.id})' }
     end
   end
 
