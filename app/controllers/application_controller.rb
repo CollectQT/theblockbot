@@ -13,10 +13,8 @@ class ApplicationController < ActionController::Base
   end
 
   def signout(notice="Signed out!")
-    session[:user_id] = nil
-    redirect_to :back || root_url, :notice => notice
-  rescue ActionController::RedirectBackError
-    redirect_to root_url, :notice => notice
+    reset_session
+    redirect_to redirect_to_back, :notice => notice
   end
 
   def failure
@@ -30,4 +28,11 @@ class ApplicationController < ActionController::Base
       signout("A login error occured, you have been signed out")
     end
 
+    def redirect_to_back(default = root_url)
+      if request.env["HTTP_REFERER"].present? and request.env["HTTP_REFERER"] != request.env["REQUEST_URI"]
+        redirect_to :back
+      else
+        redirect_to default
+      end
+    end
 end
