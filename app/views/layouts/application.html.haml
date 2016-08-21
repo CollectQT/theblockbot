@@ -38,7 +38,7 @@
               - if current_user.is_blocker
                 %li= link_to "Reports",   "/reports"
 
-              %li.pull-right= link_to 'Sign Out', signout_path, method: 'delete'
+              %li.pull-right= link_to 'Sign out', signout_path, method: 'delete'
               %li.pull-right= link_to 'Profile', '/profile'
               %li.pull-right.login(title="You!")
                 %span.name= current_user.name
