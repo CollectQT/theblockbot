@@ -39,4 +39,4 @@ $ foreman start
 
 `$ guard` in its own terminal window
 
-`$ spring rspec` if that's doing too much
+`$ rspec` if that's doing too much
