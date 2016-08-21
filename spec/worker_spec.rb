@@ -1,3 +1,6 @@
+describe "create_block" do
+end
+
 describe "create_blocks_from_report" do
 
   let(:worker) { CreateBlocksFromReport.new }
@@ -43,6 +46,14 @@ end
 describe "create_unblocks_from_unsubscribe" do
 end
 
+describe "post_block" do
+end
 
-describe "create_block" do
+describe "post_softblock" do
+end
+
+describe "post_unblock" do
+end
+
+describe "tool_unblock_all" do
 end
