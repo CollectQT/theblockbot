@@ -1,9 +1,5 @@
 describe "Twitter", :type => :feature do
 
-  before do
-    Capybara.current_driver = :mechanize
-  end
-
   it "loads with our driver" do
     visit 'https://twitter.com/login'
     expect(page).to have_title "Login on Twitter"

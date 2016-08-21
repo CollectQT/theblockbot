@@ -56,11 +56,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-mechanize (1.5.0)
-      capybara (~> 2.4, >= 2.4.4)
-      mechanize (~> 2.7.0)
-    childprocess (0.5.9)
-      ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
@@ -151,15 +146,6 @@ GEM
     lumberjack (1.0.10)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
-    mechanize (2.7.4)
-      domain_name (~> 0.5, >= 0.5.1)
-      http-cookie (~> 1.0)
-      mime-types (>= 1.17.2, < 3)
-      net-http-digest_auth (~> 1.1, >= 1.1.1)
-      net-http-persistent (~> 2.5, >= 2.5.2)
-      nokogiri (~> 1.6)
-      ntlm-http (~> 0.1, >= 0.1.1)
-      webrobots (>= 0.0.9, < 0.2)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)
@@ -169,15 +155,12 @@ GEM
     multipart-post (2.0.0)
     naught (1.1.0)
     nenv (0.3.0)
-    net-http-digest_auth (1.4)
-    net-http-persistent (2.9.4)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     notiffany (0.1.0)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    ntlm-http (0.1.1)
     oauth (0.5.1)
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
@@ -276,7 +259,6 @@ GEM
     ruby_dep (1.3.1)
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
-    rubyzip (1.2.0)
     sass (3.4.22)
     sass-rails (5.0.5)
       railties (>= 4.0.0, < 6)
@@ -284,10 +266,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    selenium-webdriver (2.53.4)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.0)
-      websocket (~> 1.0)
     sexp_processor (4.7.0)
     shellany (0.0.1)
     sidekiq (4.1.4)
@@ -349,8 +327,6 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    webrobots (0.1.2)
-    websocket (1.2.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -363,7 +339,6 @@ DEPENDENCIES
   binding_of_caller
   byebug
   capybara
-  capybara-mechanize
   coffee-rails (~> 4.1.0)
   dotenv-rails
   foreman
@@ -382,7 +357,6 @@ DEPENDENCIES
   redis-rails
   rspec-rails
   sass-rails (~> 5.0)
-  selenium-webdriver
   sidekiq
   sinatra
   slim

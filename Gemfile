@@ -36,8 +36,6 @@ group :development do
   gem 'binding_of_caller'
   gem 'capybara'
   gem 'rspec-rails'
-  gem 'selenium-webdriver'
-  gem 'capybara-mechanize'
   gem 'guard-rspec', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
