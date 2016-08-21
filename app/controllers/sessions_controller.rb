@@ -20,9 +20,9 @@ class SessionsController < ApplicationController
   def failure
     logger.error env['omniauth.error'].inspect
     begin
-        notice = "Authentication error: #{params[:message].humanize}"
+      notice = "Authentication error: #{params[:message].humanize}"
     rescue NoMethodError
-        notice = "Authentication error!"
+      notice = "Authentication error!"
     end
     redirect_to request.env['omniauth.origin'] || :back || root_url, :notice => notice
   end
