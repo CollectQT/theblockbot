@@ -1,38 +1,41 @@
-describe "logins", :type => :feature  do
-
-  let(:mock_auth_hash) {
-    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
-      :extra => { :raw_info => { :id => 1234 } },
-      :credentials => {
-        :token => 'mock_token',
-        :secret => 'mock_secret',
-      },
-    })
-  }
+describe "login", :type => :feature  do
 
   before(:each) do
-    OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:twitter] = nil
     Rails.application.env_config["omniauth.auth"] =
       OmniAuth.config.mock_auth[:twitter]
     visit '/'
   end
 
-  it "succeeds on valid credentials" do
+  def user_mock(account_id, display_name)
+    OmniAuth.config.add_mock(:twitter, {
+      :provider => 'twitter',
+      :name => display_name,
+      :extra => { :raw_info => { :id => account_id } },
+      :credentials => {:token => 'token', :secret => 'secret'},
+    })
+  end
+
+  def test_login(setup_user)
     expect(page).to have_content("Sign in with Twitter")
-    mock_auth_hash
+    user = setup_user
     click_link "Sign in"
-    expect(page).to have_content("mockusername")
+    expect(page).to have_content(user.name)
     expect(page).to have_content("Sign out")
   end
 
+  it "succeeds on valid login for user @twitter", :vcr do
+    test_login( user_mock(783214, 'Twitter') )
+  end
+
+  it "succeeds on valid login for user @twitterapi", :vcr do
+    test_login( user_mock(6253282, 'Twitter API') )
+  end
+
   it "fails on invalid credentials" do
-
-    OmniAuth.config.on_failure = Proc.new { |env|
-      OmniAuth::FailureEndpoint.new(env).redirect_to_failure
-    }
     OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
-
+    click_link "Sign in"
+    expect(page).to have_content("Authentication error")
   end
 
 end

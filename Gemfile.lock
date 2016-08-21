@@ -67,6 +67,8 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
     domain_name (0.5.20160615)
@@ -109,6 +111,7 @@ GEM
       haml (>= 4.0.6, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
+    hashdiff (0.3.0)
     hashie (3.4.4)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -259,6 +262,7 @@ GEM
     ruby_dep (1.3.1)
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
+    safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.5)
       railties (>= 4.0.0, < 6)
@@ -322,11 +326,16 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
+    vcr (3.0.3)
     web-console (2.3.0)
       activemodel (>= 4.0)
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    webmock (2.1.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -366,10 +375,12 @@ DEPENDENCIES
   twitter
   twitter-bootstrap-rails
   uglifier (>= 1.3.0)
+  vcr
   web-console (~> 2.0)
+  webmock
 
 RUBY VERSION
-   ruby 2.2.1p85
+   ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.13.0.rc.1

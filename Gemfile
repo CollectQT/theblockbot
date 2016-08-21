@@ -34,11 +34,16 @@ group :development do
   gem 'web-console', '~> 2.0'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'capybara'
   gem 'rspec-rails'
   gem 'guard-rspec', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
+end
+
+group :test do
+  gem 'vcr'
+  gem 'webmock'
+  gem 'capybara'
 end
 
 group :production do
