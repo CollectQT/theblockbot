@@ -11,6 +11,7 @@ gem 'redis-rails'
 gem 'sass-rails', '~> 5'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails'
 
 gem 'jquery-rails'
 gem 'turbolinks'
