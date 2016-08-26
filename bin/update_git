@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-git push git@gitlab.com:collectqt/theblockbot.git develop
-git push git@github.com:collectqt/theblockbot.git develop
