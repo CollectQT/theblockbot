@@ -5,13 +5,14 @@ Rails.application.routes.draw do
   root 'index#index'
 
   # delete '/block_lists/:id/remove/blocker/:user_id' => 'block_lists#remove_blocker', :as => :remove_blocker
-  resources :block_lists, except: :show
-  get    '/block_lists/:id'              => 'block_lists#show', :constraints => { :id => /[0-9]+/ }, :as => :block_list_path
-  get    '/block_lists/:name'            => 'block_lists#show'
-  post   '/block_lists/:id/add/blocker/' => 'block_lists#add_blocker', :as => :add_blocker
-  post   '/block_lists/:id/add/admin/'   => 'block_lists#add_admin',   :as => :add_admin
-  post   '/block_lists/:id/subscribe'    => 'block_lists#subscribe',   :as => :list_subscribe
-  delete '/block_lists/:id/subscribe'    => 'block_lists#unsubscribe', :as => :list_unsubscribe
+  resources :block_lists, except: :show, path: 'blocklists'
+  get    '/blocklists/'                 => 'block_lists#index'
+  get    '/blocklists/:id'              => 'block_lists#show', :constraints => { :id => /[0-9]+/ }, :as => :block_list_path
+  get    '/blocklists/:name'            => 'block_lists#show'
+  post   '/blocklists/:id/add/blocker/' => 'block_lists#add_blocker', :as => :add_blocker
+  post   '/blocklists/:id/add/admin/'   => 'block_lists#add_admin',   :as => :add_admin
+  post   '/blocklists/:id/subscribe'    => 'block_lists#subscribe',   :as => :list_subscribe
+  delete '/blocklists/:id/subscribe'    => 'block_lists#unsubscribe', :as => :list_unsubscribe
 
   post   '/reports/:id/approve' => 'reports#approve', :as => :report_approve
   get    '/reports/new'         => 'reports#new',     :as => :report_new
