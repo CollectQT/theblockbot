@@ -32,13 +32,9 @@ module RailsApp
     config.generators.test_framework(false)
 
     config.after_initialize do
-
       if Rails.env.production?
         CreateUnblocksFromExpire.perform_async
       end
-
-      load "#{Rails.root}/db/seeds.rb"
-
     end
 
   end
