@@ -29,8 +29,8 @@ $ subl .env
     TWITTER_ACCESS_TOKEN_SECRET=XXXXXXXXXXXXXXXXXXXX
 
 $ bundle install
-$ rake db:drop db:create db:migrate db:seed
-$ bin/rspec
+$ bundle exec rake db:drop db:create db:migrate db:seed
+$ bundle exec rspec
     # should be all green
 $ foreman start
 ```
@@ -39,4 +39,4 @@ $ foreman start
 
 `$ guard` in its own terminal window
 
-`$ bin/rspec` if that's doing too much
+`$ bundle exec guard` if that's doing too much
