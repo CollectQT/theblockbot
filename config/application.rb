@@ -31,18 +31,8 @@ module RailsApp
     config.active_record.raise_in_transactional_callbacks = true
     config.generators.test_framework(false)
 
-    config.after_initialize do
-      if Rails.env.development?
-        begin
-          require 'Sidekiq/api'
-          Sidekiq::Queue.new('unblocks').clear
-          Sidekiq::ScheduledSet.new.select \
-            { |job| job.klass == 'CreateUnblocksFromExpire' }.each(&:delete)
-          CreateUnblocksFromExpire.perform_async
-        rescue LoadError
-        end
-      end
-    end
+    # config.after_initialize do
+    # end
 
   end
 end
