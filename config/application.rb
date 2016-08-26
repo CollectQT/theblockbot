@@ -35,9 +35,8 @@ module RailsApp
       if Rails.env.production?
         require 'Sidekiq/api'
         Sidekiq::Queue.new('unblocks').clear
-        r = Sidekiq::ScheduledSet.new
-        jobs = r.select {|retri| retri.klass == 'CreateUnblocksFromExpire' }
-        jobs.each(&:delete)
+        Sidekiq::ScheduledSet.new.select \
+          { |job| job.klass == 'CreateUnblocksFromExpire' }.each(&:delete)
         CreateUnblocksFromExpire.perform_async
       end
     end
