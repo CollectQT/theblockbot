@@ -1,3 +1,2 @@
 :queues:
-  - ["default", 2]
-  - ["unblocks", 1]
+  - ["default", 1]

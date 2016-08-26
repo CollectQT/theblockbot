@@ -2,7 +2,7 @@ require 'Sidekiq/api'
 
 class CreateUnblocksFromExpire
   include Sidekiq::Worker
-  sidekiq_options queue: 'unblocks'
+  sidekiq_options :retry => false
 
   def perform
 
@@ -21,7 +21,6 @@ class CreateUnblocksFromExpire
     end
 
     # clear any previous running jobs
-    Sidekiq::Queue.new('unblocks').clear
     Sidekiq::ScheduledSet.new.select \
       { |job| job.klass == self.class.name }.each(&:delete)
 
