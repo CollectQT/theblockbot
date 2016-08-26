@@ -32,10 +32,11 @@ describe "login", :type => :feature  do
     test_login( user_mock(6253282, 'Twitter API') )
   end
 
-  it "fails on invalid credentials" do
-    OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
-    click_link "Sign in"
-    expect(page).to have_content("Authentication error")
-  end
+  # # unsure what this test is for, besides distracting command line output
+  # it "fails on invalid credentials" do
+  #   OmniAuth.config.mock_auth[:twitter] = :invalid_credentials
+  #   click_link "Sign in"
+  #   expect(page).to have_content("Authentication error")
+  # end
 
 end
