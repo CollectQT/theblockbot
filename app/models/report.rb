@@ -131,7 +131,7 @@ class Report < ActiveRecord::Base
       self.target.increment(:times_blocked)
       self.reporter.increment(:reports_approved)
     else
-      logger.info { 'User(#{approver.id}) Not Authorized to approve Report(#{self.id})' }
+      logger.info { "User(#{approver.id}) Not Authorized to approve Report(#{self.id})" }
     end
   end
 
@@ -139,7 +139,7 @@ class Report < ActiveRecord::Base
     if (approver.in? self.block_list.blockers) and (not self.processed?)
       self.update_attributes(processed: true)
     else
-      logger.info { 'User(#{approver.id}) Not Authorized to deny Report(#{self.id})' }
+      logger.info { "User(#{approver.id}) Not Authorized to deny Report(#{self.id})" }
     end
   end
 
