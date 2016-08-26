@@ -11,7 +11,6 @@ Admin.find_or_create_by(
   :user       => admin,
 )
 
-# was getting weird argument errors?
 Report.parse_objects(
   block_list: block_list,
   target:     admin,
