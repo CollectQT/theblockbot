@@ -39,4 +39,4 @@ $ foreman start
 
 `$ guard` in its own terminal window
 
-`$ bundle exec guard` if that's doing too much
+`$ bundle exec rspec` if that's doing too much
