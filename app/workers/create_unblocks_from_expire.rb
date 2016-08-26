@@ -1,5 +1,3 @@
-# WIP
-
 class CreateUnblocksFromExpire
   include Sidekiq::Worker
 
@@ -18,6 +16,9 @@ class CreateUnblocksFromExpire
       PostUnblock.perform_async(user.id, block.target.account_id.to_i, block.id)
       user.update_log("[REMOVE] Unblocking user #{block.target.user_name}")
     end
+
+    # queue the next round
+    CreateUnblocksFromExpire.perform_in 1.hours
 
   end
 

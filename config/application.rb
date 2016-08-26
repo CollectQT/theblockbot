@@ -30,5 +30,12 @@ module RailsApp
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     config.generators.test_framework(false)
+
+    config.after_initialize do
+      if Rails.env.production?
+        CreateUnblocksFromExpire.perform_async
+      end
+    end
+
   end
 end
