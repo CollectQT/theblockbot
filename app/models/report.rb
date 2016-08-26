@@ -23,6 +23,8 @@ class Report < ActiveRecord::Base
   scope :denied, -> { where(processed: true, approved: false, parent_id: 1) }
   scope :is_parent, -> { where(parent_id: 1) }
 
+  after_save :do_after_save
+
   def child?
     self.parent_id != 1
   end
@@ -77,7 +79,7 @@ class Report < ActiveRecord::Base
     expires = BlockList.get_expiration(block_list)
     parent_id = parent_id ? parent_id : self.set_parent(block_list, target)
 
-    report = self.create(
+    self.create(
       text: text,
       block_list: block_list,
       reporter: reporter,
@@ -85,18 +87,13 @@ class Report < ActiveRecord::Base
       expires: expires,
       parent_id: parent_id,
     )
+  end
 
-    logger.debug {
-      require 'pp'
-      pp report
-    }
-
-    reporter.increment(:reports_created)
-    target.increment(:times_reported)
-    report.process_child
-    report.autoapprove
-
-    return report
+  def do_after_save
+    self.reporter.increment(:reports_created)
+    self.target.increment(:times_reported)
+    self.process_child
+    self.autoapprove
   end
 
   def self.set_parent(block_list, target)
