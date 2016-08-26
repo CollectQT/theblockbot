@@ -1,5 +1,6 @@
 class CreateUnblocksFromExpire
   include Sidekiq::Worker
+  sidekiq_options queue: 'unblocks'
 
   def perform
 

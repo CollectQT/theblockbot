@@ -33,6 +33,11 @@ module RailsApp
 
     config.after_initialize do
       if Rails.env.production?
+        require 'Sidekiq/api'
+        Sidekiq::Queue.new('unblocks').clear
+        r = Sidekiq::ScheduledSet.new
+        jobs = r.select {|retri| retri.klass == 'CreateUnblocksFromExpire' }
+        jobs.each(&:delete)
         CreateUnblocksFromExpire.perform_async
       end
     end
