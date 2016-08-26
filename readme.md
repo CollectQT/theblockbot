@@ -30,7 +30,7 @@ $ subl .env
 
 $ bundle install
 $ rake db:drop db:create db:migrate db:seed
-$ spring rspec
+$ bin/rspec
     # should be all green
 $ foreman start
 ```
@@ -39,4 +39,4 @@ $ foreman start
 
 `$ guard` in its own terminal window
 
-`$ rspec` if that's doing too much
+`$ bin/rspec` if that's doing too much
