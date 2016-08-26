@@ -1,5 +1,3 @@
-require 'Sidekiq/api'
-
 class CreateUnblocksFromExpire
   include Sidekiq::Worker
   sidekiq_options :retry => false
