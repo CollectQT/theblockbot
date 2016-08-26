@@ -32,12 +32,15 @@ module RailsApp
     config.generators.test_framework(false)
 
     config.after_initialize do
-      if Rails.env.production?
-        require 'Sidekiq/api'
-        Sidekiq::Queue.new('unblocks').clear
-        Sidekiq::ScheduledSet.new.select \
-          { |job| job.klass == 'CreateUnblocksFromExpire' }.each(&:delete)
-        CreateUnblocksFromExpire.perform_async
+      if Rails.env.development?
+        begin
+          require 'Sidekiq/api'
+          Sidekiq::Queue.new('unblocks').clear
+          Sidekiq::ScheduledSet.new.select \
+            { |job| job.klass == 'CreateUnblocksFromExpire' }.each(&:delete)
+          CreateUnblocksFromExpire.perform_async
+        rescue LoadError
+        end
       end
     end
 
