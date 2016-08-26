@@ -1,3 +1,5 @@
+require 'Sidekiq/api'
+
 class CreateUnblocksFromExpire
   include Sidekiq::Worker
   sidekiq_options queue: 'unblocks'
@@ -17,6 +19,11 @@ class CreateUnblocksFromExpire
       PostUnblock.perform_async(user.id, block.target.account_id.to_i, block.id)
       user.update_log("[REMOVE] Unblocking user #{block.target.user_name}")
     end
+
+    # clear any previous running jobs
+    Sidekiq::Queue.new('unblocks').clear
+    Sidekiq::ScheduledSet.new.select \
+      { |job| job.klass == self.class.name }.each(&:delete)
 
     # queue the next round
     CreateUnblocksFromExpire.perform_in 1.hours
