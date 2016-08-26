@@ -18,7 +18,7 @@ gem 'turbolinks'
 
 gem 'twitter'
 gem 'sidekiq'
-gem 'sinatra', require: false
+gem 'sinatra'
 gem 'slim'
 gem 'puma'
 gem 'omniauth'
