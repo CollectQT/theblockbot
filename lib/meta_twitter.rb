@@ -37,9 +37,7 @@ module MetaTwitter
   end
 
   def self.read_user_from_ENV
-    MetaTwitter.read_user_from_twitter_id(
-      MetaTwitter.get_account_id(TwitterClient)
-    )
+    MetaTwitter.get_account_id(TwitterClient)
   end
 
   def self.read_user_from_twitter_id(id)

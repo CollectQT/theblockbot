@@ -23,7 +23,7 @@ class Auth < ActiveRecord::Base
 
   def self.get_from_ENV
 
-    user = User.update_or_create( MetaTwitter.read_user_from_ENV )
+    user = User.update_or_create( {id: MetaTwitter.read_user_from_ENV} )
 
     Auth.find_or_create_by(user: user).update_attributes(
       token: TwitterClient.access_token,
