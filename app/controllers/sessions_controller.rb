@@ -1,14 +1,10 @@
 class SessionsController < ApplicationController
 
-  def new
-    session[:origin] = request.referrer
-    redirect_to '/auth/twitter'
-  end
-
   def create
     user = Auth.parse(request.env["omniauth.auth"])
     session[:user_id] = user.id
-    path = set_path(session[:origin] || root_url)
+    path = set_path(request.referrer || root_url)
+    puts "REDIRECT PATH: #{path}"
     redirect_to path, :notice => "Signed in!"
   end
 

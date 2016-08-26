@@ -45,7 +45,7 @@
                 %img.avatar(src="#{current_user.profile_image_url}")
 
             - else
-              %li.pull-right= link_to "Sign in with Twitter", signin_path
+              %li.pull-right= link_to "Sign in with Twitter", '/auth/twitter'
     .container
       %main.row
         .col-lg-12

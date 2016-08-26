@@ -27,7 +27,6 @@ Rails.application.routes.draw do
   get  '/tools/unblocker'   => 'tools#unblocker'
   post '/tools/unblocker'   => 'tools#unblocker_perform',   :as => :unblocker_perform
 
-  get     '/signin'                  => 'sessions#new',      :as => :signin
   delete  '/signout'                 => 'sessions#destroy',  :as => :signout
   get     '/auth/failure'            => 'sessions#failure'
   get     '/auth/:provider/callback' => 'sessions#create'

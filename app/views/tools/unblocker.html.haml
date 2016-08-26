@@ -11,5 +11,5 @@
     :data    => {confirm: 'Are you sure you want to undo all blocks on your account? This action cannot be undone!!!'} # very irresponsible mixing of rocket and json syntax
 - else
   =  link_to 'Sign in with Twitter to use this tool',
-    signin_path,
+    '/auth/twitter',
     :class => 'btn btn-primary'
