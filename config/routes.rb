@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-
   root 'index#index'
 
   # delete '/block_lists/:id/remove/blocker/:user_id' => 'block_lists#remove_blocker', :as => :remove_blocker
