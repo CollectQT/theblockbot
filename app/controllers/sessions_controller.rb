@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
   def failure
     logger.error env['omniauth.error'].inspect
     redirect_to request.env['omniauth.origin'] || root_url,
-      :notice => "Authentication error #{params[:message]}"
+      :alert => "login failed"
   end
 
 end
