@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160713082627) do
+ActiveRecord::Schema.define(version: 20160906032526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20160713082627) do
   create_table "block_lists", force: :cascade do |t|
     t.string   "name",                                null: false
     t.string   "description"
-    t.boolean  "showcase",            default: false
+    t.boolean  "showcase",            default: true
     t.boolean  "show_blocks",         default: true,  null: false
     t.integer  "expires",             default: 365
     t.datetime "created_at",                          null: false

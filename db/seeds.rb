@@ -4,6 +4,7 @@ block_list = BlockList.find_or_create_by(name: 'Testing12')
 block_list.update_attributes(
   :description  => 'for testing, maintenence, etc',
   :expires      => nil,
+  :showcase     => false,
 )
 
 Admin.find_or_create_by(
