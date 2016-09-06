@@ -31,7 +31,13 @@
     %dt
       %strong Blockers:
     - for blocker in (@block_list.blockers - @block_list.admins)
-      %dd= link_to "#{blocker.name} (@#{blocker.user_name})", "http://#{blocker.website}.com/#{blocker.user_name}"
+      %dd
+        = link_to "#{blocker.name} (@#{blocker.user_name})", "http://#{blocker.website}.com/#{blocker.user_name}"
+        = form_tag remove_blocker_path(@block_list), :method => 'delete', :class => 'delete-button' do
+          = submit_tag 'x',
+            :title => 'Removes this blocker',
+            :data  => { :confirm => 'Remove this blocker?'}
+          = hidden_field :user_id, blocker.id
   %dt
     %strong Blocked Users:
   %dd= @block_list.targets.length

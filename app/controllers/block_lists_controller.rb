@@ -111,10 +111,14 @@ class BlockListsController < ApplicationController
     end
   end
 
-  # def remove_blocker
-  #   Blocker.find_by(block_list: @block_list, user: User.find(params[:user_id])).delete
-  #   redirect_to :back, notice: 'Blocker removed'
-  # end
+  def remove_blocker
+    if @block_list.admin? current_user
+      Blocker.find_by(block_list: @block_list, user: User.find(params[:user_id].keys[0])).delete
+      redirect_to :back, notice: 'Blocker removed'
+    else
+      redirect_to :back, notice: 'Not authorized'
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
