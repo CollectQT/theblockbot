@@ -112,8 +112,9 @@ class BlockListsController < ApplicationController
   end
 
   def remove_blocker
-    if @block_list.admin? current_user
-      Blocker.find_by(block_list: @block_list, user: User.find(params[:user_id].keys[0])).delete
+    target_id = params[:user_id].keys[0].to_i
+    if (@block_list.admin? current_user) or (current_user.id == target_id)
+      Blocker.find_by(block_list: @block_list, user: User.find(target_id)).delete
       redirect_to :back, notice: 'Blocker removed'
     else
       redirect_to :back, notice: 'Not authorized'

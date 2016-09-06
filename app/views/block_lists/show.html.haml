@@ -26,18 +26,28 @@
     %dt
       %strong Admins:
     - for admin in @block_list.admins
-      %dd= link_to "#{admin.name} (@#{admin.user_name})", "http://#{admin.website}.com/#{admin.user_name}"
+      %dd
+        = link_to "#{admin.name} (@#{admin.user_name})", "http://#{admin.website}.com/#{admin.user_name}"
+        - if current_user.id == admin.id
+          = form_tag remove_blocker_path(@block_list), :method => 'delete', :class => 'delete-button' do
+            = submit_tag 'x',
+              :title => 'Removes this admin',
+              :data  => { :confirm => 'Remove this admin?'}
+            = hidden_field :user_id, admin.id
+
   - if (@block_list.blockers - @block_list.admins).length > 0
     %dt
       %strong Blockers:
     - for blocker in (@block_list.blockers - @block_list.admins)
       %dd
         = link_to "#{blocker.name} (@#{blocker.user_name})", "http://#{blocker.website}.com/#{blocker.user_name}"
-        = form_tag remove_blocker_path(@block_list), :method => 'delete', :class => 'delete-button' do
-          = submit_tag 'x',
-            :title => 'Removes this blocker',
-            :data  => { :confirm => 'Remove this blocker?'}
-          = hidden_field :user_id, blocker.id
+        - if (@block_list.admin? current_user) or (current_user.id == blocker.id)
+          = form_tag remove_blocker_path(@block_list), :method => 'delete', :class => 'delete-button' do
+            = submit_tag 'x',
+              :title => 'Removes this blocker',
+              :data  => { :confirm => 'Remove this blocker?'}
+            = hidden_field :user_id, blocker.id
+
   %dt
     %strong Blocked Users:
   %dd= @block_list.targets.length
