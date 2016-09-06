@@ -20,7 +20,7 @@ class CreateUnblocksFromExpire
       { |job| job.klass == self.class.name }.each(&:delete)
 
     # queue the next round
-    CreateUnblocksFromExpire.perform_in 1.hours
+    CreateUnblocksFromExpire.perform_in 1.hours if Rails.env.production?
 
   end
 
