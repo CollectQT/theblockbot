@@ -78,7 +78,7 @@
       %th Time Reported
       %th View Reports
   %tbody
-    - @block_list.reports.active.each do |report|
+    - @block_list.reports.active.limit(100).each do |report|
       %tr
         %td= link_to "#{report.target.name} (@#{report.target.user_name})", "http://twitter.com/#{report.target.user_name}"
         %td= report.target.description

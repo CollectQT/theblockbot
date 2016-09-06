@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
   # GET /reports
   # GET /reports.json
   def index
-    @reports = Report.all.visible(current_user)
+    @reports = Report.all.visible(current_user).limit(100)
   end
 
   # GET /reports/1

@@ -3,7 +3,7 @@ class BlockListsController < ApplicationController
 
   # GET /block_lists
   def index
-    @block_lists = BlockList.all
+    @block_lists = BlockList.all.limit(30)
   end
 
   # GET /block_lists/1
