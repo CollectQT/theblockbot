@@ -92,7 +92,7 @@ module MetaTwitter
 
   def self.get_following_ids(user, target, cursor, count)
   # user => MetaTwitter::Auth.config
-  # target => str (@name, like @twitter)
+  # target => str / int (@name / 1234, twitter identifier)
   # cursor => int
   # count => int
     user_id = MetaTwitter.get_account_id(user)
@@ -118,7 +118,7 @@ module MetaTwitter
 
   def self.get_follower_ids(user, target, cursor, count)
   # user => MetaTwitter::Auth.config
-  # target => str (@name, like @twitter)
+  # target => str / int (@name / 1234, twitter identifier)
   # cursor => int
   # count => int
     user_id = MetaTwitter.get_account_id(user)
