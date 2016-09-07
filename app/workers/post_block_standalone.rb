@@ -1,4 +1,4 @@
-class PostBlock
+class PostBlockStandalone
   include Sidekiq::Worker
 
   sidekiq_retry_in do |count|
