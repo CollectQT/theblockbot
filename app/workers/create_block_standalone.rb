@@ -17,6 +17,6 @@ class CreateBlockStandalone
       MetaTwitter.get_follower?(user_auth, target_account_id) ? return : nil
     end
 
-    PostBlockStandalone.perform_async(user_database_id, target_account_id)
+    PostBlock.perform_async(user_database_id, target_account_id)
   end
 end

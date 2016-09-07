@@ -19,6 +19,12 @@ class CreateBlock
       MetaTwitter.get_follower?(user_auth, target) ? return : nil
     end
 
-    PostBlock.perform_async(user_model.id, report.id)
+    args = {
+      user_id: user_model.id,
+      target_id: report.target.id,
+      report_id: report.id,
+      block_list_id: report.block_list.id,
+    }
+    PostBlock.perform_async(user_model.id, target, ['create', args,])
   end
 end
