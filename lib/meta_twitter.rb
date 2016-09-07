@@ -90,15 +90,16 @@ module MetaTwitter
     end
   end
 
-  def self.get_following_ids(user, cursor, count)
+  def self.get_following_ids(user, target, cursor, count)
   # user => MetaTwitter::Auth.config
+  # target => str (@name, like @twitter)
   # cursor => int
   # count => int
     user_id = MetaTwitter.get_account_id(user)
-    Rails.cache.fetch("#{user_id}/all_following/#{cursor}", expires_in: 1.months) do
+    Rails.cache.fetch("#{target}/all_following/#{cursor}/context#{user_id}", expires_in: 1.months) do
       rescue_rate_limit {
-        Rails.logger.debug { "GET Twitter.friend_ids #{user_id} #{cursor}" }
-        user.friend_ids(:cursor => cursor, :count => count).to_h
+        Rails.logger.debug { "GET Twitter.friend_ids #{target} #{cursor} (context #{user_id})" }
+        user.friend_ids(target, :cursor => cursor, :count => count).to_h
       }
     end
   end
@@ -115,15 +116,16 @@ module MetaTwitter
     end
   end
 
-  def self.get_follower_ids(user, cursor, count)
+  def self.get_follower_ids(user, target, cursor, count)
   # user => MetaTwitter::Auth.config
+  # target => str (@name, like @twitter)
   # cursor => int
   # count => int
     user_id = MetaTwitter.get_account_id(user)
-    Rails.cache.fetch("#{user_id}/all_followers/#{cursor}", expires_in: 1.months) do
+    Rails.cache.fetch("#{target}/all_followers/#{cursor}/context#{user_id}", expires_in: 1.months) do
       rescue_rate_limit {
-        Rails.logger.debug { "GET Twitter.follower_ids #{user_id} #{cursor}" }
-        user.follower_ids(:cursor => cursor, :count => count).to_h
+        Rails.logger.debug { "GET Twitter.follower_ids #{target} #{cursor} (context #{user_id})" }
+        user.follower_ids(target, :cursor => cursor, :count => count).to_h
       }
     end
   end
@@ -186,45 +188,46 @@ module MetaTwitter
 
   ############################################
 
-  # follows = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
-  # follows = MetaTwitter::ReadFollows.from_followers( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
+  # following_self  = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
+  # followers_self  = MetaTwitter::ReadFollows.from_followers( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
+  # following_other = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ), target: '@cyrin_test' )
 
   class ReadFollows
 
-    def self.from_followers(user)
+    def self.from_followers(user, target: nil)
     # user => MetaTwitter::Auth.config
-      self.read(user, "followers")
+      self.read(user, "followers", target: target)
     end
 
-    def self.from_following(user)
+    def self.from_following(user, target: nil)
     # user => MetaTwitter::Auth.config
-      self.read(user, "following")
+      self.read(user, "following", target: target)
     end
 
-    def self.read(user, type)
+    def self.read(user, type, target: nil)
     # user => MetaTwitter::Auth.config
     # type => string ("followers" or "following")
       Rails.cache.fetch("fof/all/#{MetaTwitter.get_account_id(user)}/#{type}", expires_in: 1.months) do
-        self.new.page(user, type)
+        self.new.page(user, type, target)
       end
     end
 
-    def page(user, type, fof: [], cursor: -1)
+    def page(user, type, target, fof: [], cursor: -1)
       Rails.cache.fetch("fof/page/#{MetaTwitter.get_account_id(user)}/#{type}/#{cursor}", expires_in: 1.months) do
         if cursor != 0
-          fof, cursor = process_page(user, type, fof, cursor)
-          page(user, type, fof: fof, cursor: cursor)
+          fof, cursor = process_page(user, type, target, fof, cursor)
+          page(user, type, target, fof: fof, cursor: cursor)
         else
           fof
         end
       end
     end
 
-    private def process_page(user, type, fof, cursor, count: 5000)
+    private def process_page(user, type, target, fof, cursor, count: 5000)
       if type == 'followers'
-        response = MetaTwitter.get_follower_ids(user, cursor, count)
+        response = MetaTwitter.get_follower_ids(user, target, cursor, count)
       elsif type == 'following'
-        response = MetaTwitter.get_following_ids(user, cursor, count)
+        response = MetaTwitter.get_following_ids(user, target, cursor, count)
       end
       fof = fof + response[:ids]
       cursor = response[:next_cursor]
