@@ -6,17 +6,14 @@ class PostBlock
     900 * (count + 1)
   end
 
-  def perform(user_database_id, report_id)
-    user = MetaTwitter::Auth.config( User.find(user_database_id) )
-    report = Report.find(report_id)
+  def perform(user_database_id, target_account_id, callback=nil)
+    block(user_database_id, target_account_id)
+    Utils.send(Block, callback)
+  end
 
-    user.block(report.target.account_id.to_i)
-    Block.create(
-      user: user,
-      target: report.target,
-      report: report,
-      block_list: report.block_list,
-    )
+  def block(user_database_id, target_account_id)
+    user = MetaTwitter::Auth.config( User.find(user_database_id) )
+    user.block(target_account_id)
   end
 
 end
