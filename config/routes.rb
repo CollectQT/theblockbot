@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   get  '/tools/hunkerdown'  => 'tools#hunkerdown'
   get  '/tools/blockchain'  => 'tools#blockchain'
+  post '/tools/blockchain'  => 'tools#blockchain_perform'
   get  '/unblocker'         => redirect('/tools/unblocker')
   get  '/tools/unblocker'   => 'tools#unblocker'
   post '/tools/unblocker'   => 'tools#unblocker_perform',   :as => :unblocker_perform
