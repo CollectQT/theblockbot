@@ -28,13 +28,13 @@ module Utils
     string[0] == character ? string[1..string.length] : string
   end
 
-  def self.id_from_access_token(user)
+  def Utils.id_from_twitter_auth(user)
   # user => MetaTwitter::Auth.config
     user.access_token.split('-')[0]
   end
 
   def self.read_id_from_ENV
-    Utils.id_from_access_token(TwitterClient)
+    Utils.id_from_twitter_auth(TwitterClient)
   end
 
 end
