@@ -207,7 +207,10 @@ module MetaTwitter
     def self.read(user, type, target: nil)
     # user => MetaTwitter::Auth.config
     # type => string ("followers" or "following")
-      Rails.cache.fetch("fof/all/#{MetaTwitter.get_account_id(user)}/#{type}", expires_in: 1.months) do
+      user_account_id = MetaTwitter.get_account_id(user)
+      target          = target.nil? ? user_account_id : target
+
+      Rails.cache.fetch("fof/all/#{user_account_id}/#{type}", expires_in: 1.months) do
         self.new.page(user, type, target)
       end
     end
