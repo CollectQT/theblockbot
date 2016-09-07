@@ -1,6 +1,7 @@
-require 'webmock/rspec'
 require 'vcr'
+require 'json'
 require 'omniauth'
+require 'webmock/rspec'
 
 OmniAuth.config.test_mode = true
 WebMock.disable_net_connect!(allow_localhost: true)
