@@ -7,6 +7,7 @@ gem 'dotenv-rails'
 gem 'rake'
 gem 'pg'
 gem 'redis-rails'
+gem 'flt'
 
 gem 'sass-rails', '~> 5'
 gem 'twitter-bootstrap-rails'

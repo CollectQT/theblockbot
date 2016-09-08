@@ -1,3 +1,4 @@
+require 'flt'
 require 'vcr'
 require 'json'
 require 'omniauth'
