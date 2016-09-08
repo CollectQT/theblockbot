@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
 rm -rf spec/vcr/*
+echo "The cassettes will now most likely contain trivial changes"
+echo "Avoid committing those changes unless you are modifying the spec"
