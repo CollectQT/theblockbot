@@ -30,7 +30,7 @@ module Utils
 
   def Utils.id_from_twitter_auth(user)
   # user => MetaTwitter::Auth.config
-    user.access_token.split('-')[0]
+    user.access_token.split('-')[0].to_i
   end
 
   def self.read_id_from_ENV
