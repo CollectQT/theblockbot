@@ -4,7 +4,7 @@ describe "send" do
   let(:callback) { JSON.load JSON.dump ['create', args] }
   let(:model) { Block }
 
-  it "creates a model object with given arguments" do
+  it "calls a method on a model with the given arguments" do
     expect(model).to receive(callback[0]).with(callback[1])
     Utils.send(model, callback)
   end
