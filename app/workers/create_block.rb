@@ -1,7 +1,7 @@
 class CreateBlock
   include Sidekiq::Worker
 
-  def perform(user_database_id, report_id)
+  def perform(user_database_id, target_account_id)
     user_model = User.find(user_database_id)
     user_auth  = MetaTwitter::Auth.config(user_model)
     report = Report.find(report_id)
@@ -20,11 +20,11 @@ class CreateBlock
     end
 
     args = {
-      user_id: user_model.id,
+      user_id: user_database_id,
       target_id: report.target.id,
       report_id: report.id,
       block_list_id: report.block_list.id,
     }
-    PostBlock.perform_async(user_model.id, target, ['create', args,])
+    PostBlock.perform_async(user_database_id, target_account_id, ['create', args,])
   end
 end
