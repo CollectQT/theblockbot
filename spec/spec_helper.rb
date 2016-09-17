@@ -1,6 +1,7 @@
 require 'flt'
 require 'vcr'
 require 'json'
+require 'hash_dot'
 require 'omniauth'
 require 'webmock/rspec'
 
