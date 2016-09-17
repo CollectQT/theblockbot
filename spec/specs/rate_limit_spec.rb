@@ -1,5 +1,8 @@
 ### CODE WIP !!! ###
 
+# example spec here:
+# => https://github.com/rubygems/rubygems.org/pull/1414
+
 # describe "the login callback", :type => :request  do
 
 #   let(:limit) { 15 }
