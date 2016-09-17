@@ -111,6 +111,10 @@ module MetaTwitter
     }
 
     user.friendships(target_users)
+  # [(
+  #    :id => twitter_user.id
+  #    :connections => (following, following_requested, followed_by, none),
+  # ),]
   end
 
   ############################################
