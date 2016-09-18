@@ -136,6 +136,30 @@ module MetaTwitter
 
   ############################################
 
+  class RemoveFollowing
+
+    def from_list(user, user_id_list, max: 100)
+      list_without_following = []
+
+      for slice in user_id_list.each_slice(max).to_a
+        response = self.get_connections(user, slice)
+        for item in response
+          list_without_following.concat([item.id]) unless item.connections.include? "following"
+        end
+      end
+
+      return list_without_following
+    end
+
+    def get_connections(user, slice)
+      MetaTwitter.get_connections(user, slice)
+    end
+
+  end
+
+
+  ############################################
+
   # following_self  = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
   # followers_self  = MetaTwitter::ReadFollows.from_followers( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
   # following_other = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ), target: '@cyrin_test' )
