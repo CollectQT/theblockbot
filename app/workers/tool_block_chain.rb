@@ -3,15 +3,16 @@ class ToolBlockChain
 
   def perform(user_database_id, target_account_name)
     # create a user for the target, for reference purposes
-    User.get_from_twitter_name(target_account_name)
+    target_account_id = User.get_from_twitter_name(target_account_name).account_id
 
-    user      = MetaTwitter::Auth.config( User.find(user_database_id) )
-    followers = MetaTwitter::ReadFollows.from_followers( user, target: target_account_name )
+    user        = MetaTwitter::Auth.config( User.find(user_database_id) )
+    target_list = MetaTwitter::ReadFollows.from_followers( user, target: target_account_name )
 
-    followers_without_following = MetaTwitter.remove_following_from_list(user, followers)
+    target_list = MetaTwitter.remove_follow_from_list(user, target_list, "following")
+    target_list = MetaTwitter.remove_blocked_from_list(user, target_list)
+    # a filter for removing followers is purposefully omitted here
 
     for follower in followers
-      puts "Blocking #{follower}"
       CreateBlock.perform_async(user_database_id, follower)
     end
 
