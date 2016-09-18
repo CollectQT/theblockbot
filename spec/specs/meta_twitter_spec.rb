@@ -19,6 +19,7 @@ describe "MetaTwitter" do
         case id
           when 1 then {'id': id, 'connections': 'none'}.to_dot
           when 2 then {'id': id, 'connections': 'following'}.to_dot
+          when 3 then {'id': id, 'connections': 'none'}.to_dot
         end
       }.compact
     end
@@ -28,8 +29,8 @@ describe "MetaTwitter" do
     it "removes following for list" do
       stub_get_connections
 
-      list = MetaTwitter.remove_following_from_list(nil, [1, 2])
-      expected_list = [1]
+      list = MetaTwitter.remove_following_from_list(nil, [1, 2, 3])
+      expected_list = [1, 3]
 
       expect(list).to eq(expected_list)
     end
@@ -39,8 +40,9 @@ describe "MetaTwitter" do
 
       expect(MetaTwitter).to receive(:get_connections).with(nil, [1])
       expect(MetaTwitter).to receive(:get_connections).with(nil, [2])
+      expect(MetaTwitter).to receive(:get_connections).with(nil, [3])
 
-      MetaTwitter.remove_following_from_list(nil, [1, 2], max: 1)
+      MetaTwitter.remove_following_from_list(nil, [1, 2, 3], max: 1)
     end
   end
 
