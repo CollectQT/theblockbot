@@ -120,6 +120,8 @@ module MetaTwitter
   ############################################
 
   def self.remove_following_from_list(user, user_id_list, max: 100)
+  # user => MetaTwitter::Auth.config
+  # user_id_list => [123, 456, ...]
     list_without_following = []
 
     for slice in user_id_list.each_slice(max).to_a
