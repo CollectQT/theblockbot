@@ -117,22 +117,25 @@ module MetaTwitter
   # ),]
   end
 
+  def self.pre_get_connections(user, user_id_list, max: 100)
+    connections_list = []
+    for slice in user_id_list.each_slice(max).to_a
+      connections_list.concat( self.get_connections(user, slice) )
+    end
+    return connections_list
+  end
+
   ############################################
 
-  def self.remove_following_from_list(user, user_id_list, max: 100)
+  def self.remove_following_from_list(user, user_id_list)
   # user => MetaTwitter::Auth.config
   # user_id_list => [123, 456, ...]
-    list_without_following = []
-
-    for slice in user_id_list.each_slice(max).to_a
-      response = self.get_connections(user, slice)
-      for item in response
-        list_without_following.concat([item.id]) unless item.connections.include? "following"
-      end
-    end
-
-    return list_without_following
+    MetaTwitter.pre_get_connections(user, user_id_list).map{ |target|
+      target.id unless target.connections.include? "following"
+    }.compact
   end
+
+
 
   def self.remove_blocked_from_list(user, user_id_list)
   # user => MetaTwitter::Auth.config

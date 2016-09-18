@@ -34,16 +34,6 @@ describe "MetaTwitter" do
 
       expect(list).to eq(expected_list)
     end
-
-    it "respects the `max` parameter" do
-      stub_get_connections
-
-      expect(MetaTwitter).to receive(:get_connections).with(nil, [1])
-      expect(MetaTwitter).to receive(:get_connections).with(nil, [2])
-      expect(MetaTwitter).to receive(:get_connections).with(nil, [3])
-
-      MetaTwitter.remove_following_from_list(nil, [1, 2, 3], max: 1)
-    end
   end
 
   let (:stub_block_ids) {
@@ -58,6 +48,18 @@ describe "MetaTwitter" do
       expected_ids = [1, 2]
 
       expect(ids).to eq(expected_ids)
+    end
+  end
+
+  context ".pre_get_connections" do
+    it "respects the `max` parameter" do
+      stub_get_connections
+
+      expect(MetaTwitter).to receive(:get_connections).with(nil, [1])
+      expect(MetaTwitter).to receive(:get_connections).with(nil, [2])
+      expect(MetaTwitter).to receive(:get_connections).with(nil, [3])
+
+      MetaTwitter.pre_get_connections(nil, [1, 2, 3], max: 1)
     end
   end
 
