@@ -24,7 +24,7 @@ describe "meta_twitter" do
     end
   }
 
-  context "MetaTwitter::RemoveFollowing.from_list" do
+  context "MetaTwitter.remove_following_from_list" do
     it "removes following for list" do
       stub_get_connections
 
