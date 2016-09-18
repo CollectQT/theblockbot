@@ -85,7 +85,7 @@ module MetaTwitter
   # user => MetaTwitter::Auth.config
   # cursor => int
     user_id = Utils.id_from_twitter_auth(user)
-    Rails.cache.fetch("#{user_id}/blocked_ids/#{cursor}", expires_in: 1.days) do
+    Rails.cache.fetch("#{user_id}/blocked_ids/#{cursor}", expires_in: 1.weeks) do
       Rails.logger.debug { "GET Twitter.blocked_ids #{user_id} #{cursor}" }
       user.blocked_ids(cursor: cursor).to_h
     end
