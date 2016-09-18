@@ -12,7 +12,7 @@ class ToolBlockChain
 
     for follower in followers
       puts "Blocking #{follower}"
-      CreateBlockStandalone.perform_async(user_database_id, follower)
+      CreateBlock.perform_async(user_database_id, follower)
     end
 
   end
