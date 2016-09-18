@@ -20,17 +20,27 @@ describe "MetaTwitter" do
           when 1 then {'id': id, 'connections': 'none'}.to_dot
           when 2 then {'id': id, 'connections': 'following'}.to_dot
           when 3 then {'id': id, 'connections': 'none'}.to_dot
+          when 4 then {'id': id, 'connections': 'followed_by'}.to_dot
         end
       }.compact
     end
   }
 
-  context ".remove_following_from_list" do
-    it "removes following for list" do
+  context ".remove_follow_from_list" do
+    it "removes following from list" do
       stub_get_connections
 
-      list = MetaTwitter.remove_following_from_list(nil, [1, 2, 3])
-      expected_list = [1, 3]
+      list = MetaTwitter.remove_follow_from_list(nil, [1, 2, 3, 4], "following")
+      expected_list = [1, 3, 4]
+
+      expect(list).to eq(expected_list)
+    end
+
+    it "removes followers from list" do
+      stub_get_connections
+
+      list = MetaTwitter.remove_follow_from_list(nil, [1, 2, 3, 4], "followed_by")
+      expected_list = [1, 2, 3]
 
       expect(list).to eq(expected_list)
     end

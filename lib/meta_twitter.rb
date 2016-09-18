@@ -127,15 +127,14 @@ module MetaTwitter
 
   ############################################
 
-  def self.remove_following_from_list(user, user_id_list)
+  def self.remove_follow_from_list(user, user_id_list, type)
   # user => MetaTwitter::Auth.config
   # user_id_list => [123, 456, ...]
+  # type => "following" | "followed_by"
     MetaTwitter.pre_get_connections(user, user_id_list).map{ |target|
-      target.id unless target.connections.include? "following"
+      target.id unless target.connections.include? type
     }.compact
   end
-
-
 
   def self.remove_blocked_from_list(user, user_id_list)
   # user => MetaTwitter::Auth.config
