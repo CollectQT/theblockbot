@@ -119,6 +119,21 @@ module MetaTwitter
 
   ############################################
 
+  def self.remove_following_from_list(user, user_id_list, max: 100)
+    list_without_following = []
+
+    for slice in user_id_list.each_slice(max).to_a
+      response = self.get_connections(user, slice)
+      for item in response
+        list_without_following.concat([item.id]) unless item.connections.include? "following"
+      end
+    end
+
+    return list_without_following
+  end
+
+  ############################################
+
   # MetaTwitter::Auth.config(User)
 
   class Auth
@@ -133,30 +148,6 @@ module MetaTwitter
     end
 
   end
-
-  ############################################
-
-  class RemoveFollowing
-
-    def from_list(user, user_id_list, max: 100)
-      list_without_following = []
-
-      for slice in user_id_list.each_slice(max).to_a
-        response = self.get_connections(user, slice)
-        for item in response
-          list_without_following.concat([item.id]) unless item.connections.include? "following"
-        end
-      end
-
-      return list_without_following
-    end
-
-    def get_connections(user, slice)
-      MetaTwitter.get_connections(user, slice)
-    end
-
-  end
-
 
   ############################################
 

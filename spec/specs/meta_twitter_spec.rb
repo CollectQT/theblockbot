@@ -28,7 +28,7 @@ describe "meta_twitter" do
     it "removes following for list" do
       stub_get_connections
 
-      list = MetaTwitter::RemoveFollowing.new.from_list(nil, [1, 2])
+      list = MetaTwitter.remove_following_from_list(nil, [1, 2])
       expected_list = [1]
 
       expect(list).to eq(expected_list)
@@ -40,7 +40,7 @@ describe "meta_twitter" do
       expect(MetaTwitter).to receive(:get_connections).with(nil, [1])
       expect(MetaTwitter).to receive(:get_connections).with(nil, [2])
 
-      MetaTwitter::RemoveFollowing.new.from_list(nil, [1, 2], max: 1)
+      MetaTwitter.remove_following_from_list(nil, [1, 2], max: 1)
     end
   end
 
