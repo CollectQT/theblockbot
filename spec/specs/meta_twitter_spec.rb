@@ -1,8 +1,8 @@
-describe "meta_twitter" do
+describe "MetaTwitter" do
 
   let(:env_user) { MetaTwitter::Auth.config( User.get_from_ENV ) }
 
-  context "MetaTwitter::ReadFollows.from_followers" do
+  context "::ReadFollows.from_followers" do
     it "reads roughly the same amount of followers as followers_count", :vcr do
       follows          = MetaTwitter::ReadFollows.from_followers( env_user, target: '@gitlab' )
       rounded_follows  = Flt.DecNum(follows.count).round(precision: 1)
@@ -24,7 +24,7 @@ describe "meta_twitter" do
     end
   }
 
-  context "MetaTwitter.remove_following_from_list" do
+  context ".remove_following_from_list" do
     it "removes following for list" do
       stub_get_connections
 
