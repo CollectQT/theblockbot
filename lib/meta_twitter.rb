@@ -134,6 +134,12 @@ module MetaTwitter
     return list_without_following
   end
 
+  def self.remove_blocked_from_list(user, user_id_list)
+  # user => MetaTwitter::Auth.config
+  # user_id_list => [123, 456, ...]
+    user_id_list - MetaTwitter::BlockIds.read(user)
+  end
+
   ############################################
 
   # MetaTwitter::Auth.config(User)

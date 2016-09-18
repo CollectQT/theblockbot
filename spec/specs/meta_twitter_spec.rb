@@ -44,4 +44,19 @@ describe "MetaTwitter" do
     end
   end
 
+  let (:stub_block_ids) {
+    allow(MetaTwitter::BlockIds).to receive(:read).and_return([3])
+  }
+
+  context ".remove_blocked_from_list" do
+    it "removes blocked from list" do
+      stub_block_ids
+
+      ids = MetaTwitter.remove_blocked_from_list(nil, [1, 2, 3])
+      expected_ids = [1, 2]
+
+      expect(ids).to eq(expected_ids)
+    end
+  end
+
 end
