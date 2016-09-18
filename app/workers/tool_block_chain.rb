@@ -8,6 +8,8 @@ class ToolBlockChain
     user      = MetaTwitter::Auth.config( User.find(user_database_id) )
     followers = MetaTwitter::ReadFollows.from_followers( user, target: target_account_name )
 
+    followers_without_following = MetaTwitter.remove_following_from_list(user, followers)
+
     for follower in followers
       puts "Blocking #{follower}"
       CreateBlockStandalone.perform_async(user_database_id, follower)
