@@ -45,6 +45,7 @@ group :test do
   gem 'webmock'
   gem 'capybara'
   gem 'hash_dot'
+  gem 'factory_girl_rails'
 end
 
 group :production do

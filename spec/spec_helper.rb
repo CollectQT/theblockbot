@@ -4,6 +4,7 @@ require 'json'
 require 'hash_dot'
 require 'omniauth'
 require 'webmock/rspec'
+require 'factory_girl_rails'
 
 OmniAuth.config.test_mode = true
 WebMock.disable_net_connect!(allow_localhost: true)
@@ -41,4 +42,6 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
+
+  config.include FactoryGirl::Syntax::Methods
 end
