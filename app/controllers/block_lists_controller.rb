@@ -8,6 +8,9 @@ class BlockListsController < ApplicationController
 
   # GET /block_lists/1
   def show
+    if block_list.private_list? and not block_list.is_blocker? current_user
+      redirect_to :back, notice: 'Not authorized'
+    end
   end
 
   # GET /block_lists/new
