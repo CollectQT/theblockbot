@@ -24,6 +24,10 @@ describe "Report" do
     it 'creates a report' do
       expect(report_parent.id).to be_a(Integer)
     end
+
+    it 'auto approves reports' do
+      expect(report_parent.approver).to be(user)
+    end
   end
 
 end
