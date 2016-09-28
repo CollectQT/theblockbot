@@ -79,14 +79,17 @@ class Report < ActiveRecord::Base
     expires = BlockList.get_expiration(block_list)
     parent_id = parent_id ? parent_id : self.set_parent(block_list, target)
 
-    self.create!(
+    report = self.find_or_create_by(
       text: text,
       block_list: block_list,
       reporter: reporter,
       target: target,
+    )
+    report.update_attributes(
       expires: expires,
       parent_id: parent_id,
     )
+    report
   end
 
   def do_after_save
