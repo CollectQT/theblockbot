@@ -28,6 +28,18 @@ describe "Report" do
     it 'auto approves reports' do
       expect(report_parent.approver).to be(user)
     end
+
+    it 'sets parent attribute on child reports' do
+      expect(report_child.parent.id).to be(report_parent.id)
+    end
+
+    it 'sets the parent_id=1 on parent reports' do
+      expect(report_parent.parent_id).to be(1)
+    end
+
+    it 'does not set parent_id=1 on child reports' do
+      expect(report_child.parent_id).not_to be(1)
+    end
   end
 
 end
