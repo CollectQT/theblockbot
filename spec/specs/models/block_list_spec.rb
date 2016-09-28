@@ -27,28 +27,32 @@ describe "BlockList", :type => :feature  do
 
     it 'allows view by Blocker' do
       mock_user_twitter
+      user = User.find_by(name: 'Twitter')
 
       blocker = Blocker.find_or_create_by(
         block_list: block_list_private,
-        user: User.find_by(name: 'Twitter'),
+        user: user,
       )
 
       visit block_list_path(block_list_private)
       expect(page).to have_content(block_list_private.name)
+      expect(page).to have_content(user.name)
 
       blocker.delete
     end
 
     it 'allows view by Admin' do
       mock_user_twitter
+      user = User.find_by(name: 'Twitter')
 
       admin = Admin.find_or_create_by(
         block_list: block_list_private,
-        user: User.find_by(name: 'Twitter'),
+        user: user,
       )
 
       visit block_list_path(block_list_private)
       expect(page).to have_content(block_list_private.name)
+      expect(page).to have_content(user.name)
 
       admin.delete
     end
