@@ -4,10 +4,37 @@ require 'json'
 require 'hash_dot'
 require 'omniauth'
 require 'webmock/rspec'
+require 'database_cleaner'
 require 'factory_girl_rails'
+
 
 OmniAuth.config.test_mode = true
 WebMock.disable_net_connect!(allow_localhost: true)
+
+
+def mock_omniauth()
+  OmniAuth.config.mock_auth[:twitter] = nil
+  Rails.application.env_config["omniauth.auth"] =
+    OmniAuth.config.mock_auth[:twitter]
+end
+
+
+def mock_user(account_id, display_name)
+  # ex: user_mock(783214, 'Twitter')
+  OmniAuth.config.add_mock(:twitter, {
+    :provider => 'twitter',
+    :name => display_name,
+    :extra => { :raw_info => { :id => account_id } },
+    :credentials => {:token => 'token', :secret => 'secret'},
+  })
+end
+
+
+def mock_user_ENV_user()
+  user = User.get_from_ENV
+  mock_user(user.account_id, user.name)
+end
+
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/vcr'
