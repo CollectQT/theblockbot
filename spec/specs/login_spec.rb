@@ -1,24 +1,21 @@
 describe "login", :type => :feature  do
 
   before(:each) do
-    mock_omniauth
     visit '/'
   end
 
-  def test_login(setup_user)
-    expect(page).to have_content("Sign in with Twitter")
-    user = setup_user
-    click_link "Sign in"
-    expect(page).to have_content(user.name)
+  # vcr cassette loaded from spec helper
+  it "succeeds on valid login for user @twitter" do
+    expect(page).to have_content('Sign in with Twitter')
+    mock_user_twitter
     expect(page).to have_content("Sign out")
   end
 
-  it "succeeds on valid login for user @twitter", :vcr do
-    test_login( mock_user(783214, 'Twitter') )
-  end
-
-  it "succeeds on valid login for user @twitterapi", :vcr do
-    test_login( mock_user(6253282, 'Twitter API') )
+  # one use vcr cassette
+  it "succeeds on valid login for user @twitterapi" do
+    expect(page).to have_content('Sign in with Twitter')
+    mock_user_twitterapi
+    expect(page).to have_content("Sign out")
   end
 
   # # unsure what this test is for, besides distracting command line output
