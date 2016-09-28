@@ -14,7 +14,7 @@ class PostBlock
   def block(user_database_id, target_account_id)
     begin
       user = MetaTwitter::Auth.config( User.find(user_database_id) )
-      user.block(target_account_id)
+      user.block(target_account_id.to_i)
     rescue Twitter::Error::NotFound
       Rails.logger.info { "Twitter account with id #{target_account_id} no longer exists" }
     end
