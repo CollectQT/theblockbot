@@ -30,6 +30,8 @@ gem 'haml-rails'
 gem 'attr_encrypted', '~> 3'
 gem 'rack-attack'
 
+gem 'coveralls'
+
 group :development do
   gem 'foreman'
   gem 'byebug'
