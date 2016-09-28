@@ -79,7 +79,7 @@ class Report < ActiveRecord::Base
     expires = BlockList.get_expiration(block_list)
     parent_id = parent_id ? parent_id : self.set_parent(block_list, target)
 
-    self.create(
+    self.create!(
       text: text,
       block_list: block_list,
       reporter: reporter,
