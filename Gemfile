@@ -46,6 +46,7 @@ group :test do
   gem 'capybara'
   gem 'hash_dot'
   gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
 
 group :production do
