@@ -93,7 +93,7 @@ class BlockList < ActiveRecord::Base
   end
 
 
-  def self.make(name:, user:, description: nil, expires: 365, private_list: false)
+  def self.make(name:, user:, description: nil, expires: 365, private_list: false, showcase: false)
     block_list = self.find_or_create_by(
       name: name
     )
@@ -101,6 +101,7 @@ class BlockList < ActiveRecord::Base
       expires: expires,
       private_list: private_list,
       description: description,
+      showcase: showcase,
     )
     user.update_log("Created block_list #{block_list.name}")
 

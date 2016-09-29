@@ -1,10 +1,11 @@
 admin = User.get_from_ENV
 
-block_list = BlockList.find_or_create_by(name: 'testing12')
-block_list.update_attributes(
-  :description  => 'for testing, maintenence, etc',
-  :expires      => nil,
-  :showcase     => false,
+block_list = BlockList.make(
+  name: 'Testing12',
+  user: admin,
+  description: 'for testing, maintenence, etc',
+  expires: nil,
+  showcase: false,
 )
 
 Admin.find_or_create_by(
