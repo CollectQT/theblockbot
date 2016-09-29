@@ -69,7 +69,7 @@
       %dt= submit_tag "Add Admin", :class => 'btn btn-primary btn-sm'
       %dd= text_field_tag :user_name, nil, :placeholder => "@name, like @lynncyrin"
 
-%h2 Blocked Users
+%h2 Active Reports
 %table.table.table-striped
   %thead
     %tr
@@ -84,8 +84,18 @@
         %td= report.target.description
         %td= time_ago_in_words(report.created_at) + ' ago'
         %td= link_to 'Reports', "/user/reports/?id=#{report.target.id}", :class => 'btn btn-default'
+      - if report.children.count > 0
+        %tr
+          %td -
+          %td= "the above report has #{report.children.count} other reports attached to it"
+          %td -
+          %td -
+  - if @block_list.reports.active.count > 100
+    %p (list has more than 100 blocked users)
 
-= link_to 'Back to Block Lists',
-  block_lists_path, :class => 'btn btn-default'
-= link_to 'Create new Block List',
-  '/blocklists/new', :class => 'btn btn-default'
+/ = link_to 'Back to Block Lists',
+/   block_lists_path, :class => 'btn btn-default'
+/ = link_to 'Create new Block List',
+/   '/blocklists/new', :class => 'btn btn-default'
+
+.spacer
