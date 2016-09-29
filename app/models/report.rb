@@ -23,8 +23,6 @@ class Report < ActiveRecord::Base
   scope :denied, -> { where(processed: true, approved: false, parent_id: 1) }
   scope :is_parent, -> { where(parent_id: 1) }
 
-  after_save :do_after_save
-
   def child?
     self.parent_id != 1
   end
@@ -89,14 +87,13 @@ class Report < ActiveRecord::Base
       expires: expires,
       parent_id: parent_id,
     )
-    report
-  end
 
-  def do_after_save
-    self.reporter.increment(:reports_created)
-    self.target.increment(:times_reported)
-    self.process_child
-    self.autoapprove
+    report.reporter.increment(:reports_created)
+    report.target.increment(:times_reported)
+    report.process_child
+    report.autoapprove
+
+    report
   end
 
   def self.set_parent(block_list, target)
