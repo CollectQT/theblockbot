@@ -1,25 +1,26 @@
-.page-header
-  %h1 Twitter Block Chain - Ruby Version
+.jumbotron
+  .page-header
+    %h1 Twitter Block Chain - Ruby Version
 
-.page-body
-  %p
-    :markdown
-      Ruby based version of [@satsukitv](https://twitter.com/satsukitv)'s [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en), which is in javascript. Blocks all the followers of a target user, except for people you follow.
+  .page-body
+    %p
+      :markdown
+        Ruby based version of [@satsukitv](https://twitter.com/satsukitv)'s [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en), which is in javascript. Blocks all the followers of a target user, except for people you follow.
 
-      The javascript implementation of Twitter Block Chain is great, but it requires you to keep someone's follower page open for anything from minutes to hours (depending on number of followers). TheBlockBot instead will take the username of the person to block chain, and does the rest of the work on its server.
+        The javascript implementation of Twitter Block Chain is great, but it requires you to keep someone's follower page open for anything from minutes to hours (depending on number of followers). TheBlockBot instead will take the username of the person to block chain, and does the rest of the work on its server.
 
-      For target users with less than 1000 followers the above mentioned [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en) (javascript version) is a better option. For target users with greater than 1000 followers, continue to the form below!
-  %hr
-  %h2 Block Chain Target User:
+        For target users with less than 1000 followers the above mentioned [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en) (javascript version) is a better option. For target users with greater than 1000 followers, continue to the form below!
+    %hr
+    %h2 Block Chain Target User:
 
-- if current_user
-  = form_tag '/tools/blockchain', :method => 'post' do
-    = text_field_tag :user_name, nil, :placeholder => '@name'
-    = submit_tag "Block Chain!",
-      :class => 'btn btn-primary btn-sm',
-      :data  => {:confirm => 'Are you sure you want to block chain this user? TheBlockBot does not currently provide the means to undo it, and it may take quite some time'}
+  - if current_user
+    = form_tag '/tools/blockchain', :method => 'post' do
+      = text_field_tag :user_name, nil, :placeholder => '@name'
+      = submit_tag "Block Chain!",
+        :class => 'btn btn-primary btn-sm',
+        :data  => {:confirm => 'Are you sure you want to block chain this user? TheBlockBot does not currently provide the means to undo it, and it may take quite some time'}
 
-- else
-  =  link_to 'Sign in with Twitter to use this tool',
-    '/auth/twitter',
-    :class => 'btn btn-primary'
+  - else
+    =  link_to 'Sign in with Twitter to use this tool',
+      '/auth/twitter',
+      :class => 'btn btn-primary'

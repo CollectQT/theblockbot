@@ -1,12 +1,26 @@
-%h1 TheBlockBot
+.jumbotron
 
-%p !!! Alpha version software, your input may be wiped !!!
+  %h1.index-page-header TheBlockBot
 
-- if current_user
-  = link_to 'Subscribe to block lists',
-    block_lists_path,
-    :class => 'btn btn-primary'
-- else
-  =  link_to 'Sign In with Twitter',
-    '/auth/twitter',
-    :class => 'btn btn-primary'
+  .index-page-content
+    - if current_user
+      %h2 Tools
+      %ul
+        %li
+          = link_to 'Remove All Blocks',
+            '/tools/unblocker',
+            :class => 'btn btn-primary'
+          %p remove all blocks on your account
+        %li
+          = link_to 'Block Chain',
+            '/tools/blockchain',
+            :class => 'btn btn-primary'
+          %p block someone, and all of their followers
+      %h2 Block Lists
+      %ul
+        %li
+          %p work in progress!
+    - else
+      =  link_to 'Sign In with Twitter',
+        '/auth/twitter',
+        :class => 'btn btn-primary'

@@ -24,7 +24,7 @@
 
             %a.navbar-brand{:href => "/"} TheBlockBot
 
-            %li= link_to "Block Lists", "/blocklists"
+            / %li= link_to "Block Lists", "/blocklists"
 
             %li.dropdown
               %a#toolMenu.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
@@ -35,8 +35,8 @@
                 %li= link_to "Twitter Block Chain", "/tools/blockchain"
 
             - if current_user
-              - if current_user.is_blocker
-                %li= link_to "Reports",   "/reports"
+              / - if current_user.is_blocker
+              /   %li= link_to "Reports",   "/reports"
 
               %li.pull-right= link_to 'Sign out', signout_path, method: 'delete'
               %li.pull-right= link_to 'Profile', '/profile'
@@ -51,6 +51,8 @@
         .col-lg-12
           = bootstrap_flash
           = yield
-      %footer
-        :markdown
-          A [CollectQT](https://www.patreon.com/collectqt) Project, contact [@lynncyrin](https://twitter.com/lynncyrin) for issues
+    %footer
+      .container
+        %p
+          :markdown
+            A [CollectQT](https://www.patreon.com/collectqt) Project, contact [@lynncyrin](https://twitter.com/lynncyrin) for issues
