@@ -123,7 +123,8 @@ class Report < ActiveRecord::Base
 
   def approve(approver)
     if (approver.in? self.block_list.blockers) and not (self.processed? or self.child?)
-      CreateBlocksFromReport.perform_async(self.id)
+      # temporarily disabled pending a rewrite
+      # CreateBlocksFromReport.perform_async(self.id)
       self.update_attributes(approver: approver, approved: true, processed: true)
       self.target.increment(:times_blocked)
       self.reporter.increment(:reports_approved)
