@@ -6,6 +6,16 @@ class PostBlock
     900 * (count + 1)
   end
 
+  def self.perform_async_with_callback(user:, report:)
+    args = {
+      user_id: user.id,
+      target_id: report.target.id,
+      report_id: report.id,
+      block_list_id: report.block_list.id,
+    }
+    PostBlock.perform_async(user.id, report.target.account_id, ['create', args,])
+  end
+
   def perform(user_database_id, target_account_id, callback=nil)
     block(user_database_id, target_account_id)
     Utils.send(Block, callback)
