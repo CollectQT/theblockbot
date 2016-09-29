@@ -100,7 +100,7 @@ class BlockList < ActiveRecord::Base
     block_list.update_attributes(
       expires: expires,
       private_list: private_list,
-      description: description unless description.nil?,
+      description: description,
     )
     user.update_log("Created block_list #{block_list.name}")
 
