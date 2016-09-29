@@ -19,6 +19,12 @@ describe "Report" do
     reporter: user,
     parent_id: report_parent.id,
   ) }
+  let(:report_parent_second) { Report.parse_objects(
+    block_list: block_list,
+    target: user,
+    text: 'parent report two',
+    reporter: user,
+  ) }
 
   context 'parse_objects' do
     it 'creates a report' do
@@ -39,6 +45,10 @@ describe "Report" do
 
     it 'does not set parent_id=1 on child reports' do
       expect(report_child.parent_id).not_to be(1)
+    end
+
+    it 'sets the parent_id=1 on a second parent report' do
+      expect(report_parent_second.parent_id).to be(1)
     end
   end
 
