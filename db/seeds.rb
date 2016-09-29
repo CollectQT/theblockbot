@@ -13,7 +13,8 @@ Admin.find_or_create_by(
   :user       => admin,
 )
 
-Report.parse_objects(
+Report.find_or_create_by(
+  id: 1,
   block_list: block_list,
   target:     admin,
   text:       'Global parent report, used for reference purposes',
