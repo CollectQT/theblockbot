@@ -5,9 +5,7 @@
   %thead
     %tr
       %th Name
-      %th Hashtag
       %th Description
-      %th Subscribers
       %th Blockers
       %th Blocked Users
       %th Actions
@@ -15,9 +13,7 @@
     - @block_lists.where(showcase: true).each do |block_list|
       %tr
         %td= link_to block_list.name, block_list_path(block_list)
-        %td= '#'+block_list.name.downcase.delete(' ')
         %td= block_list.description
-        %td= block_list.users.length
         %td= block_list.blockers.length
         %td= block_list.targets.length
         %td
