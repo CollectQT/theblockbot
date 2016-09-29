@@ -95,7 +95,7 @@ class Report < ActiveRecord::Base
   end
 
   def process_child
-    if self.child? then self.update_attributes(processed: true) end
+    if self.child? then self.update_attributes(processed: true, approved: true) end
   end
 
   def autoapprove
