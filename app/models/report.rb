@@ -18,10 +18,9 @@ class Report < ActiveRecord::Base
   validates_uniqueness_of :text, scope: [:block_list, :reporter, :target,],
     message: "You have already created this report"
 
-  scope :pending, -> { where(processed: false, parent_id: 1) }
-  scope :active, -> { where(approved: true, expired: false, parent_id: 1) }
-  scope :denied, -> { where(processed: true, approved: false, parent_id: 1) }
-  scope :is_parent, -> { where(parent_id: 1) }
+  scope :pending, -> { where(processed: false) }
+  scope :active, -> { where(approved: true, expired: false) }
+  scope :denied, -> { where(processed: true, approved: false) }
 
   def child?
     self.parent_id != 1
@@ -68,14 +67,13 @@ class Report < ActiveRecord::Base
     )
   end
 
-  def self.parse_objects(block_list:, target:, text:, reporter:, parent_id: nil)
+  def self.parse_objects(block_list:, target:, text:, reporter:, parent_id: 1)
   # block_list -> BlockList
   # target -> User
   # text -> string
   # reporter -> User
 
     expires = BlockList.get_expiration(block_list)
-    parent_id = parent_id ? parent_id : self.set_parent(block_list, target)
 
     report = self.find_or_create_by(
       text: text,
@@ -94,18 +92,6 @@ class Report < ActiveRecord::Base
     report.autoapprove
 
     report
-  end
-
-  def self.set_parent(block_list, target)
-    parent = self.get_parent(block_list, target)
-    parent != nil ? parent.id : 1
-  end
-
-  def self.get_parent(block_list, target)
-    self.is_parent.where(
-      :block_list => block_list,
-      :target     => target,
-    ).first
   end
 
   def process_child
