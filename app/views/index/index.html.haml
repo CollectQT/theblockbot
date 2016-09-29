@@ -9,18 +9,19 @@
         %li
           = link_to 'Remove All Blocks',
             '/tools/unblocker',
-            :class => 'btn'
+            :class => 'btn index-button'
           %p : remove all blocks on your account
         %li
           = link_to 'Block Chain',
             '/tools/blockchain',
-            :class => 'btn'
+            :class => 'btn index-button'
           %p : block someone, and all of their followers
       %h2 Block Lists
       %ul
         %li
           %p work in progress!
     - else
-      =  link_to 'Sign In with Twitter',
-        '/auth/twitter',
-        :class => 'btn btn-primary'
+      .index-signin
+        =  link_to 'Sign In with Twitter',
+          '/auth/twitter',
+          :class => 'btn btn-primary index-signin'
