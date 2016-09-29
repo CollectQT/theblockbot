@@ -8,13 +8,13 @@ describe "Report" do
   }
   let(:report_parent) { Report.parse_objects(
     block_list: block_list,
-    target: User.first,
+    target: user,
     text: 'parent report',
     reporter: user,
   ) }
   let(:report_child) { Report.parse_objects(
     block_list: BlockList.first,
-    target: User.first,
+    target: user,
     text: 'child report',
     reporter: user,
     parent_id: report_parent.id,
