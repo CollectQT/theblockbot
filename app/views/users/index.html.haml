@@ -3,15 +3,18 @@
 
 .info
   %h2 Settings
-  %h2 Subscriptions
-  %ul
-    - if current_user.block_lists.length > 0
-      - current_user.block_lists.each do |block_list|
-        %li
-          %span= link_to block_list.name, block_list_url(block_list)
-    - else
+    %ul
       %li
-        %span= link_to "None!", block_lists_path
+        %p work in progress
+  / %h2 Subscriptions
+  / %ul
+  /   - if current_user.block_lists.length > 0
+  /     - current_user.block_lists.each do |block_list|
+  /       %li
+  /         %span= link_to block_list.name, block_list_url(block_list)
+  /   - else
+  /     %li
+  /       %span= link_to "None!", block_lists_path
   %h2 Log
   %ul
     - if current_user.log.length == 0
