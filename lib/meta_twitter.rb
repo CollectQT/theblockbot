@@ -20,7 +20,7 @@ module MetaTwitter
     status = "/read_from_id/#{id}"
 
     Rails.cache.fetch(status, expires_in: 1.hours) do
-      Rails.logger.error { status }
+      Rails.logger.info { status }
       rescue_not_found {
         TwitterClient.user(id.to_i).to_h
       }
@@ -33,7 +33,7 @@ module MetaTwitter
     status = "/read_from_name/#{name}"
 
     Rails.cache.fetch(status, expires_in: 1.hours) do
-      Rails.logger.error { status }
+      Rails.logger.info { status }
       rescue_not_found {
         TwitterClient.user(name).to_h
       }
@@ -46,7 +46,7 @@ module MetaTwitter
     status = "/read_from_bulk_ids/#{key}"
 
     Rails.cache.fetch(status, expires_in: 1.days) do
-      Rails.logger.error { status }
+      Rails.logger.info { status }
       rescue_not_found {
         users = TwitterClient.users(ids)
       }
@@ -65,7 +65,7 @@ module MetaTwitter
     status = "#{user_id}/following?/#{target_id}"
 
     Rails.cache.fetch(status, expires_in: 1.weeks) do
-      Rails.logger.error { status }
+      Rails.logger.info { status }
       user.friendship?(user, target_id)
     end
   end
@@ -77,7 +77,7 @@ module MetaTwitter
     status = "#{user_id}/follower?/#{target_id}"
 
     Rails.cache.fetch(status, expires_in: 1.weeks) do
-      Rails.logger.error { status }
+      Rails.logger.info { status }
       user.friendship?(target_id, user)
     end
   end
@@ -89,7 +89,7 @@ module MetaTwitter
     status = "#{user_id}/blocked?/#{target_id}"
 
     Rails.cache.fetch(status, expires_in: 1.weeks) do
-      Rails.logger.error { status }
+      Rails.logger.info { status }
       user.block?(target_id)
     end
   end
@@ -151,7 +151,7 @@ module MetaTwitter
       status          = "fof/#{type}/source:#{user_account_id}/target:#{target}"
 
       Rails.cache.fetch(status, expires_in: 1.months) do
-        Rails.logger.error { status }
+        Rails.logger.info { status }
         self.new.page(user, type, target)
       end
     end
@@ -161,7 +161,7 @@ module MetaTwitter
       status = "fof/page/#{id}/#{type}/#{cursor}"
 
       Rails.cache.fetch(status, expires_in: 1.months) do
-        Rails.logger.error { status }
+        Rails.logger.info { status }
         if cursor != 0
           fof, cursor = process_page(user, type, target, fof, cursor)
           page(user, type, target, fof: fof, cursor: cursor)
@@ -195,7 +195,7 @@ module MetaTwitter
       status          = "blockids/source:#{user_account_id}/"
 
       Rails.cache.fetch(status, expires_in: 1.months) do
-        Rails.logger.error { status }
+        Rails.logger.info { status }
         self.new.page(user)
       end
     end
@@ -205,7 +205,7 @@ module MetaTwitter
       status = "blockids/page/#{id}/#{cursor}"
 
       Rails.cache.fetch(status, expires_in: 1.months) do
-        Rails.logger.error { status }
+        Rails.logger.info { status }
         if cursor != 0
           ids, cursor = process_page(user, ids, cursor)
           page(user, ids: ids, cursor: cursor)
