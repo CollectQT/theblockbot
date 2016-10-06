@@ -17,7 +17,6 @@ module MetaTwitter
 
   def self.read_user_from_twitter_id(id)
   # id => int (1111111111111111)
-    log_entry = "GET Twitter.user #{id}"
     status = "/read_from_id/#{id}"
 
     Rails.cache.fetch(status, expires_in: 1.hours) do
