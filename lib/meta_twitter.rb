@@ -5,11 +5,15 @@ rescue Twitter::Error::NotFound
 end
 
 
-#############################################
+############################################################
 
 
 module MetaTwitter
 # access with MetaTwitter.function_name
+
+############################################################
+# user data
+############################################################
 
   def self.read_user_from_twitter_id(id)
   # id => int (1111111111111111)
@@ -45,9 +49,11 @@ module MetaTwitter
     end
   end
 
-  ############################################
+############################################################
+# boolean checks
+############################################################
 
-  def self.get_following?(user, target_id)
+  def self.following?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
     user_id = Utils.id_from_twitter_auth(user)
@@ -57,21 +63,7 @@ module MetaTwitter
     end
   end
 
-  def self.get_following_ids(user, target, cursor)
-  # user => MetaTwitter::Auth.config
-  # target => str / int (@name / 1234, twitter identifier)
-  # cursor => int
-    user.friend_ids(target, :cursor => cursor).to_h
-  end
-
-  def self.get_followers_ids(user, target, cursor)
-  # user => MetaTwitter::Auth.config
-  # target => str / int (@name / 1234, twitter identifier)
-  # cursor => int
-    user.follower_ids(target, :cursor => cursor).to_h
-  end
-
-  def self.get_follower?(user, target_id)
+  def self.follower?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
     user_id = Utils.id_from_twitter_auth(user)
@@ -81,17 +73,7 @@ module MetaTwitter
     end
   end
 
-  def self.get_blocked_ids(user, cursor)
-  # user => MetaTwitter::Auth.config
-  # cursor => int
-    user_id = Utils.id_from_twitter_auth(user)
-    Rails.cache.fetch("#{user_id}/blocked_ids/#{cursor}", expires_in: 1.weeks) do
-      Rails.logger.debug { "GET Twitter.blocked_ids #{user_id} #{cursor}" }
-      user.blocked_ids(cursor: cursor).to_h
-    end
-  end
-
-  def self.get_blocked?(user, target_id)
+  def self.blocked?(user, target_id)
   # user => MetaTwitter::Auth.config
   # target_id => int
     user_id = Utils.id_from_twitter_auth(user)
@@ -101,29 +83,33 @@ module MetaTwitter
     end
   end
 
-  ############################################
+############################################################
+# user lists
+############################################################
 
-  def self.remove_follow_from_list(user, user_id_list, type)
-  # user => MetaTwitter::Auth.config
-  # user_id_list => [123, 456, ...]
-  # type => "following" | "followed_by"
-    user_id_list - MetaTwitter::ReadFollows.read(user, type)
+  def self.get_followers(user, target: nil)
+  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+    MetaTwitter::ReadFollows.read(user, "followers", target: target)
   end
 
-  def self.remove_blocked_from_list(user, user_id_list)
-  # user => MetaTwitter::Auth.config
-  # user_id_list => [123, 456, ...]
-    user_id_list - MetaTwitter::BlockIds.read(user)
+  def self.get_following(user, target: nil)
+  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+    MetaTwitter::ReadFollows.read(user, "following", target: target)
   end
 
   def self.get_mutuals(user)
-  # user => MetaTwitter::Auth.config
-    followers = MetaTwitter::ReadFollows.from_followers(user)
-    following = MetaTwitter::ReadFollows.from_following(user)
-    followers - following
+  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+    MetaTwitter.get_followers(user) - MetaTwitter.get_following(user)
   end
 
-  ############################################
+  def self.get_blocked(user)
+  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+    MetaTwitter::BlockIds.read(user)
+  end
+
+
+############################################################
+
 
   # MetaTwitter::Auth.config(User)
 
@@ -140,23 +126,11 @@ module MetaTwitter
 
   end
 
-  ############################################
 
-  # following_self  = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
-  # followers_self  = MetaTwitter::ReadFollows.from_followers( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
-  # following_other = MetaTwitter::ReadFollows.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ), target: '@cyrin_test' )
+############################################################
+
 
   class ReadFollows
-
-    def self.from_followers(user, target: nil)
-    # user => MetaTwitter::Auth.config
-      self.read(user, "followers", target: target)
-    end
-
-    def self.from_following(user, target: nil)
-    # user => MetaTwitter::Auth.config
-      self.read(user, "following", target: target)
-    end
 
     def self.read(user, type, target: nil)
     # user => MetaTwitter::Auth.config
@@ -185,9 +159,9 @@ module MetaTwitter
 
     private def process_page(user, type, target, fof, cursor)
       if type == 'followers'
-        response = MetaTwitter.get_followers_ids(user, target, cursor)
+        response = user.follower_ids(target, :cursor => cursor).to_h
       elsif type == 'following'
-        response = MetaTwitter.get_following_ids(user, target, cursor)
+        response = user.friend_ids(target, :cursor => cursor).to_h
       end
       fof = fof + response[:ids]
       cursor = response[:next_cursor]
@@ -196,20 +170,25 @@ module MetaTwitter
 
   end
 
-  ############################################
 
-  # ids = MetaTwitter::BlockIds.read( MetaTwitter::Auth.config( User.find_by(user_name:'lynncyrin') ) )
+############################################################
+
 
   class BlockIds
 
     def self.read(user)
-    # user => MetaTwitter::Auth.config
-      self.new.page(user)
+      user_account_id = Utils.id_from_twitter_auth(user)
+      status          = "blockids/source:#{user_account_id}/"
+
+      Rails.logger.error { status }
+      Rails.cache.fetch(status, expires_in: 1.months) do
+        self.new.page(user, type, target)
+      end
     end
 
     def page(user, ids: [], cursor: -1)
       id = Utils.id_from_twitter_auth(user)
-      Rails.cache.fetch("blockids/page/#{id}/#{cursor}", expires_in: 1.days) do
+      Rails.cache.fetch("blockids/page/#{id}/#{cursor}", expires_in: 1.months) do
         if cursor != 0
           ids, cursor = process_page(user, ids, cursor)
           page(user, ids: ids, cursor: cursor)
@@ -220,7 +199,7 @@ module MetaTwitter
     end
 
     private def process_page(user, ids, cursor)
-      response = MetaTwitter.get_blocked_ids(user, cursor)
+      response = user.blocked_ids(cursor: cursor).to_h
       ids = ids + response[:ids]
       cursor = response[:next_cursor]
       return ids, cursor
