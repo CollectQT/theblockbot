@@ -198,6 +198,8 @@ module MetaTwitter
         Rails.logger.info { status }
         self.new.page(user)
       end
+    rescue Twitter::Error::TooManyRequests
+      []
     end
 
     def page(user, ids: [], cursor: -1)
