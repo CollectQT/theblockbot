@@ -46,9 +46,9 @@ class ToolBlockChain
 
 
   def get_target_list(user:, target:)
-    target_list = MetaTwitter::ReadFollows.from_followers(user, target: target )
-    target_list = MetaTwitter.remove_follow_from_list(user, target_list, "following")
-    target_list = MetaTwitter.remove_blocked_from_list(user, target_list)
+    target_list = MetaTwitter.get_followers(user, target: target )
+    target_list = target_list - MetaTwitter.get_following(user)
+    target_list = target_list - MetaTwitter.get_blocked(user)
     # a filter for removing followers is purposefully omitted here
     # because people will often follow you when they start harassing you
   end
