@@ -99,22 +99,22 @@ module MetaTwitter
 ############################################################
 
   def self.get_followers(user, target: nil)
-  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+  # user => MetaTwitter::Auth.config( User.get_from_ENV )
     MetaTwitter::ReadFollows.read(user, "followers", target: target)
   end
 
   def self.get_following(user, target: nil)
-  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+  # user => MetaTwitter::Auth.config( User.get_from_ENV )
     MetaTwitter::ReadFollows.read(user, "following", target: target)
   end
 
   def self.get_mutuals(user)
-  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+  # user => MetaTwitter::Auth.config( User.get_from_ENV )
     MetaTwitter.get_followers(user) - MetaTwitter.get_following(user)
   end
 
   def self.get_blocked(user)
-  # user => MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') )
+  # user => MetaTwitter::Auth.config( User.get_from_ENV )
     MetaTwitter::BlockIds.read(user)
   end
 
