@@ -1,6 +1,3 @@
-describe "create_block" do
-end
-
 describe "create_blocks_from_report" do
 
   let(:worker) { CreateBlocksFromReport.new }
@@ -36,24 +33,4 @@ describe "create_blocks_from_subscribe" do
     worker.work_on(user, block_list)
   end
 
-end
-
-
-describe "create_unblocks_from_expire" do
-end
-
-
-describe "create_unblocks_from_unsubscribe" do
-end
-
-describe "post_block" do
-end
-
-describe "post_softblock" do
-end
-
-describe "post_unblock" do
-end
-
-describe "tool_unblock_all" do
 end
