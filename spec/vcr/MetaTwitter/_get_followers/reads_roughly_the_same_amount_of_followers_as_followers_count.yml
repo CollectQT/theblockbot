@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.twitter.com/1.1/users/show.json?screen_name=@gitlab
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - TwitterRubyGem/5.16.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Status:
+      - 200 OK
+      X-Rate-Limit-Limit:
+      - '181'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":390167291,"id_str":"390167291","name":"GitLab","screen_name":"gitlab","location":"","profile_location":null,"description":"GitLab
+        is open source software to collaborate on code. Everyone can contribute. Follow
+        @GitLabStatus for service information.","url":"https:\/\/t.co\/0jxyO1Cur2","entities":{"url":{"urls":[{"url":"https:\/\/t.co\/0jxyO1Cur2","expanded_url":"https:\/\/www.gitlab.com\/","display_url":"gitlab.com","indices":[0,23]}]},"description":{"urls":[]}},"protected":false,"followers_count":34491,"friends_count":302,"listed_count":794,"created_at":"Thu
+        Oct 13 15:27:13 +0000 2011","favourites_count":3590,"utc_offset":7200,"time_zone":"Amsterdam","geo_enabled":false,"verified":false,"statuses_count":14685,"lang":"en","status":{"created_at":"Thu
+        Oct 06 15:24:36 +0000 2016","id":784051738714054656,"id_str":"784051738714054656","text":"RT
+        @dimitrieh: Another simple issue to start contributing to @gitlab https:\/\/t.co\/dH4qsqp6iS
+        #frontend adding a tooltip!","truncated":false,"entities":{"hashtags":[{"text":"frontend","indices":[93,102]}],"symbols":[],"user_mentions":[{"screen_name":"dimitrieh","name":"Dimitrie","id":29700063,"id_str":"29700063","indices":[3,13]},{"screen_name":"gitlab","name":"GitLab","id":390167291,"id_str":"390167291","indices":[61,68]}],"urls":[{"url":"https:\/\/t.co\/dH4qsqp6iS","expanded_url":"https:\/\/gitlab.com\/gitlab-org\/gitlab-ce\/issues\/23066","display_url":"gitlab.com\/gitlab-org\/git\u2026","indices":[69,92]}]},"source":"\u003ca
+        href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003eTwitter Web Client\u003c\/a\u003e","in_reply_to_status_id":null,"in_reply_to_status_id_str":null,"in_reply_to_user_id":null,"in_reply_to_user_id_str":null,"in_reply_to_screen_name":null,"geo":null,"coordinates":null,"place":null,"contributors":null,"retweeted_status":{"created_at":"Thu
+        Oct 06 14:56:39 +0000 2016","id":784044705835253760,"id_str":"784044705835253760","text":"Another
+        simple issue to start contributing to @gitlab https:\/\/t.co\/dH4qsqp6iS #frontend
+        adding a tooltip!","truncated":false,"entities":{"hashtags":[{"text":"frontend","indices":[78,87]}],"symbols":[],"user_mentions":[{"screen_name":"gitlab","name":"GitLab","id":390167291,"id_str":"390167291","indices":[46,53]}],"urls":[{"url":"https:\/\/t.co\/dH4qsqp6iS","expanded_url":"https:\/\/gitlab.com\/gitlab-org\/gitlab-ce\/issues\/23066","display_url":"gitlab.com\/gitlab-org\/git\u2026","indices":[54,77]}]},"source":"\u003ca
+        href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003eTwitter Web Client\u003c\/a\u003e","in_reply_to_status_id":null,"in_reply_to_status_id_str":null,"in_reply_to_user_id":null,"in_reply_to_user_id_str":null,"in_reply_to_screen_name":null,"geo":null,"coordinates":null,"place":{"id":"75431660bc651ca9","url":"https:\/\/api.twitter.com\/1.1\/geo\/id\/75431660bc651ca9.json","place_type":"city","name":"Breda","full_name":"Breda,
+        Nederland","country_code":"NL","country":"The Netherlands","contained_within":[],"bounding_box":{"type":"Polygon","coordinates":[[[4.658036,51.4767179],[4.8716632,51.4767179],[4.8716632,51.6431374],[4.658036,51.6431374]]]},"attributes":{}},"contributors":null,"is_quote_status":false,"retweet_count":1,"favorite_count":4,"favorited":false,"retweeted":false,"possibly_sensitive":false,"lang":"en"},"is_quote_status":false,"retweet_count":1,"favorite_count":0,"favorited":false,"retweeted":false,"possibly_sensitive":false,"lang":"en"},"contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"333333","profile_background_image_url":"http:\/\/pbs.twimg.com\/profile_background_images\/407996134\/bg.png","profile_background_image_url_https":"https:\/\/pbs.twimg.com\/profile_background_images\/407996134\/bg.png","profile_background_tile":true,"profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/757993008461742080\/9pAwHBR0_normal.jpg","profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/757993008461742080\/9pAwHBR0_normal.jpg","profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/390167291\/1454354951","profile_link_color":"554488","profile_sidebar_border_color":"FFFFFF","profile_sidebar_fill_color":"474D57","profile_text_color":"CCCCCC","profile_use_background_image":true,"has_extended_profile":false,"default_profile":false,"default_profile_image":false,"following":false,"follow_request_sent":false,"notifications":false,"translator_type":"none"}'
+    http_version: 
+  recorded_at: Thu, 06 Oct 2016 19:27:13 GMT
+recorded_with: VCR 3.0.3
