@@ -61,16 +61,4 @@ describe "MetaTwitter" do
     end
   end
 
-  context ".pre_get_connections" do
-    it "respects the `max` parameter" do
-      stub_get_connections
-
-      expect(MetaTwitter).to receive(:get_connections).with(nil, [1])
-      expect(MetaTwitter).to receive(:get_connections).with(nil, [2])
-      expect(MetaTwitter).to receive(:get_connections).with(nil, [3])
-
-      MetaTwitter.pre_get_connections(nil, [1, 2, 3], max: 1)
-    end
-  end
-
 end

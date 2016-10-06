@@ -101,39 +101,13 @@ module MetaTwitter
     end
   end
 
-  def self.get_connections(user, target_users)
-  # user => MetaTwitter::Auth.config
-  # target_users => [Twitter.user.id,] length <= 100
-    Rails.logger.debug {
-      user_id = Utils.id_from_twitter_auth(user)
-      key = Digest::MD5.hexdigest(target_users.to_s)
-      "GET Twitter.friendships #{user_id} #{key}"
-    }
-
-    user.friendships(target_users)
-  # [(
-  #    :id => twitter_user.id
-  #    :connections => (following, following_requested, followed_by, none),
-  # ),]
-  end
-
-  def self.pre_get_connections(user, user_id_list, max: 100)
-    connections_list = []
-    for slice in user_id_list.each_slice(max).to_a
-      connections_list.concat( self.get_connections(user, slice) )
-    end
-    return connections_list
-  end
-
   ############################################
 
   def self.remove_follow_from_list(user, user_id_list, type)
   # user => MetaTwitter::Auth.config
   # user_id_list => [123, 456, ...]
   # type => "following" | "followed_by"
-    MetaTwitter.pre_get_connections(user, user_id_list).map{ |target|
-      target.id unless target.connections.include? type
-    }.compact
+    user_id_list - MetaTwitter::ReadFollows.read(user, type)
   end
 
   def self.remove_blocked_from_list(user, user_id_list)
