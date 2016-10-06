@@ -116,6 +116,13 @@ module MetaTwitter
     user_id_list - MetaTwitter::BlockIds.read(user)
   end
 
+  def self.get_mutuals(user)
+  # user => MetaTwitter::Auth.config
+    followers = MetaTwitter::ReadFollows.from_followers(user)
+    following = MetaTwitter::ReadFollows.from_following(user)
+    followers - following
+  end
+
   ############################################
 
   # MetaTwitter::Auth.config(User)
@@ -185,80 +192,6 @@ module MetaTwitter
       fof = fof + response[:ids]
       cursor = response[:next_cursor]
       return fof, cursor
-    end
-
-  end
-
-  ############################################
-
-  # mutuals = MetaTwitter::ReadMutuals.from_following( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
-  # mutuals = MetaTwitter::ReadMutuals.from_followers( MetaTwitter::Auth.config( User.find_by(user_name: 'lynncyrin') ) )
-
-  class ReadMutuals
-
-    def self.from_following(user)
-    # user => MetaTwitter::Auth.config
-      read(user, "following")
-    end
-
-    def self.from_followers(user)
-    # user => MetaTwitter::Auth.config
-      self.read(user, "followers")
-    end
-
-    def self.read(user, type)
-    # user => MetaTwitter::Auth.config
-    # type => string ("followers" or "following")
-      id = Utils.id_from_twitter_auth(user)
-      Rails.cache.fetch("readmutuals/all/#{id}/#{type}", expires_in: 1.months) do
-        target_users = MetaTwitter::ReadFollows.read(user, type)
-        self.new.page(user, type, target_users)
-      end
-    end
-
-    def page(user, type, target_users, mutuals: [], nonmutuals: [], depth: 0, count: 100)
-      id = Utils.id_from_twitter_auth(user)
-      Rails.cache.fetch("readmutuals/page/#{id}/#{type}/#{depth}", expires_in: 1.months) do
-
-        if target_users.length > 0
-
-          _mutuals, _nonmutuals = process_page(user, target_users.take(count))
-
-          target_users = target_users.drop(count)
-          mutuals      = mutuals + _mutuals
-          nonmutuals   = nonmutuals + _nonmutuals
-          depth        = depth + 1
-
-          page(user, type, target_users,
-            mutuals: mutuals,
-            nonmutuals: nonmutuals,
-            depth: depth,
-            count: count,
-          )
-
-        else
-          return mutuals, nonmutuals
-
-        end
-      end
-    end
-
-    private def process_page(user, target_users)
-      response = MetaTwitter.get_connections(user, target_users)
-      mutuals = []
-      nonmutuals = []
-
-      for item in response
-        connections = item.connections
-
-        if connections.include? "following" and connections.include? "followed_by"
-          mutuals.concat([item.id])
-        else
-          nonmutuals.concat([item.id])
-        end
-      end
-
-      return mutuals, nonmutuals
     end
 
   end
