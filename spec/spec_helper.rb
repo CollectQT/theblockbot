@@ -5,6 +5,7 @@ require 'hash_dot'
 require 'vcr_helper'
 require 'login_helper'
 require 'factory_helper'
+require 'sidekiq_helper'
 
 
 RSpec.configure do |config|
