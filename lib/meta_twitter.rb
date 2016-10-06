@@ -157,8 +157,8 @@ module MetaTwitter
     end
 
     def page(user, type, target, fof: [], cursor: -1)
-      id = Utils.id_from_twitter_auth(user)
-      status = "fof/page/#{id}/#{type}/#{cursor}"
+      user_account_id = Utils.id_from_twitter_auth(user)
+      status = "fof/#{type}/source:#{user_account_id}/target:#{target}/page:#{cursor}"
 
       Rails.cache.fetch(status, expires_in: 1.months) do
         Rails.logger.info { status }
@@ -201,8 +201,8 @@ module MetaTwitter
     end
 
     def page(user, ids: [], cursor: -1)
-      id = Utils.id_from_twitter_auth(user)
-      status = "blockids/page/#{id}/#{cursor}"
+      user_account_id = Utils.id_from_twitter_auth(user)
+      status = "blockids/source:#{user_account_id}/page:#{cursor}"
 
       Rails.cache.fetch(status, expires_in: 1.months) do
         Rails.logger.info { status }
