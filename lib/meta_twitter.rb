@@ -182,7 +182,7 @@ module MetaTwitter
 
       Rails.logger.error { status }
       Rails.cache.fetch(status, expires_in: 1.months) do
-        self.new.page(user, type, target)
+        self.new.page(user)
       end
     end
 
