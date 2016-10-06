@@ -1,6 +1,10 @@
 class ToolBlockChain
   include Sidekiq::Worker
 
+  sidekiq_retry_in do |count|
+    # 15min * 60sec/min = 900sec
+    900 * (count + 1)
+  end
 
   def perform(user_database_id, target_user_name)
     user        = User.find(user_database_id)
