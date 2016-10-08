@@ -1,14 +1,15 @@
 .jumbotron
-  %h1 Twitter Block Chain - Ruby Version
+  %h1 Twitter Block Chain
 
   .page-body
     %p
       :markdown
-        Ruby based version of [@satsukitv](https://twitter.com/satsukitv)'s [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en), which is in javascript. Blocks all the followers of a target user, except for people you follow.
+        Server based version of [@satsukitv](https://twitter.com/satsukitv)'s [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en) broswer extension. Blocks all the followers of a target user, except the ones you follow.
 
-        The javascript implementation of Twitter Block Chain is great, but it requires you to keep someone's follower page open for anything from minutes to hours (depending on number of followers). TheBlockBot instead will take the username of the person to block chain, and does the rest of the work on its server.
+        For target users with less than 1,000 followers, [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en) is a better option.
 
-        For target users with less than 1000 followers the above mentioned [Twitter Block Chain](https://chrome.google.com/webstore/detail/twitter-block-chain/dkkfampndkdnjffkleokegfnibnnjfah?hl=en) (javascript version) is a better option. For target users with greater than 1000 followers, continue to the form below!
+        Due to technical limitations, this tool does not currently work on target users with greater than 75,000 followers. This limit will be removed in a future update!
+
     %hr
     %h2 Block Chain Target User:
 

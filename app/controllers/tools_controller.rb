@@ -1,26 +1,37 @@
 class ToolsController < ApplicationController
 
-  def hunkerdown
-  end
 
   def blockchain
   # GET /tools/blockchain
   end
 
-  def blockchain_perform
+
+  def blockchain_perform(notice: nil, alert: nil)
   # POST /tools/blockchain
+    target_user = params[:user_name]
+
     if current_user
-      ToolBlockChain.perform_async(current_user.id, params[:user_name])
-      notice = "Running a blockchain on #{params[:user_name]}"
+      user_auth = MetaTwitter::Auth.config(current_user)
+
+      if MetaTwitter.too_many_followers?(user_auth, target_user)
+        alert = "User #{target_user} has too many followers for blockchain"
+      else
+        ToolBlockChain.perform_async(current_user.id, target_user)
+        notice = "Running a blockchain on #{target_user}"
+      end
+
     else
-      notice = "Not authorized"
+      alert = "Not authorized"
     end
-    redirect_to :back, notice: notice
+
+    redirect_to :back, notice: notice, alert: alert
   end
+
 
   def unblocker
   # GET /tools/unblocker
   end
+
 
   def unblocker_perform
   # POST /tools/unblocker
@@ -34,5 +45,6 @@ class ToolsController < ApplicationController
       redirect_to :back
     end
   end
+
 
 end

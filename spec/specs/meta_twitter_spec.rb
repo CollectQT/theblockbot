@@ -13,4 +13,9 @@ describe "MetaTwitter" do
     end
   end
 
+  it ".too_many_followers?", :vcr do
+    result = MetaTwitter.too_many_followers?(env_user, '@twitter')
+    expect(result).to be(true)
+  end
+
 end

@@ -94,6 +94,17 @@ module MetaTwitter
     end
   end
 
+  def self.too_many_followers?(user, target_name)
+  # user => MetaTwitter::Auth.config
+  # target_name => string
+  status = "too_many_followers?/#{target_name}"
+
+    Rails.cache.fetch(status, expires_in: 1.days) do
+      Rails.logger.info { status }
+      user.user(target_name).followers_count >= 74900
+    end
+  end
+
 ############################################################
 # user lists
 ############################################################
