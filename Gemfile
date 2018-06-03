@@ -1,3 +1,5 @@
+source 'https://rubygems.org'
+
 gem 'dotenv-rails'
 gem 'flt'
 gem 'pg'
@@ -7,9 +9,9 @@ gem 'redis-rails'
 
 gem 'coffee-rails'
 gem 'markdown'
-gem 'sass-rails', '~> 5'
+gem 'sass-rails'
 gem 'twitter-bootstrap-rails'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
 gem 'jquery-rails'
 gem 'turbolinks'
