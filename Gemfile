@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'dotenv-rails'
 gem 'flt'
 gem 'pg'
-gem 'rails', '~> 4'
+gem 'rails'
 gem 'rake'
 gem 'redis-rails'
 
@@ -24,7 +24,6 @@ gem 'omniauth-twitter'
 gem 'puma'
 gem 'rack-attack'
 gem 'sidekiq'
-gem 'sinatra', require: false
 gem 'slim'
 gem 'twitter'
 
