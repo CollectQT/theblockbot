@@ -1,5 +1,3 @@
-ruby '2.4.4'
-
 gem 'dotenv-rails'
 gem 'flt'
 gem 'pg'
